@@ -1,0 +1,67 @@
+/**
+ * StoryScroller CSS
+ * Provides fallback snapping behavior and Lenis-specific styling
+ */
+
+/* Fallback for when JavaScript fails or is disabled */
+.story-scroller-container {
+  scroll-snap-type: y proximity; /* Safe fallback - not mandatory */
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.story-scroller-section {
+  scroll-snap-align: start;
+  height: 100vh;
+  outline: none;
+}
+
+/* Lenis-specific styles for consistent behavior */
+html.lenis {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Accessibility improvements */
+.story-scroller-section:focus-visible {
+  outline: 2px solid #4a90e2;
+  outline-offset: -2px;
+}
+
+/* Prevent text selection during scroll */
+.story-scroller-container.is-scrolling {
+  user-select: none;
+}
+
+/* Loading state */
+.story-scroller-container.is-loading {
+  cursor: wait;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .story-scroller-container {
+    scroll-behavior: auto;
+  }
+  
+  .story-scroller-section {
+    animation: none !important;
+    transition: none !important;
+  }
+}

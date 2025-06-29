@@ -1,0 +1,28 @@
+# Source files
+src/
+tests/
+
+# Config files
+tsup.config.ts
+vitest.config.ts
+eslint.config.js
+tsconfig.json
+
+# Development files
+*.log
+.DS_Store
+node_modules/
+coverage/
+.turbo/
+
+# Test files
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Keep dist and necessary files
+!dist/
+!README.md
+!package.json
+!LICENSE

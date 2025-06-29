@@ -1,0 +1,32 @@
+{
+  "name": "storyscroller",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "StoryScroller React component and demo extracted from portfolio monorepo",
+  "author": "Prime Inc",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.17.0",
+    "pnpm": ">=9.12.0"
+  },
+  "packageManager": "pnpm@9.12.0",
+  "scripts": {
+    "dev": "pnpm --filter demo dev",
+    "dev:package": "pnpm --filter package dev",
+    "build": "pnpm --filter package build && pnpm --filter demo build",
+    "build:package": "pnpm --filter package build",
+    "build:demo": "pnpm --filter demo build",
+    "test": "pnpm --filter package test && pnpm --filter demo test",
+    "test:package": "pnpm --filter package test",
+    "test:demo": "pnpm --filter demo test",
+    "lint": "pnpm --filter package lint && pnpm --filter demo lint",
+    "typecheck": "pnpm --filter package typecheck",
+    "clean": "pnpm --filter package clean && pnpm --filter demo clean",
+    "install:all": "pnpm install"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "rimraf": "^6.0.1"
+  }
+}

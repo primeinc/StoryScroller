@@ -1,0 +1,33 @@
+{
+  "name": "@primeinc/dev-tools",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Shared development tools for the portfolio monorepo",
+  "main": "./src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./dev-server": {
+      "import": "./src/dev-server.js",
+      "default": "./src/dev-server.js"
+    }
+  },
+  "engines": {
+    "node": ">=20.17.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist tsconfig.tsbuildinfo .turbo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.30",
+    "typescript": "5.8.3"
+  }
+}

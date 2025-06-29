@@ -1,0 +1,52 @@
+{
+  "name": "@primeinc/story-scroller-demo",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "clean": "rimraf dist .turbo .vite-cache",
+    "dev": "node scripts/dev-server.js start",
+    "dev:kill": "node scripts/dev-server.js kill",
+    "dev:port-check": "node scripts/dev-server.js port-check",
+    "dev:restart": "node scripts/dev-server.js restart",
+    "dev:start": "node scripts/dev-server.js start",
+    "dev:status": "node scripts/dev-server.js status",
+    "dev:stop": "node scripts/dev-server.js stop",
+    "preview": "vite preview",
+    "lint": "eslint src --cache",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:unit": "vitest",
+    "test:unit:run": "vitest run"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@primeinc/story-scroller": "workspace:../package",
+    "@vitejs/plugin-react": "^4.2.1",
+    "gsap": "^3.12.5",
+    "lenis": "^1.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^5.2.8"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@primeinc/dev-tools": "workspace:../dev-tools",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/node": "^20",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^9.0.0",
+    "jsdom": "^24.0.0",
+    "postcss": "^8.4.38",
+    "rimraf": "^5.0.5",
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.8.3",
+    "vitest": "^1.4.0"
+  }
+}

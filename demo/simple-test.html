@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+</head>
+<body>
+    <script>
+        function checkDemo() {
+            fetch('http://localhost:5174/src/main.tsx')
+                .then(response => response.text())
+                .then(code => {
+                    console.log('Main.tsx loaded successfully');
+                    
+                    // Now check if the App component loads
+                    return fetch('http://localhost:5174/src/App.tsx');
+                })
+                .then(response => response.text())
+                .then(code => {
+                    console.log('App.tsx loaded successfully');
+                    
+                    // Check if StoryScroller import works
+                    return fetch('http://localhost:5174/@fs/home/will/local_dev/portfolio/packages/story-scroller/src/index.ts');
+                })
+                .then(response => response.text())
+                .then(code => {
+                    console.log('StoryScroller index loaded successfully');
+                    console.log('All imports appear to work. Issue might be runtime rendering.');
+                })
+                .catch(error => {
+                    console.error('Import error:', error);
+                });
+        }
+        
+        checkDemo();
+    </script>
+</body>
+</html>

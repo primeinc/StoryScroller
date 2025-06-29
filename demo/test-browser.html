@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Browser Test</title>
+    <script>
+        async function testApp() {
+            try {
+                const response = await fetch('http://localhost:5174');
+                const html = await response.text();
+                console.log('HTML received, length:', html.length);
+                
+                // Open in new window to check console
+                const newWindow = window.open('http://localhost:5174', '_blank');
+                
+                setTimeout(() => {
+                    if (newWindow) {
+                        console.log('Check the new window console for errors');
+                    }
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        
+        window.onload = testApp;
+    </script>
+</head>
+<body>
+    <h1>Browser Test - Check Console</h1>
+    <p>This will open the demo in a new window. Check both consoles for errors.</p>
+</body>
+</html>
