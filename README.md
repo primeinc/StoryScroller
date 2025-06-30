@@ -1,5 +1,8 @@
 # StoryScroller
 
+[![Deploy Demo to GitHub Pages](https://github.com/primeinc/StoryScroller/actions/workflows/deploy-demo.yml/badge.svg)](https://github.com/primeinc/StoryScroller/actions/workflows/deploy-demo.yml)
+[![Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://primeinc.github.io/StoryScroller/)
+
 A production-ready React scroll-snapping component using GSAP and Lenis, extracted from the Prime Inc portfolio monorepo.
 
 ## Overview

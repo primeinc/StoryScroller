@@ -1,0 +1,14 @@
+<svg width="64" height="80" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Logo mark only: for favicon, icons, compact use -->
+  <g>
+    <!-- Primary ribbon flow -->
+    <path d="M32 16 Q18 16 18 30 Q18 44 32 44 Q46 44 46 58 Q46 72 32 72" stroke="#4F46E5" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <!-- Secondary ribbon flow - interleaved -->
+    <path d="M32 16 Q46 16 46 30 Q46 44 32 44 Q18 44 18 58 Q18 72 32 72" stroke="#22D3EE" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <!-- Motion trail indicators -->
+    <circle cx="56" cy="30" r="2" fill="#4F46E5" opacity="0.6"/>
+    <circle cx="60" cy="32" r="1.5" fill="#4F46E5" opacity="0.4"/>
+    <circle cx="56" cy="54" r="2" fill="#22D3EE" opacity="0.6"/>
+    <circle cx="60" cy="56" r="1.5" fill="#22D3EE" opacity="0.4"/>
+  </g>
+</svg>

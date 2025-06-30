@@ -1,3 +1,26 @@
+/**
+ * @license
+ * Copyright (c) 2025 Prime Inc
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 import type { RefObject } from 'react';
 import type { ScrollState, AnimationControllers } from '../types/scroll-manager';
 import type { IBrowserService } from '../services/BrowserService';
@@ -10,7 +33,7 @@ import type { IBrowserService } from '../services/BrowserService';
 /** Forces all animation systems to sync to a specific section. */
 export async function forceSync(
   targetSection: number,
-  stateRef: RefObject<ScrollState>,
+  _stateRef: RefObject<ScrollState>,
   controllers: AnimationControllers,
   browserService: IBrowserService,
   updateState: (updates: Partial<ScrollState>) => void
@@ -18,8 +41,8 @@ export async function forceSync(
   console.warn(`🔄 FORCE SYNC triggered. Syncing to section: ${targetSection}`);
 
   // Use gsap from global or import
-  const gsap = window.gsap || (await import('gsap')).gsap;
-  const ScrollTrigger = window.ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger;
+  const gsap = (window as any).gsap || (await import('gsap')).default;
+  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger;
   
   gsap.killTweensOf(window);
   controllers.lenis?.stop();
@@ -48,8 +71,8 @@ export async function emergencyReset(
 ) {
   console.error("🚨 EMERGENCY RESET triggered. Reinitializing scroll system.");
 
-  const gsap = window.gsap || (await import('gsap')).gsap;
-  const ScrollTrigger = window.ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger;
+  const gsap = (window as any).gsap || (await import('gsap')).default;
+  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger')).ScrollTrigger;
 
   gsap.killTweensOf('*');
   ScrollTrigger.killAll();

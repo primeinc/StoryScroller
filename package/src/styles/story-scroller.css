@@ -39,9 +39,50 @@ html.lenis {
 }
 
 /* Accessibility improvements */
+.story-scroller-section {
+  position: relative;
+}
+
 .story-scroller-section:focus-visible {
-  outline: 2px solid #4a90e2;
-  outline-offset: -2px;
+  outline: 3px solid #4a90e2;
+  outline-offset: -3px;
+  z-index: 1;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .story-scroller-section:focus-visible {
+    outline: 3px solid currentColor;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Keyboard navigation indicator */
+.story-scroller-section[tabindex]:focus {
+  outline: 2px dashed #4a90e2;
+  outline-offset: 4px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Live region for announcements */
+.story-scroller-live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* Prevent text selection during scroll */
@@ -54,7 +95,7 @@ html.lenis {
   cursor: wait;
 }
 
-/* Reduced motion support */
+/* Enhanced reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   .story-scroller-container {
     scroll-behavior: auto;
@@ -63,5 +104,13 @@ html.lenis {
   .story-scroller-section {
     animation: none !important;
     transition: none !important;
+    transform: none !important;
+  }
+  
+  /* Disable GSAP animations when reduced motion is preferred */
+  .story-scroller-container * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

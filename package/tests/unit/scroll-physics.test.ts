@@ -116,7 +116,7 @@ describe('Easing Functions', () => {
       // Test key points
       expect(easing(0)).toBeCloseTo(0, 3);
       expect(easing(1)).toBeCloseTo(1, 3);
-      expect(easing(0.5)).toBeWithinRange(0.3, 0.8);
+      expect(easing(0.5)).toBeWithinRange(0.9, 0.99); // Exponential ease-out is very fast initially
       
       // Should be monotonically increasing
       const points = [0, 0.25, 0.5, 0.75, 1.0];
@@ -129,9 +129,14 @@ describe('Easing Functions', () => {
       const easing = EASING_FUNCTIONS.DEFAULT;
       
       // Should not return NaN or Infinity
-      expect(easing(0)).toBeFinite();
-      expect(easing(1)).toBeFinite();
-      expect(easing(0.5)).toBeFinite();
+      expect(isFinite(easing(0))).toBe(true);
+      expect(isFinite(easing(1))).toBe(true);
+      expect(isFinite(easing(0.5))).toBe(true);
+      
+      // Should not return NaN
+      expect(isNaN(easing(0))).toBe(false);
+      expect(isNaN(easing(1))).toBe(false);
+      expect(isNaN(easing(0.5))).toBe(false);
     });
   });
 

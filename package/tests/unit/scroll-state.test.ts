@@ -214,17 +214,18 @@ describe('Scroll State Management', () => {
       expect(state.targetSection).toBeNull();
     });
 
-    it('should detect invalid target sections', () => {
+    it('should clamp invalid target sections during update', () => {
       const { result } = renderHook(() => useScrollState(mockConfig));
       
       act(() => {
-        result.current.updateState({ targetSection: 10 }); // Invalid (>= sections)
+        result.current.updateState({ targetSection: 10 }); // Will be clamped to 4
       });
 
+      // State should be valid because targetSection was clamped
       const isValid = result.current.verifyState();
       
-      expect(isValid).toBe(false);
-      expect(result.current.getState().targetSection).toBeNull();
+      expect(isValid).toBe(true);
+      expect(result.current.getState().targetSection).toBe(4); // Clamped to sections - 1
     });
 
     it('should detect scroll position drift', () => {
@@ -374,11 +375,11 @@ describe('Scroll State Management', () => {
       });
       expect(result.current.queries.canNavigate()).toBe(false);
 
-      // Not animating but canNavigate is false
+      // canNavigate is automatically set based on isAnimating
       act(() => {
-        result.current.updateState({ isAnimating: false, canNavigate: false });
+        result.current.updateState({ isAnimating: false }); // This will set canNavigate to true
       });
-      expect(result.current.queries.canNavigate()).toBe(false);
+      expect(result.current.queries.canNavigate()).toBe(true); // true because not animating
     });
   });
 

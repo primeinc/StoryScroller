@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://storyscroller-demo.vercel.app/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow admin paths (if any)
+Disallow: /admin/
+Disallow: /_next/static/
+Disallow: /api/
+
+# Allow common paths
+Allow: /favicon.ico
+Allow: /robots.txt
+Allow: /sitemap.xml

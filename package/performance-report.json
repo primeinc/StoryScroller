@@ -1,0 +1,97 @@
+{
+  "summary": {
+    "version": "1.0.0",
+    "timestamp": "2025-06-30T03:54:08.372Z",
+    "overallScore": 100,
+    "critical": [],
+    "recommendations": [
+      "Increase test coverage above 80%"
+    ]
+  },
+  "bundleSize": {
+    "core": 49039,
+    "css": 63,
+    "total": 49102,
+    "gzippedEstimate": 14711,
+    "targets": {
+      "core": 51200,
+      "withDeps": 153600,
+      "gzipped": 35840
+    },
+    "analysis": {
+      "coreWithinTarget": true,
+      "gzippedWithinTarget": true
+    }
+  },
+  "timing": {},
+  "memory": {},
+  "meta": {
+    "timestamp": "2025-06-30T03:54:08.372Z",
+    "version": "1.0.0",
+    "nodeVersion": "v20.17.0",
+    "platform": "linux"
+  },
+  "dependencies": {
+    "runtime": 3,
+    "development": 15,
+    "peer": 2,
+    "runtimeDeps": {
+      "@gsap/react": "^2.1.1",
+      "gsap": "^3.12.5",
+      "lenis": "^1.1.19"
+    },
+    "analysis": {
+      "hasGsap": true,
+      "hasLenis": true,
+      "hasReactGsap": true,
+      "lightweightRuntime": true
+    }
+  },
+  "quality": {
+    "typescriptErrors": 0,
+    "sourceFiles": 16,
+    "testFiles": 11,
+    "testCoverage": 68.75,
+    "analysis": {
+      "typescriptClean": true,
+      "wellTested": true,
+      "hasTests": true
+    }
+  },
+  "targets": {
+    "bundleSize": {
+      "core": 51200,
+      "withDeps": 153600,
+      "gzipped": 35840
+    },
+    "timing": {
+      "animationDuration": 600,
+      "inputResponse": 100,
+      "navigationComplete": 1000
+    },
+    "memory": {
+      "baseline": 10485760,
+      "maxUsage": 52428800,
+      "leakTolerance": 5242880
+    },
+    "framerate": {
+      "target": 60,
+      "minimum": 45
+    },
+    "browserSupport": {
+      "chrome": "90+",
+      "firefox": "88+",
+      "safari": "14+",
+      "edge": "90+",
+      "mobileSafari": "14+",
+      "chromeAndroid": "90+"
+    },
+    "accessibility": {
+      "wcagLevel": "AA",
+      "screenReader": true,
+      "keyboardNavigation": true,
+      "reducedMotion": true,
+      "highContrast": true
+    }
+  }
+}

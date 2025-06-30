@@ -1,4 +1,27 @@
 /**
+ * @license
+ * Copyright (c) 2025 Prime Inc
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/**
  * @fileoverview Physics constants and timing configurations for the scroll system.
  * Centralizes all "magic numbers" for easy tuning and consistency.
  */
@@ -6,9 +29,9 @@
 /** Timing constants for animations and debouncing */
 export const TIMING = {
   /** Base animation duration in seconds */
-  BASE_DURATION: 1.2,
+  BASE_DURATION: 0.6,
   /** Base animation duration in seconds (alias for compatibility) */
-  BASE_ANIMATION_DURATION: 1.2,
+  BASE_ANIMATION_DURATION: 0.6,
   /** Minimum animation duration to prevent jarring transitions */
   MIN_DURATION: 0.3,
   /** Maximum animation duration to prevent sluggish feel */
@@ -27,8 +50,8 @@ export const TIMING = {
   STATE_VERIFICATION_INTERVAL: 500,
   /** Threshold in ms to consider an animation "stuck" if it hasn't completed */
   STUCK_ANIMATION_THRESHOLD: 5000,
-  /** Navigation cooldown to prevent rapid section changes */
-  NAVIGATION_COOLDOWN: 200,
+  /** Navigation cooldown to prevent rapid section changes (optimized for button responsiveness) */
+  NAVIGATION_COOLDOWN: 50,
   /** Position check delay after animation */
   POSITION_CHECK_DELAY: 100,
   /** ScrollTrigger config delay to avoid hydration errors */
@@ -38,7 +61,7 @@ export const TIMING = {
 /** Physics parameters for smooth scrolling */
 export const PHYSICS = {
   /** Base duration in seconds for a single-section scroll animation */
-  BASE_ANIMATION_DURATION: 1.2,
+  BASE_ANIMATION_DURATION: 0.6,
   /** Lenis lerp (smoothing) factor (0-1, lower is smoother) */
   LENIS_LERP: 0.1,
   /** Lenis wheel sensitivity multiplier */
@@ -46,7 +69,7 @@ export const PHYSICS = {
   /** Wheel scroll multiplier (reduced for better control) */
   WHEEL_MULTIPLIER: 0.8,
   /** Default easing function */
-  DEFAULT_EASING: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  DEFAULT_EASING: (t: number) => t === 0 ? 0 : t === 1 ? 1 : Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   /** Observer tolerance for trackpad debouncing (higher = less sensitive) */
   OBSERVER_TOLERANCE: 50,
   /** Touch gesture multiplier */
@@ -56,7 +79,7 @@ export const PHYSICS = {
   /** Duration multiplier for touch devices */
   TOUCH_DURATION_MULTIPLIER: 0.8,
   /** Lenis duration multiplier (slightly faster for responsiveness) */
-  LENIS_DURATION_MULTIPLIER: 0.8,
+  LENIS_DURATION_MULTIPLIER: 0.7,
 } as const;
 
 /** Parameters for the magnetic snap effect */
@@ -112,7 +135,7 @@ export const SCROLLTRIGGER_CONFIG = {
 /** Easing functions */
 export const EASING_FUNCTIONS = {
   /** Default exponential ease-out */
-  DEFAULT: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  DEFAULT: (t: number) => t === 0 ? 0 : t === 1 ? 1 : Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   /** Smooth cubic ease-out for natural deceleration */
   CUBIC_OUT: (t: number) => 1 - Math.pow(1 - t, 3),
   /** Power2 ease in-out (GSAP compatible) */
