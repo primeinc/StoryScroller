@@ -3,59 +3,94 @@ import {
   StoryScrollerWithErrorBoundary, 
   type StoryScrollerConfig 
 } from '@primeinc/story-scroller';
+import { ControlHub } from './components/ControlHub';
+
+// Accessibility helper for reduced motion detection
+const prefersReducedMotion = () => {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
 
 // Rich content sections that showcase the package capabilities
 const createSections = () => [
-  <section key="hero" className="section-content section-1">
-    <h1 className="section-title">StoryScroller</h1>
+  <section key="hero" className="section-content section-1" aria-labelledby="hero-title">
+    <div className="hero-metrics">
+      <div className="metric-card">
+        <span className="metric-value">47KB</span>
+        <span className="metric-label">Bundle Size</span>
+      </div>
+      <div className="metric-card">
+        <span className="metric-value">60 FPS</span>
+        <span className="metric-label">Performance</span>
+      </div>
+      <div className="metric-card">
+        <span className="metric-value">WCAG AA</span>
+        <span className="metric-label">Accessible</span>
+      </div>
+      <div className="metric-card">
+        <span className="metric-value">React 18+</span>
+        <span className="metric-label">Modern</span>
+      </div>
+    </div>
+    
+    <h1 id="hero-title" className="section-title">StoryScroller</h1>
     <p className="section-subtitle">Production-ready narrative scrolling for React</p>
     <p className="section-description">
       Seamlessly blend storytelling with smooth scrolling animations. 
       Built with GSAP, Lenis, and React 18 for maximum performance.
     </p>
-    <a href="#features" className="section-cta">Explore Features</a>
+    
+    <div className="hero-interactive">
+      <div className="scroll-hint">
+        <span>Try scrolling, arrow keys, or the controls →</span>
+        <div className="scroll-indicator">↓</div>
+      </div>
+    </div>
+    
+    <a href="https://github.com/primeinc/storyscroller" className="section-cta" aria-describedby="hero-title" target="_blank" rel="noopener noreferrer">
+      View on GitHub →
+    </a>
   </section>,
 
-  <section key="features" className="section-content section-2">
-    <h1 className="section-title">Features</h1>
+  <section key="features" className="section-content section-2" aria-labelledby="features-title">
+    <h1 id="features-title" className="section-title">Features</h1>
     <p className="section-subtitle">Everything you need for narrative motion</p>
     <div className="section-description">
-      <ul className="feature-list">
-        <li>🎯 Magnetic snap scrolling with physics-based easing</li>
-        <li>⚡ Optimized performance with debounced state management</li>
-        <li>🎛️ Comprehensive configuration options</li>
-        <li>🛡️ Built-in error boundaries and recovery</li>
-        <li>📱 Touch and keyboard navigation support</li>
-        <li>🎨 Completely customizable styling</li>
+      <ul className="feature-list" role="list" aria-label="StoryScroller features">
+        <li role="listitem">🎯 Magnetic snap scrolling with physics-based easing</li>
+        <li role="listitem">⚡ Optimized performance with debounced state management</li>
+        <li role="listitem">🎛️ Comprehensive configuration options</li>
+        <li role="listitem">🛡️ Built-in error boundaries and recovery</li>
+        <li role="listitem">📱 Touch and keyboard navigation support</li>
+        <li role="listitem">🎨 Completely customizable styling</li>
       </ul>
     </div>
   </section>,
 
-  <section key="motion" className="section-content section-3">
-    <h1 className="section-title">Motion</h1>
+  <section key="motion" className="section-content section-3" aria-labelledby="motion-title">
+    <h1 id="motion-title" className="section-title">Motion</h1>
     <p className="section-subtitle">Designed for complex animations</p>
     <p className="section-description">
       Leverage GSAP's powerful animation engine with Lenis smooth scrolling. 
       Perfect for creating immersive storytelling experiences with precise control 
       over timing, easing, and section transitions.
     </p>
-    <div className="motion-demo">
-      <div className="floating-element">✨</div>
-      <div className="floating-element">🌟</div>
-      <div className="floating-element">💫</div>
+    <div className="motion-demo" aria-label="Animated elements demonstration" role="img">
+      <div className="floating-element" aria-hidden="true">✨</div>
+      <div className="floating-element" aria-hidden="true">🌟</div>
+      <div className="floating-element" aria-hidden="true">💫</div>
     </div>
   </section>,
 
-  <section key="integration" className="section-content section-4">
-    <h1 className="section-title">Integration</h1>
+  <section key="integration" className="section-content section-4" aria-labelledby="integration-title">
+    <h1 id="integration-title" className="section-title">Integration</h1>
     <p className="section-subtitle">GSAP + Lenis + React 18</p>
     <p className="section-description">
       Simple integration with existing React applications. 
       Comes with TypeScript support, comprehensive error handling, 
       and optimized performance patterns out of the box.
     </p>
-    <div className="code-preview">
-      <code>
+    <div className="code-preview" role="region" aria-label="Code example">
+      <code role="code" aria-label="StoryScroller React component example">
         {`<StoryScrollerWithErrorBoundary
   sections={sections}
   duration={1.2}
@@ -68,15 +103,21 @@ const createSections = () => [
     </div>
   </section>,
 
-  <section key="demo" className="section-content section-5">
-    <h1 className="section-title">Ready</h1>
+  <section key="demo" className="section-content section-5" aria-labelledby="ready-title">
+    <h1 id="ready-title" className="section-title">Ready</h1>
     <p className="section-subtitle">Start building narrative experiences</p>
     <p className="section-description">
       This demo showcases the full capabilities of StoryScroller. 
       Try the navigation controls, keyboard shortcuts (↑↓), 
       or simply scroll to experience the smooth section snapping.
     </p>
-    <a href="https://github.com/primeinc/story-scroller" className="section-cta">
+    <a 
+      href="https://github.com/primeinc/story-scroller" 
+      className="section-cta"
+      aria-describedby="ready-title"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       Get Started →
     </a>
   </section>,
@@ -101,180 +142,86 @@ const ErrorFallback = ({ error, resetError }: { error?: Error, resetError?: () =
   </div>
 );
 
-// Enhanced navigation UI using the global API
-function NavigationUI() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const sectionsCount = createSections().length;
 
-  useEffect(() => {
-    // Poll the state from the global API
-    const interval = setInterval(() => {
-      if ((window as any).storyScrollerAPI?.getState) {
-        const state = (window as any).storyScrollerAPI.getState();
-        setCurrentIndex(state.currentSection);
-        setIsAnimating(state.isAnimating);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleNext = () => {
-    if ((window as any).storyScrollerAPI) {
-      (window as any).storyScrollerAPI.nextSection();
-    }
-  };
-
-  const handlePrev = () => {
-    if ((window as any).storyScrollerAPI) {
-      (window as any).storyScrollerAPI.prevSection();
-    }
-  };
-
-  return (
-    <nav className="nav-ui">
-      <div className="nav-controls">
-        <button 
-          className="nav-button"
-          onClick={handlePrev} 
-          disabled={currentIndex === 0}
-          aria-label="Previous section"
-        >
-          ← Prev
-        </button>
-        
-        <div className="nav-info">
-          <span className="current-section">
-            {currentIndex + 1} / {sectionsCount}
-          </span>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${((currentIndex + 1) / sectionsCount) * 100}%` }}
-            />
-          </div>
-        </div>
-        
-        <button 
-          className="nav-button"
-          onClick={handleNext} 
-          disabled={currentIndex === sectionsCount - 1}
-          aria-label="Next section"
-        >
-          Next →
-        </button>
-      </div>
-      
-      <div className="nav-status">
-        {isAnimating && <span className="status-indicator animating">Animating</span>}
-      </div>
-    </nav>
-  );
-}
-
-// Section indicators component
-function SectionIndicators() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const sections = createSections();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if ((window as any).storyScrollerAPI?.getState) {
-        const state = (window as any).storyScrollerAPI.getState();
-        setCurrentIndex(state.currentSection);
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleSectionClick = (index: number) => {
-    if ((window as any).storyScrollerAPI) {
-      (window as any).storyScrollerAPI.gotoSection(index);
-    }
-  };
-
-  return (
-    <div className="section-indicators">
-      {sections.map((_, index) => (
-        <button
-          key={index}
-          className={`indicator ${index === currentIndex ? 'active' : ''}`}
-          onClick={() => handleSectionClick(index)}
-          aria-label={`Go to section ${index + 1}`}
-        />
-      ))}
-    </div>
-  );
-}
-
-// Debug info panel
-function DebugPanel() {
-  const [state, setState] = useState({
-    currentSection: 0,
-    isAnimating: false,
-    lastNavigationTime: 0
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if ((window as any).storyScrollerAPI?.getState) {
-        const apiState = (window as any).storyScrollerAPI.getState();
-        setState({
-          currentSection: apiState.currentSection,
-          isAnimating: apiState.isAnimating,
-          lastNavigationTime: apiState.lastNavigationTime
-        });
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="debug-panel">
-      <h4>Debug Info</h4>
-      <div className="debug-info">
-        <div>Current: {state.currentSection + 1}</div>
-        <div>Animating: {state.isAnimating ? 'Yes' : 'No'}</div>
-        <div>Last Navigation: {state.lastNavigationTime ? new Date(state.lastNavigationTime).toLocaleTimeString() : 'N/A'}</div>
-      </div>
-    </div>
-  );
-}
 
 // Main app component
 function App() {
   const sections = createSections();
+  const [reducedMotion, setReducedMotion] = useState(prefersReducedMotion());
+
+  // Listen for reduced motion preference changes
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = () => setReducedMotion(mediaQuery.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
   
-  // Advanced configuration with all the new features
+  // Advanced configuration with accessibility considerations
   const storyScrollerConfig: StoryScrollerConfig = {
-    duration: 1.2,
-    easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
+    duration: reducedMotion ? 0.1 : 1.2, // Respect reduced motion
+    easing: reducedMotion 
+      ? (t: number) => t // Linear for reduced motion
+      : (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing
     tolerance: 50,
-    enableMagneticSnap: true,
+    enableMagneticSnap: !reducedMotion, // Disable magnetic snap for reduced motion
     magneticThreshold: 0.15,
     magneticVelocityThreshold: 5,
     keyboardNavigation: true,
     onSectionChange: (index: number) => {
       console.log(`📍 Section changed to: ${index + 1}`);
+      
+      // Announce section changes to screen readers
+      const announcement = `Section ${index + 1} of ${sections.length}`;
+      const ariaLive = document.getElementById('aria-live-region');
+      if (ariaLive) {
+        ariaLive.textContent = announcement;
+      }
     },
     containerClassName: 'story-scroller-container',
     sectionClassName: 'story-scroller-section',
+    ariaLabel: 'StoryScroller demo sections',
+    sectionLabels: [
+      'Introduction and overview',
+      'Features and capabilities', 
+      'Motion and animation',
+      'Integration and setup',
+      'Getting started'
+    ],
   };
 
   return (
     <>
-      <StoryScrollerWithErrorBoundary
-        sections={sections}
-        errorFallback={<ErrorFallback />}
-        {...storyScrollerConfig}
+      {/* Skip navigation for keyboard users */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      
+      {/* ARIA live region for screen reader announcements */}
+      <div 
+        id="aria-live-region" 
+        aria-live="polite" 
+        aria-atomic="true"
+        className="sr-only"
       />
       
-      <NavigationUI />
-      <SectionIndicators />
-      <DebugPanel />
+      {/* Reduced motion indicator */}
+      {reducedMotion && (
+        <div className="reduced-motion-notice" role="status" aria-live="polite">
+          Reduced motion mode active
+        </div>
+      )}
+      
+      <main id="main-content" role="main">
+        <StoryScrollerWithErrorBoundary
+          sections={sections}
+          errorFallback={<ErrorFallback />}
+          {...storyScrollerConfig}
+        />
+      </main>
+      
+      <ControlHub sectionsCount={sections.length} />
     </>
   );
 }

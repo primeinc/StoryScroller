@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
+    "build:production": "NODE_ENV=production vite build",
     "clean": "rimraf dist .turbo .vite-cache",
     "dev": "node scripts/dev-server.js start",
     "dev:kill": "node scripts/dev-server.js kill",
@@ -14,12 +16,20 @@
     "dev:status": "node scripts/dev-server.js status",
     "dev:stop": "node scripts/dev-server.js stop",
     "preview": "vite preview",
+    "preview:production": "vite build && vite preview",
     "lint": "eslint src --cache",
+    "lint:fix": "eslint src --cache --fix",
+    "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
     "test:unit": "vitest",
-    "test:unit:run": "vitest run"
+    "test:unit:run": "vitest run",
+    "test:all": "npm run test:unit:run && npm run test",
+    "quality": "npm run lint && npm run typecheck && npm run build",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "netlify deploy --prod",
+    "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -41,6 +51,7 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.19",
+    "cssnano": "^6.0.1",
     "eslint": "^9.0.0",
     "jsdom": "^24.0.0",
     "postcss": "^8.4.38",
