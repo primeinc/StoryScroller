@@ -1,5 +1,10 @@
 # StoryScroller
 
+[![npm version](https://badge.fury.io/js/@primeinc%2Fstory-scroller.svg)](https://badge.fury.io/js/@primeinc%2Fstory-scroller)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@primeinc/story-scroller)](https://bundlephobia.com/package/@primeinc/story-scroller)
+
 A high-performance React component for narrative-driven scroll experiences. Built with GSAP and Lenis for buttery-smooth section-based navigation with full motion control.
 
 ## Why StoryScroller?
@@ -65,7 +70,7 @@ Navigation requests are intelligently queued and deduplicated, ensuring smooth t
   sections={sections}
   
   // Animation
-  duration={1.2}                    // Scroll animation duration (seconds)
+  duration={0.6}                    // Scroll animation duration (seconds)
   easing={(t) => t * t * t}        // Custom easing function
   
   // Physics
@@ -81,6 +86,10 @@ Navigation requests are intelligently queued and deduplicated, ensuring smooth t
   
   // Callbacks
   onSectionChange={(index) => {}}  // Section change handler
+  
+  // Accessibility
+  ariaLabel="Story sections"       // Container ARIA label
+  sectionLabels={["Intro", "Features", "Conclusion"]} // Custom section labels
   
   // Styling
   containerClassName="my-scroller"
@@ -196,7 +205,7 @@ function AnimatedSection({ isActive, children }) {
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `sections` | `ReactNode[]` | required | Array of section components |
-| `duration` | `number` | `1.2` | Animation duration in seconds |
+| `duration` | `number` | `0.6` | Animation duration in seconds |
 | `easing` | `(t: number) => number` | Exponential ease-out | Easing function |
 | `tolerance` | `number` | `50` | Input sensitivity threshold |
 | `preventDefault` | `boolean` | `true` | Prevent native scroll |
@@ -206,6 +215,8 @@ function AnimatedSection({ isActive, children }) {
 | `magneticThreshold` | `number` | `0.15` | Magnetic snap distance |
 | `magneticVelocityThreshold` | `number` | `5` | Max velocity for snap |
 | `onSectionChange` | `(index: number) => void` | - | Section change callback |
+| `ariaLabel` | `string` | `"Story sections"` | Container ARIA label |
+| `sectionLabels` | `string[]` | - | Custom labels for screen readers |
 | `containerClassName` | `string` | - | Container CSS class |
 | `sectionClassName` | `string` | - | Section CSS class |
 
@@ -219,6 +230,7 @@ Available via `window.storyScrollerAPI`:
 | `nextSection()` | `void` | Go to next section |
 | `prevSection()` | `void` | Go to previous section |
 | `getState()` | `ScrollState` | Get current scroll state |
+| `getQueueStatus()` | `QueueStatus` | Get animation queue status |
 | `forceSync()` | `void` | Force sync to current position |
 | `emergencyReset()` | `void` | Reset entire system |
 
@@ -251,9 +263,10 @@ interface ScrollState {
 ## Performance Optimization
 
 ### Bundle Size
-- Core: ~37KB minified
+- Core: ~46KB minified (ESM)
 - With dependencies (GSAP + Lenis): ~150KB total
 - Tree-shakeable exports
+- Full TypeScript declarations included
 
 ### Optimization Tips
 
@@ -264,13 +277,31 @@ interface ScrollState {
 
 ## Accessibility
 
-StoryScroller is built with accessibility in mind:
+StoryScroller v1.0 is **WCAG 2.1 AA compliant** and built with accessibility as a priority:
 
-- **Keyboard Navigation**: Full support for arrow keys, Page Up/Down, Home/End
-- **Screen Readers**: Proper ARIA labels and announcements
-- **Reduced Motion**: Respects `prefers-reduced-motion`
-- **Focus Management**: Sections are focusable and properly managed
-- **CSS Fallback**: Works without JavaScript using scroll-snap
+- **🎯 Keyboard Navigation**: Full support for arrow keys, Page Up/Down, Home/End
+- **📢 Screen Reader Support**: Live announcements with custom section labels
+- **🎨 High Contrast**: Works with high contrast and reduced motion preferences  
+- **⚡ Reduced Motion**: Automatically disables animations when `prefers-reduced-motion: reduce`
+- **🔍 Focus Management**: Proper focus indicators and tabindex management
+- **🆔 ARIA Labels**: Comprehensive labeling for assistive technologies
+- **📱 CSS Fallback**: Works without JavaScript using native scroll-snap
+
+### Accessibility Configuration
+
+```tsx
+<StoryScroller
+  sections={sections}
+  ariaLabel="Story progression with 5 chapters"
+  sectionLabels={[
+    "Introduction to our product",
+    "Key features overview", 
+    "Customer testimonials",
+    "Pricing information",
+    "Get started today"
+  ]}
+/>
+```
 
 ## Browser Support
 

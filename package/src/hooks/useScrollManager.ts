@@ -1,4 +1,27 @@
 /**
+ * @license
+ * Copyright (c) 2025 Prime Inc
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+/**
  * @fileoverview The centralized scroll management hook using the new state system.
  * This hook orchestrates Lenis, GSAP, and Observer with the new useScrollState
  * to create a stable and predictable scroll experience.
@@ -55,6 +78,30 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     browserService: providedBrowserService
   } = config;
 
+  // Check for reduced motion preference and adjust duration accordingly
+  const prefersReducedMotion = useRef(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      prefersReducedMotion.current = mediaQuery.matches;
+      
+      const handler = (e: MediaQueryListEvent) => {
+        prefersReducedMotion.current = e.matches;
+      };
+      
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
+    }
+    
+    // Return empty cleanup function for cases where window is undefined
+    return () => {};
+  }, []);
+
+  // Adjust animation duration based on motion preference
+  const getEffectiveDuration = useCallback(() => {
+    return prefersReducedMotion.current ? 0.01 : duration;
+  }, [duration]);
+
   const containerRef = useRef<HTMLDivElement>(null);
   const browserService = useRef(providedBrowserService || createBrowserService());
   const animationQueue = useRef(createAnimationQueue());
@@ -82,7 +129,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
   // Initialize debouncing with optimized configuration for responsiveness
   const debouncing = useDebouncing({
     navigationCooldown: TIMING.NAVIGATION_COOLDOWN, // Now 100ms instead of 200ms
-    animationDuration: duration * 1000, // Convert to milliseconds
+    animationDuration: getEffectiveDuration() * 1000, // Convert to milliseconds, respect reduced motion
     scrollEndDelay: TIMING.SCROLL_END_TIMEOUT,
     preventOverlap: false, // Allow overlapping for better button responsiveness
     trackMomentum: true,
@@ -137,14 +184,15 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
 
     animationQueue.current.processing = true;
     const targetY = request.targetSection * browserService.current.getInnerHeight();
-    const animationDuration = request.options?.duration || duration;
+    const animationDuration = request.options?.duration || getEffectiveDuration();
     const animationId = `section-${request.targetSection}-${Date.now()}`;
 
     console.log('🚀 [processNavigationQueue] Processing navigation:', {
       target: request.targetSection,
       currentSection: scrollState.queries.getCurrentSection(),
       duration: animationDuration,
-      animationId
+      animationId,
+      reducedMotion: prefersReducedMotion.current
     });
 
     // Mark animation start in debouncing
@@ -216,7 +264,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
         animationQueue.current.processing = false;
       }
     });
-  }, [scrollState, duration, easing, debouncing]);
+  }, [scrollState, getEffectiveDuration, easing, debouncing]);
 
   const gotoSection = useCallback((index: number, options?: NavigationOptions) => {
     const clampedIndex = Math.max(0, Math.min(sections.length - 1, index));
