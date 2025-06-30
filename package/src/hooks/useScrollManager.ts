@@ -17,6 +17,7 @@ import type {
   ScrollState
 } from '../types/scroll-manager';
 import { useScrollState } from './useScrollState';
+import { useDebouncing } from './useDebouncing';
 import { createBrowserService } from '../services/BrowserService';
 import { createAnimationQueue } from '../utils/animation-queue';
 import { forceSync, emergencyReset } from '../utils/scroll-sync';
@@ -77,6 +78,17 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     }
   });
 
+  // Initialize debouncing with proper configuration
+  const debouncing = useDebouncing({
+    navigationCooldown: TIMING.NAVIGATION_COOLDOWN,
+    animationDuration: duration * 1000, // Convert to milliseconds
+    scrollEndDelay: TIMING.SCROLL_END_TIMEOUT,
+    preventOverlap: true,
+    trackMomentum: true,
+    debug: true, // Enable debug logging to track issues
+    logPrefix: '🎯 [ScrollManager]'
+  });
+
   // Create a ref for the current state with all required fields
   const stateRef = useRef<ScrollState>({
     ...scrollState.getState(),
@@ -92,7 +104,8 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
   }, [scrollState]);
 
   const processNavigationQueue = useCallback(async () => {
-    if (animationQueue.current.processing || !scrollState.queries.canNavigate()) return;
+    // Use debouncing to check if we can navigate
+    if (animationQueue.current.processing || !debouncing.canNavigate()) return;
 
     const request = animationQueue.current.dequeue();
     if (!request) return;
@@ -100,12 +113,17 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     animationQueue.current.processing = true;
     const targetY = request.targetSection * browserService.current.getInnerHeight();
     const animationDuration = request.options?.duration || duration;
+    const animationId = `section-${request.targetSection}-${Date.now()}`;
 
     console.log('🚀 [processNavigationQueue] Processing navigation:', {
       target: request.targetSection,
       currentSection: scrollState.queries.getCurrentSection(),
-      duration: animationDuration
+      duration: animationDuration,
+      animationId
     });
+
+    // Mark animation start in debouncing
+    debouncing.markAnimationStart(animationId);
 
     // Update state to start animation
     scrollState.updateState({
@@ -128,6 +146,9 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       onComplete: () => {
         console.log('✅ [processNavigationQueue] Animation complete');
         
+        // Mark animation end in debouncing
+        debouncing.markAnimationEnd(animationId);
+        
         // Update state
         scrollState.updateState({
           currentSection: request.targetSection,
@@ -145,12 +166,16 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       },
       onInterrupt: () => {
         console.log('⚠️ [processNavigationQueue] Animation interrupted');
+        
+        // Mark animation end in debouncing
+        debouncing.markAnimationEnd(animationId);
+        
         scrollState.updateState({ isAnimating: false, targetSection: null });
         request.options?.onInterrupt?.();
         animationQueue.current.processing = false;
       }
     });
-  }, [scrollState, duration, easing]);
+  }, [scrollState, duration, easing, debouncing]);
 
   const gotoSection = useCallback((index: number, options?: NavigationOptions) => {
     const clampedIndex = Math.max(0, Math.min(sections.length - 1, index));
@@ -195,7 +220,15 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       tolerance,
       preventDefault,
       onChangeY: (self) => {
-        if (!scrollState.queries.canNavigate()) return;
+        // Mark scroll start in debouncing
+        debouncing.markScrollStart();
+
+        // Use debouncing to check if we can navigate
+        if (!debouncing.canNavigate()) {
+          // Mark scroll end since we're not navigating
+          debouncing.markScrollEnd();
+          return;
+        }
 
         const velocity = self.velocityY || 0;
         const delta = self.deltaY || 0;
@@ -221,13 +254,17 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
             }
           }
         }
+        
+        // Mark scroll end after processing
+        debouncing.markScrollEnd();
       }
     });
 
     // Keyboard navigation
     if (keyboardNavigation) {
       const handleKeydown = (e: KeyboardEvent) => {
-        if (!scrollState.queries.canNavigate()) return;
+        // Use debouncing to check if we can navigate
+        if (!debouncing.canNavigate()) return;
 
         switch (e.key) {
           case 'ArrowDown':
@@ -264,7 +301,8 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     nextSection,
     prevSection,
     gotoSection,
-    processNavigationQueue
+    processNavigationQueue,
+    debouncing
   ]);
 
   const setupScrollSync = useCallback(async () => {
@@ -283,7 +321,10 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       }
     });
 
-    // Sync Lenis with GSAP ticker
+    // Stop Lenis RAF loop - we'll drive it with GSAP ticker
+    controllers.current.lenis.stop();
+
+    // Sync Lenis with GSAP ticker (this is the proper way)
     const ticker = (time: number) => {
       controllers.current.lenis?.raf(time * 1000);
     };
@@ -302,16 +343,12 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
 
     // Initialize Lenis
     controllers.current.lenis = await initLenis();
-    controllers.current.lenis.stop(); // Start stopped
 
-    // Setup sync between Lenis and ScrollTrigger
+    // Setup sync between Lenis and ScrollTrigger (this will stop Lenis RAF and use GSAP ticker)
     await setupScrollSync();
 
     // Setup input handlers
     setupInputHandlers();
-
-    // Start Lenis
-    controllers.current.lenis.start();
 
     // Set up periodic state verification
     controllers.current.verificationIntervalId = setInterval(() => {
@@ -375,6 +412,8 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       forceSync(currentSection, stateRef, controllers.current, browserService.current, scrollState.updateState);
     },
     emergencyReset: () => {
+      // Also reset debouncing state on emergency reset
+      debouncing.forceReset();
       emergencyReset(controllers.current, reinitialize, scrollState.resetState);
     },
     destroy,
