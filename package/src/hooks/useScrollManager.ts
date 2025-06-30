@@ -42,6 +42,7 @@ const initLenis = async () => {
 };
 
 export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI {
+  
   const { 
     sections, 
     onSectionChange, 
@@ -78,12 +79,12 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     }
   });
 
-  // Initialize debouncing with proper configuration
+  // Initialize debouncing with optimized configuration for responsiveness
   const debouncing = useDebouncing({
-    navigationCooldown: TIMING.NAVIGATION_COOLDOWN,
+    navigationCooldown: TIMING.NAVIGATION_COOLDOWN, // Now 100ms instead of 200ms
     animationDuration: duration * 1000, // Convert to milliseconds
     scrollEndDelay: TIMING.SCROLL_END_TIMEOUT,
-    preventOverlap: true,
+    preventOverlap: false, // Allow overlapping for better button responsiveness
     trackMomentum: true,
     debug: true, // Enable debug logging to track issues
     logPrefix: '🎯 [ScrollManager]'
@@ -109,8 +110,27 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
   }, [scrollState]);
 
   const processNavigationQueue = useCallback(async () => {
-    // Use debouncing to check if we can navigate
-    if (animationQueue.current.processing || !debouncing.canNavigate()) return;
+    // Check if we're already processing
+    if (animationQueue.current.processing) return;
+    
+    // Peek at the next request to determine navigation rules
+    const nextRequest = animationQueue.current.requests[0];
+    if (!nextRequest) return;
+    
+    // For wheel events, use a more lenient navigation check that doesn't block on scrolling
+    let canNavigateNow = false;
+    if (nextRequest.source === 'user_wheel') {
+      // For wheel events, only check animation state and cooldown, not scrolling
+      const notAnimating = !debouncing.isAnimating();
+      const cooldownMet = (Date.now() - (stateRef.current.lastNavigationTime || 0)) >= 100;
+      canNavigateNow = notAnimating && cooldownMet;
+      
+    } else {
+      // For other navigation types, use the full debouncing check
+      canNavigateNow = debouncing.canNavigate();
+    }
+    
+    if (!canNavigateNow) return;
 
     const request = animationQueue.current.dequeue();
     if (!request) return;
@@ -130,14 +150,16 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     // Mark animation start in debouncing
     debouncing.markAnimationStart(animationId);
 
-    // Update state to start animation
+    // Update state to start animation with immediate currentSection update for responsiveness
     scrollState.updateState({
+      currentSection: request.targetSection, // Update immediately for responsive feedback
       targetSection: request.targetSection,
       isAnimating: true,
       lastInputType: request.source as any
     });
 
-    // Update last navigation time in ref
+    // Update refs immediately for consistent state
+    currentSectionRef.current = request.targetSection;
     stateRef.current.lastNavigationTime = Date.now();
 
     // Kill any existing scroll animations
@@ -211,6 +233,21 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       }
     });
 
+    // For button/programmatic navigation, be very responsive 
+    const canNavigateNow = options?.force || debouncing.canNavigate() || 
+      (Date.now() - stateRef.current.lastNavigationTime) > 20; // Allow very rapid button clicks
+
+    if (!canNavigateNow && !options?.force) {
+      console.log('🎯 [gotoSection] Navigation blocked by timing check');
+      return;
+    }
+
+    // Update currentSectionRef immediately to provide instant feedback
+    if (clampedIndex !== currentSection) {
+      currentSectionRef.current = clampedIndex;
+      stateRef.current.lastNavigationTime = Date.now();
+    }
+
     const request = animationQueue.current.enqueue({ 
       targetSection: clampedIndex, 
       source: 'programmatic', 
@@ -226,7 +263,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     if (request) {
       processNavigationQueue();
     }
-  }, [sections.length, processNavigationQueue]);
+  }, [sections.length, processNavigationQueue, debouncing]);
 
   const nextSection = useCallback(() => {
     // Get the latest current section directly from the ref
@@ -254,32 +291,59 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
   }, [gotoSection]);
 
   const setupInputHandlers = useCallback(() => {
+    const target = containerRef.current;
+    
+    if (!target) {
+      console.error('🚨 [setupInputHandlers] containerRef.current is null! Observer cannot be created.');
+      return;
+    }
+    
     // Observer for wheel/touch input
     controllers.current.observer = Observer.create({
-      target: containerRef.current,
+      target,
       type: 'wheel,touch',
       tolerance,
       preventDefault,
       onChangeY: (self) => {
-        // Mark scroll start in debouncing
-        debouncing.markScrollStart();
-
-        // Use debouncing to check if we can navigate
-        if (!debouncing.canNavigate()) {
-          // Mark scroll end since we're not navigating
-          debouncing.markScrollEnd();
-          return;
-        }
-
+        console.log('🎯 [Observer] onChangeY triggered!', { deltaY: self.deltaY, velocityY: self.velocityY, eventType: self.event?.type });
+        
         const velocity = self.velocityY || 0;
         const delta = self.deltaY || 0;
         const direction = invertDirection ? -Math.sign(delta) : Math.sign(delta);
+        const eventType = self.event?.type;
 
         // Update velocity in state
         scrollState.setters.setVelocity(Math.abs(velocity));
 
-        // Determine if we should navigate
-        if (Math.abs(delta) > tolerance) {
+        // More reliable wheel event detection
+        const isWheelEvent = eventType === 'wheel';
+        const isSignificantDelta = Math.abs(delta) > 10; // Lower threshold for better responsiveness
+        const isMomentumScroll = Math.abs(velocity) > 100 && Math.abs(delta) < 10; // Tighter momentum detection
+
+        // Handle momentum scrolling - mark scroll activity but don't navigate
+        if (isMomentumScroll) {
+          debouncing.markScrollStart();
+          debouncing.markScrollEnd();
+          return;
+        }
+
+        // Handle intentional wheel input
+        if (isWheelEvent && isSignificantDelta) {
+          // Check if we can navigate BEFORE marking scroll start to avoid self-blocking
+          // For wheel events, we only check cooldown and animation state, not scrolling state
+          const now = Date.now();
+          const timeSinceLastNav = now - (stateRef.current.lastNavigationTime || 0);
+          const cooldownMet = timeSinceLastNav >= 100; // 100ms cooldown for wheel events
+          const notAnimating = !debouncing.isAnimating();
+          const canNavigateNow = cooldownMet && notAnimating;
+          
+          if (!canNavigateNow) {
+            return;
+          }
+          
+          // Start scroll tracking after navigation check passes
+          debouncing.markScrollStart();
+
           // Get the latest current section directly from the ref
           const current = currentSectionRef.current;
           const target = current + direction;
@@ -287,7 +351,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
           if (target >= 0 && target < sections.length) {
             const request = animationQueue.current.enqueue({
               targetSection: target,
-              source: self.event?.type === 'wheel' ? 'user_wheel' : 'user_touch',
+              source: 'user_wheel',
               priority: 'normal'
             });
 
@@ -295,12 +359,14 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
               processNavigationQueue();
             }
           }
+          
+          // End scroll tracking after processing
+          debouncing.markScrollEnd();
         }
-        
-        // Mark scroll end after processing
-        debouncing.markScrollEnd();
       }
     });
+
+    console.log('✅ [setupInputHandlers] Observer created successfully for', target.className);
 
     // Keyboard navigation
     if (keyboardNavigation) {
@@ -381,7 +447,21 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
   }, []);
 
   const reinitialize = useCallback(async () => {
-    console.log('🔄 [reinitialize] Starting scroll system initialization');
+    // Wait for DOM to be ready before setting up observers
+    const waitForContainer = () => {
+      return new Promise<void>((resolve) => {
+        const checkContainer = () => {
+          if (containerRef.current) {
+            resolve();
+          } else {
+            requestAnimationFrame(checkContainer);
+          }
+        };
+        checkContainer();
+      });
+    };
+
+    await waitForContainer();
 
     // Initialize Lenis
     controllers.current.lenis = await initLenis();
@@ -389,8 +469,26 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     // Setup sync between Lenis and ScrollTrigger (this will stop Lenis RAF and use GSAP ticker)
     await setupScrollSync();
 
-    // Setup input handlers
+    // Setup input handlers AFTER container is guaranteed to be available
     setupInputHandlers();
+
+    // Force initial state synchronization after a brief delay to allow DOM to settle
+    setTimeout(() => {
+      const currentScrollY = browserService.current.getScrollY();
+      const viewportHeight = browserService.current.getInnerHeight();
+      const calculatedSection = Math.round(currentScrollY / viewportHeight);
+
+      // If there's a mismatch, force sync
+      if (calculatedSection !== scrollState.queries.getCurrentSection()) {
+        scrollState.updateState({
+          currentSection: calculatedSection,
+          scrollPosition: currentScrollY,
+          targetSection: null,
+          isAnimating: false
+        });
+        currentSectionRef.current = calculatedSection;
+      }
+    }, 100);
 
     // Set up periodic state verification
     controllers.current.verificationIntervalId = setInterval(() => {
@@ -400,12 +498,9 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
         currentSectionRef.current = scrollState.queries.getCurrentSection();
       }
     }, TIMING.STATE_VERIFICATION_INTERVAL);
-
-    console.log('✅ [reinitialize] Scroll system initialized');
-  }, [setupScrollSync, setupInputHandlers, scrollState]);
+  }, [setupScrollSync, setupInputHandlers, scrollState, browserService]);
 
   const destroy = useCallback(() => {
-    console.log('🧹 [destroy] Cleaning up scroll system');
 
     // Kill all animations
     gsap.killTweensOf('*');
@@ -454,9 +549,34 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     nextSection,
     prevSection,
     forceSync: () => {
-      const currentSection = Math.round(browserService.current.getScrollY() / browserService.current.getInnerHeight());
-      currentSectionRef.current = currentSection; // Update our ref too
-      forceSync(currentSection, stateRef, controllers.current, browserService.current, scrollState.updateState);
+      console.log('🔧 [forceSync] Starting force sync');
+      const currentScrollY = browserService.current.getScrollY();
+      const viewportHeight = browserService.current.getInnerHeight();
+      const calculatedSection = Math.round(currentScrollY / viewportHeight);
+      const clampedSection = Math.max(0, Math.min(sections.length - 1, calculatedSection));
+      
+      console.log('🔧 [forceSync] Sync calculation:', {
+        scrollY: currentScrollY,
+        viewportHeight,
+        calculatedSection,
+        clampedSection,
+        currentStateSection: scrollState.queries.getCurrentSection()
+      });
+
+      // Update both the state and our ref
+      currentSectionRef.current = clampedSection;
+      scrollState.updateState({
+        currentSection: clampedSection,
+        scrollPosition: currentScrollY,
+        targetSection: null,
+        isAnimating: false,
+        isScrolling: false
+      });
+
+      // Use the existing forceSync utility for additional cleanup
+      forceSync(clampedSection, stateRef, controllers.current, browserService.current, scrollState.updateState);
+      
+      console.log('🔧 [forceSync] Force sync completed');
     },
     emergencyReset: () => {
       // Also reset debouncing state on emergency reset

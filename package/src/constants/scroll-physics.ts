@@ -6,9 +6,9 @@
 /** Timing constants for animations and debouncing */
 export const TIMING = {
   /** Base animation duration in seconds */
-  BASE_DURATION: 0.8,
+  BASE_DURATION: 0.6,
   /** Base animation duration in seconds (alias for compatibility) */
-  BASE_ANIMATION_DURATION: 0.8,
+  BASE_ANIMATION_DURATION: 0.6,
   /** Minimum animation duration to prevent jarring transitions */
   MIN_DURATION: 0.3,
   /** Maximum animation duration to prevent sluggish feel */
@@ -27,8 +27,8 @@ export const TIMING = {
   STATE_VERIFICATION_INTERVAL: 500,
   /** Threshold in ms to consider an animation "stuck" if it hasn't completed */
   STUCK_ANIMATION_THRESHOLD: 5000,
-  /** Navigation cooldown to prevent rapid section changes */
-  NAVIGATION_COOLDOWN: 200,
+  /** Navigation cooldown to prevent rapid section changes (optimized for button responsiveness) */
+  NAVIGATION_COOLDOWN: 50,
   /** Position check delay after animation */
   POSITION_CHECK_DELAY: 100,
   /** ScrollTrigger config delay to avoid hydration errors */
@@ -38,7 +38,7 @@ export const TIMING = {
 /** Physics parameters for smooth scrolling */
 export const PHYSICS = {
   /** Base duration in seconds for a single-section scroll animation */
-  BASE_ANIMATION_DURATION: 0.8,
+  BASE_ANIMATION_DURATION: 0.6,
   /** Lenis lerp (smoothing) factor (0-1, lower is smoother) */
   LENIS_LERP: 0.1,
   /** Lenis wheel sensitivity multiplier */

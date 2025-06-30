@@ -26,9 +26,11 @@
     "typecheck": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:headed": "playwright test --headed",
+    "test:headed": "PLAYWRIGHT_HEADED=true playwright test",
     "test:debug": "playwright test --debug",
-    "test:report": "playwright show-report",
+    "test:interactive": "PLAYWRIGHT_HTML_REPORT=true playwright test",
+    "test:report": "PLAYWRIGHT_HTML_REPORT=true playwright show-report",
+    "test:report:generate": "PLAYWRIGHT_HTML_REPORT=true playwright test --reporter=html",
     "test:unit": "vitest",
     "test:unit:run": "vitest run",
     "test:unit:ui": "vitest --ui"
