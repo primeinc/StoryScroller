@@ -8,6 +8,9 @@ export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production'
   
   return {
+    // Support base path for GitHub Pages deployment
+    base: process.env.PUBLIC_URL || '/',
+    
     plugins: [
       react({
         // Enable React Fast Refresh in development
@@ -17,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
     
     resolve: {
       alias: {
-        '@primeinc/story-scroller': path.resolve(__dirname, '../package/src/index.ts'),
+        '@primeinc/storyscroller': path.resolve(__dirname, '../package/src/index.ts'),
       },
     },
     
@@ -38,7 +41,7 @@ export default defineConfig(({ command, mode }) => {
             // Vendor chunks
             'react-vendor': ['react', 'react-dom'],
             'animation-vendor': ['gsap', '@gsap/react', 'lenis'],
-            'story-scroller': ['@primeinc/story-scroller'],
+            'story-scroller': ['@primeinc/storyscroller'],
           },
           
           // Asset file naming
@@ -91,7 +94,7 @@ export default defineConfig(({ command, mode }) => {
         'lenis',
       ],
       exclude: [
-        '@primeinc/story-scroller', // Always use local version
+        '@primeinc/storyscroller', // Always use local version
       ],
     },
     

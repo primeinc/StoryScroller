@@ -1,5 +1,5 @@
 {
-  "name": "@primeinc/story-scroller",
+  "name": "@primeinc/storyscroller",
   "version": "1.0.0",
   "description": "Production-ready React component for narrative-driven scroll experiences with GSAP and Lenis",
   "type": "module",
@@ -81,7 +81,7 @@
   "author": "Prime Inc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/primeinc/storyscroller.git",
+    "url": "https://github.com/primeinc/StoryScroller.git",
     "directory": "package"
   },
   "keywords": [

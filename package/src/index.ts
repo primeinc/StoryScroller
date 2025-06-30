@@ -78,4 +78,4 @@ export {
 export { createAnimationQueue } from './utils/animation-queue'
 
 // Style imports - consumers should import separately:
-// import '@primeinc/story-scroller/styles'
+// import '@primeinc/storyscroller/styles'

@@ -1,12 +1,14 @@
 # Source files
 src/
 tests/
+scripts/
 
 # Config files
 tsup.config.ts
 vitest.config.ts
 eslint.config.js
 tsconfig.json
+playwright.config.ts
 
 # Development files
 *.log
@@ -14,6 +16,22 @@ tsconfig.json
 node_modules/
 coverage/
 .turbo/
+playwright-report/
+test-results/
+assets/
+
+# Documentation (except README and CHANGELOG)
+CONTRIBUTING.md
+DEMO_AUDIT.md
+MIGRATION_CHECKLIST.md
+NARRATIVE_READY_CHECKLIST.md
+PERFORMANCE.md
+SECURITY.md
+SOCIAL_IMAGES.md
+TESTS.md
+TEST_REPORT.md
+docs/
+performance-report.json
 
 # Test files
 *.test.ts
@@ -24,5 +42,6 @@ coverage/
 # Keep dist and necessary files
 !dist/
 !README.md
+!CHANGELOG.md
 !package.json
 !LICENSE

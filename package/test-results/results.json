@@ -1,0 +1,1843 @@
+{
+  "config": {
+    "configFile": "/home/will/local_dev/storyscroller/package/playwright.config.ts",
+    "rootDir": "/home/will/local_dev/storyscroller/package/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results/junit.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/will/local_dev/storyscroller/package/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/will/local_dev/storyscroller/package/tests",
+        "testIgnore": [
+          "**/unit/**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts",
+          "**/functional/**/*.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/will/local_dev/storyscroller/package/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/home/will/local_dev/storyscroller/package/tests",
+        "testIgnore": [
+          "**/unit/**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts",
+          "**/functional/**/*.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/will/local_dev/storyscroller/package/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/home/will/local_dev/storyscroller/package/tests",
+        "testIgnore": [
+          "**/unit/**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts",
+          "**/functional/**/*.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/will/local_dev/storyscroller/package/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "mobile-chrome",
+        "name": "mobile-chrome",
+        "testDir": "/home/will/local_dev/storyscroller/package/tests",
+        "testIgnore": [
+          "**/unit/**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts",
+          "**/functional/**/*.test.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/will/local_dev/storyscroller/package/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {},
+        "id": "mobile-safari",
+        "name": "mobile-safari",
+        "testDir": "/home/will/local_dev/storyscroller/package/tests",
+        "testIgnore": [
+          "**/unit/**/*.test.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts",
+          "**/functional/**/*.test.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.53.1",
+    "workers": 2,
+    "webServer": {
+      "command": "cd ../demo && pnpm dev",
+      "url": "http://localhost:5184",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "functional/critical-navigation-issues.test.ts",
+      "file": "functional/critical-navigation-issues.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Critical Navigation Issues Test Suite",
+          "file": "functional/critical-navigation-issues.test.ts",
+          "line": 62,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "1. Mouse Wheel Navigation Broken",
+              "file": "functional/critical-navigation-issues.test.ts",
+              "line": 82,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-ef56ac9250d280ea0b2c",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 83,
+                  "column": 5
+                },
+                {
+                  "title": "should handle multiple wheel events appropriately",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-26896c00589bfaeeeade",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 107,
+                  "column": 5
+                },
+                {
+                  "title": "should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-b5e2bf314587ad6c6763",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 83,
+                  "column": 5
+                },
+                {
+                  "title": "should handle multiple wheel events appropriately",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-f499db03bcf0b6cb44a2",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 107,
+                  "column": 5
+                },
+                {
+                  "title": "should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-3b6d65e7b719cb2db86c",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 83,
+                  "column": 5
+                },
+                {
+                  "title": "should handle multiple wheel events appropriately",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-e6bfe097bed44de44eda",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 107,
+                  "column": 5
+                },
+                {
+                  "title": "should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-0fce186ef3bdc1ff7e7e",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 83,
+                  "column": 5
+                },
+                {
+                  "title": "should handle multiple wheel events appropriately",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-34aa5f7e8d6ed796193e",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 107,
+                  "column": 5
+                },
+                {
+                  "title": "should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-439cadf90224d43dc3e2",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 83,
+                  "column": 5
+                },
+                {
+                  "title": "should handle multiple wheel events appropriately",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-fe148f8fbf2556024cba",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 107,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "2. Button Navigation Delays Too Long",
+              "file": "functional/critical-navigation-issues.test.ts",
+              "line": 131,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-116f8d35a2f9540c6b7a",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 132,
+                  "column": 5
+                },
+                {
+                  "title": "should update state immediately when navigation starts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-41df3fdd0b042e0877df",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 215,
+                  "column": 5
+                },
+                {
+                  "title": "should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-512c3d0fdf66b2dd6bf1",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 132,
+                  "column": 5
+                },
+                {
+                  "title": "should update state immediately when navigation starts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-4762fe6c4b802bb28c3b",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 215,
+                  "column": 5
+                },
+                {
+                  "title": "should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-f3339b65c10721bc216c",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 132,
+                  "column": 5
+                },
+                {
+                  "title": "should update state immediately when navigation starts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-881fcbcc76a85749f44a",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 215,
+                  "column": 5
+                },
+                {
+                  "title": "should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-5dfe3bfd180898251511",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 132,
+                  "column": 5
+                },
+                {
+                  "title": "should update state immediately when navigation starts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-d61cf667c72356b28ee4",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 215,
+                  "column": 5
+                },
+                {
+                  "title": "should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-035b5dd711b047c9c63f",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 132,
+                  "column": 5
+                },
+                {
+                  "title": "should update state immediately when navigation starts",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-9e65a7ea21a3a725bb91",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 215,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "3. State Synchronization Issues",
+              "file": "functional/critical-navigation-issues.test.ts",
+              "line": 238,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-ffe7c4e977c657cf1bcc",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 239,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain scroll position and section consistency",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-78f3c68d59a04536e472",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 275,
+                  "column": 5
+                },
+                {
+                  "title": "should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-b0baa9df5b1855f6a8b2",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 239,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain scroll position and section consistency",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-be0840b80300979c774a",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 275,
+                  "column": 5
+                },
+                {
+                  "title": "should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-5b9e715cbf5c81cf53f1",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 239,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain scroll position and section consistency",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-831f95636e0ae0e04383",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 275,
+                  "column": 5
+                },
+                {
+                  "title": "should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-db2b3a544a2888a2f8ca",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 239,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain scroll position and section consistency",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-5e287d48e77a40188ce0",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 275,
+                  "column": 5
+                },
+                {
+                  "title": "should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-41a88f4e1d0745974c7a",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 239,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain scroll position and section consistency",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-227a1a92a48dadc763de",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 275,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "4. Multi-Navigation Sequence Test",
+              "file": "functional/critical-navigation-issues.test.ts",
+              "line": 322,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should handle complex navigation sequences without state corruption",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-933fa65781d042f26c2e",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 323,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain queue integrity during rapid navigation requests",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-6dcf223eee68d1005115",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 360,
+                  "column": 5
+                },
+                {
+                  "title": "should handle complex navigation sequences without state corruption",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-2f035a35746ecd7040fb",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 323,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain queue integrity during rapid navigation requests",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-fd9eeb55b07589a4eeeb",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 360,
+                  "column": 5
+                },
+                {
+                  "title": "should handle complex navigation sequences without state corruption",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-4dcf676c3b1f5eef6c8e",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 323,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain queue integrity during rapid navigation requests",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-bf9c1c4df040263db1de",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 360,
+                  "column": 5
+                },
+                {
+                  "title": "should handle complex navigation sequences without state corruption",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-bcb6f20b71c3dbdc27a7",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 323,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain queue integrity during rapid navigation requests",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-5644a43b4fef481ba0f4",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 360,
+                  "column": 5
+                },
+                {
+                  "title": "should handle complex navigation sequences without state corruption",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-1c0ebb74a5d06ff44f8f",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 323,
+                  "column": 5
+                },
+                {
+                  "title": "should maintain queue integrity during rapid navigation requests",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-3c6fc5499eff7e60c708",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 360,
+                  "column": 5
+                }
+              ]
+            },
+            {
+              "title": "5. Performance and Timing Validation",
+              "file": "functional/critical-navigation-issues.test.ts",
+              "line": 393,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "should complete wheel navigation within performance targets",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip"
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-d8fc368eed16fccd837e",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 394,
+                  "column": 10
+                },
+                {
+                  "title": "should not have excessive console errors during navigation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "chromium",
+                      "projectName": "chromium",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-51b50fe4aee186331417",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 423,
+                  "column": 5
+                },
+                {
+                  "title": "should complete wheel navigation within performance targets",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip"
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-4c17e1513b80e4825a17",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 394,
+                  "column": 10
+                },
+                {
+                  "title": "should not have excessive console errors during navigation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "firefox",
+                      "projectName": "firefox",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-35c38b0994820e47e40b",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 423,
+                  "column": 5
+                },
+                {
+                  "title": "should complete wheel navigation within performance targets",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip"
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-d2c028cff7f6bad2c5d3",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 394,
+                  "column": 10
+                },
+                {
+                  "title": "should not have excessive console errors during navigation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "webkit",
+                      "projectName": "webkit",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-97efdf8ec9ed8d52c5ba",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 423,
+                  "column": 5
+                },
+                {
+                  "title": "should complete wheel navigation within performance targets",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip"
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-c337676e6cc20a6a4d86",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 394,
+                  "column": 10
+                },
+                {
+                  "title": "should not have excessive console errors during navigation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-chrome",
+                      "projectName": "mobile-chrome",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-e6523682a5d1e8c9fb90",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 423,
+                  "column": 5
+                },
+                {
+                  "title": "should complete wheel navigation within performance targets",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [
+                        {
+                          "type": "skip"
+                        }
+                      ],
+                      "expectedStatus": "skipped",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-158cfae8b1dc4fa1c0b3",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 394,
+                  "column": 10
+                },
+                {
+                  "title": "should not have excessive console errors during navigation",
+                  "ok": true,
+                  "tags": [],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "mobile-safari",
+                      "projectName": "mobile-safari",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "c0acd321bcdf0fa02064-a1a4367b6f2dd136684f",
+                  "file": "functional/critical-navigation-issues.test.ts",
+                  "line": 423,
+                  "column": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "functional/scroll-performance.test.ts",
+      "file": "functional/scroll-performance.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "StoryScroller Performance Validation",
+          "file": "functional/scroll-performance.test.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should complete animations within performance target",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-bde0744edb07f577c710",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "should respond to user input quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-d72553428b7fa59bf16c",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "should handle wheel events properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-6122730d1fa2d5c37164",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should not have conflicting animation systems",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-b098b66fb630cff96f32",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should have reasonable scroll physics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-ae8533c119f49d89090e",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "should not have excessive console errors (quality check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-a48aaadd7f60a23d52da",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "should complete animations within performance target",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-f4eb453114595d7964c1",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "should respond to user input quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-55384db122b1c288b1e0",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "should handle wheel events properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-d02d6404b9a31fb6c6da",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should not have conflicting animation systems",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-bcf59fb6ad180e62dac6",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should have reasonable scroll physics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-056606771a3d001bf06d",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "should not have excessive console errors (quality check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-c96da48ad90b2cd9e781",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "should complete animations within performance target",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-485488bc18f441fad405",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "should respond to user input quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-253ba10764ec1b71be25",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "should handle wheel events properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-7516673c16a7939ff362",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should not have conflicting animation systems",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-f565f2a00b46fca32cc7",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should have reasonable scroll physics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-1c031d19576fcdba8b70",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "should not have excessive console errors (quality check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-f218aafaf1a740f5bb00",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "should complete animations within performance target",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-e5a7f4262a47d67d6bdf",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "should respond to user input quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-0166b1613bc732cd9f88",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "should handle wheel events properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-cf445413fe27bf6714e6",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should not have conflicting animation systems",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-83459ec3a084abd9d2fe",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should have reasonable scroll physics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-d5f59f44492dc160a9ae",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "should not have excessive console errors (quality check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-chrome",
+                  "projectName": "mobile-chrome",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-619d1f14e1c60cfe6e25",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 229,
+              "column": 3
+            },
+            {
+              "title": "should complete animations within performance target",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-79b47f4c351edeae59ca",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 14,
+              "column": 3
+            },
+            {
+              "title": "should respond to user input quickly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-400f148c367628d0a0ec",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 40,
+              "column": 3
+            },
+            {
+              "title": "should handle wheel events properly",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-61d50b056a22b57e277c",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 94,
+              "column": 3
+            },
+            {
+              "title": "should not have conflicting animation systems",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-dca4f472207c1cf1c61e",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 136,
+              "column": 3
+            },
+            {
+              "title": "should have reasonable scroll physics",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-f69a6785f5c64641579a",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 185,
+              "column": 3
+            },
+            {
+              "title": "should not have excessive console errors (quality check)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "mobile-safari",
+                  "projectName": "mobile-safari",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "da5ca19b39dcecc4a041-58488dac361a69abe928",
+              "file": "functional/scroll-performance.test.ts",
+              "line": 229,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-06-30T04:52:31.619Z",
+    "duration": 54.497999999999934,
+    "expected": 0,
+    "skipped": 80,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

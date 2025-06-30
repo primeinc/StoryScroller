@@ -193,7 +193,7 @@ describe('Hero Metrics Display', () => {
       
       const ctaButton = screen.getByRole('link', { name: /View on GitHub/ })
       expect(ctaButton).toBeInTheDocument()
-      expect(ctaButton).toHaveAttribute('href', 'https://github.com/primeinc/storyscroller')
+      expect(ctaButton).toHaveAttribute('href', 'https://github.com/primeinc/StoryScroller')
       expect(ctaButton).toHaveAttribute('target', '_blank')
       expect(ctaButton).toHaveAttribute('rel', 'noopener noreferrer')
     })

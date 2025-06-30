@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 interface ControlHubProps {
   sectionsCount: number;
@@ -25,6 +25,15 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   const [activeTab, setActiveTab] = useState<TabType>('navigation');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  
+  // Refs for focus management
+  const advancedModeRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const firstFocusableRef = useRef<HTMLButtonElement>(null);
+  const lastFocusableRef = useRef<HTMLButtonElement>(null);
   
   // Performance monitoring state
   const [fps, setFps] = useState(60);
@@ -37,6 +46,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
     enableMagneticSnap: true,
     magneticThreshold: 0.15,
   });
+  const [previousConfig, setPreviousConfig] = useState<DemoConfig>(config);
 
   // Poll StoryScroller state
   useEffect(() => {
@@ -95,11 +105,149 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   const applyConfig = () => {
     if ((window as any).storyScrollerAPI?.updateConfig) {
       (window as any).storyScrollerAPI.updateConfig(config);
+      setPreviousConfig(config);
+      showSuccessToast('Configuration applied successfully!');
     }
   };
 
+  const showSuccessToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  // Focus trap implementation
+  const trapFocus = useCallback((e: KeyboardEvent) => {
+    if (mode !== 'advanced' || !advancedModeRef.current) return;
+
+    const focusableElements = advancedModeRef.current.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const focusableArray = Array.from(focusableElements) as HTMLElement[];
+    
+    if (focusableArray.length === 0) return;
+    
+    const firstElement = focusableArray[0];
+    const lastElement = focusableArray[focusableArray.length - 1];
+
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        // Shift + Tab
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      handleCloseAdvanced();
+    }
+  }, [mode]);
+
+  // Handle mode transitions with loading state
+  const handleModeChange = useCallback((newMode: ControlMode) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setMode(newMode);
+      setIsTransitioning(false);
+    }, 150);
+  }, []);
+
+  const handleOpenAdvanced = () => {
+    previousFocusRef.current = document.activeElement as HTMLElement;
+    handleModeChange('advanced');
+  };
+
+  const handleCloseAdvanced = () => {
+    handleModeChange('standard');
+    // Return focus to previous element
+    setTimeout(() => {
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
+    }, 200);
+  };
+
+  // Set up focus trap listeners
+  useEffect(() => {
+    if (mode === 'advanced') {
+      document.addEventListener('keydown', trapFocus);
+      // Focus first element when modal opens
+      setTimeout(() => {
+        if (firstFocusableRef.current) {
+          firstFocusableRef.current.focus();
+        }
+      }, 200);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', trapFocus);
+    };
+  }, [mode, trapFocus]);
+
+  // Check if config has changed
+  const hasConfigChanged = useCallback(() => {
+    return JSON.stringify(config) !== JSON.stringify(previousConfig);
+  }, [config, previousConfig]);
+
+  // SVG Icons
+  const SettingsIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fillRule="evenodd" clipRule="evenodd" d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M10 1.667c.46 0 .833.373.833.833v1.575a5.833 5.833 0 012.3.95l1.117-1.117a.833.833 0 011.179 1.179l-1.117 1.116a5.833 5.833 0 01.95 2.3H16.667a.833.833 0 010 1.667h-1.405a5.833 5.833 0 01-.95 2.3l1.117 1.117a.833.833 0 01-1.179 1.179l-1.116-1.117a5.833 5.833 0 01-2.3.95v1.404a.833.833 0 01-1.667 0v-1.405a5.833 5.833 0 01-2.3-.95l-1.117 1.117a.833.833 0 01-1.179-1.179l1.117-1.116a5.833 5.833 0 01-.95-2.3H3.333a.833.833 0 010-1.667h1.405a5.833 5.833 0 01.95-2.3L4.57 4.571a.833.833 0 011.179-1.179l1.116 1.117a5.833 5.833 0 012.3-.95V2.5c0-.46.374-.833.834-.833zm0 5a3.333 3.333 0 100 6.667 3.333 3.333 0 000-6.667z" fill="currentColor"/>
+    </svg>
+  );
+
+  const CloseIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const ChevronLeftIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12.5 15L7.5 10l5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const ChevronRightIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7.5 15l5-5-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
+  const CheckIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.5 4.5L6 12 2.5 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+
   return (
-    <div className={`control-hub control-hub--${mode}`}>
+    <>
+      {/* Loading overlay */}
+      {isTransitioning && (
+        <div className="control-hub-overlay" aria-hidden="true">
+          <div className="control-hub-spinner" />
+        </div>
+      )}
+
+      {/* Toast notification */}
+      {showToast && (
+        <div className="control-hub-toast" role="status" aria-live="polite">
+          <CheckIcon />
+          <span>{toastMessage}</span>
+        </div>
+      )}
+
+      <div className={`control-hub control-hub--${mode} ${isTransitioning ? 'transitioning' : ''}`}>
       {/* Minimal Mode: Just progress indicator */}
       {mode === 'minimal' && (
         <div className="hub-minimal">
@@ -132,10 +280,10 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
           </div>
           <button 
             className="hub-expand"
-            onClick={() => setMode('standard')}
+            onClick={() => handleModeChange('standard')}
             aria-label="Expand controls"
           >
-            ⚙️
+            <SettingsIcon />
           </button>
         </div>
       )}
@@ -153,18 +301,18 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
             </div>
             <div className="hub-actions">
               <button 
-                onClick={() => setMode('advanced')}
+                onClick={handleOpenAdvanced}
                 className="hub-action"
                 aria-label="Advanced controls"
               >
-                ⚙️
+                <SettingsIcon />
               </button>
               <button 
-                onClick={() => setMode('minimal')}
+                onClick={() => handleModeChange('minimal')}
                 className="hub-action"
                 aria-label="Minimize controls"
               >
-                ✕
+                <CloseIcon />
               </button>
             </div>
           </div>
@@ -176,7 +324,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               disabled={currentIndex === 0}
               aria-label="Previous section"
             >
-              ←
+              <ChevronLeftIcon />
             </button>
             
             <div className="section-dots">
@@ -196,7 +344,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               disabled={currentIndex === sectionsCount - 1}
               aria-label="Next section"
             >
-              →
+              <ChevronRightIcon />
             </button>
           </div>
         </div>
@@ -204,15 +352,16 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
 
       {/* Advanced Mode: Full configuration */}
       {mode === 'advanced' && (
-        <div className="hub-advanced">
+        <div className="hub-advanced" ref={advancedModeRef} role="dialog" aria-modal="true" aria-labelledby="hub-title">
           <div className="hub-header">
-            <h3 className="hub-title">Demo Controls</h3>
+            <h3 className="hub-title" id="hub-title">Demo Controls</h3>
             <button 
-              onClick={() => setMode('standard')}
+              ref={firstFocusableRef}
+              onClick={handleCloseAdvanced}
               className="hub-close"
               aria-label="Close advanced controls"
             >
-              ✕
+              <CloseIcon />
             </button>
           </div>
 
@@ -258,14 +407,14 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                       onClick={handlePrev}
                       disabled={currentIndex === 0}
                     >
-                      ← Previous
+                      <ChevronLeftIcon /> Previous
                     </button>
                     <button 
                       className="control-btn"
                       onClick={handleNext}
                       disabled={currentIndex === sectionsCount - 1}
                     >
-                      Next →
+                      Next <ChevronRightIcon />
                     </button>
                   </div>
                 </div>
@@ -297,26 +446,40 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                   <div className="config-controls">
                     <div className="config-item">
                       <label>Duration: {config.duration}s</label>
-                      <input
-                        type="range"
-                        min="0.2"
-                        max="2"
-                        step="0.1"
-                        value={config.duration}
-                        onChange={(e) => setConfig(prev => ({ ...prev, duration: parseFloat(e.target.value) }))}
-                      />
+                      <div className="config-slider-wrapper">
+                        <input
+                          type="range"
+                          min="0.2"
+                          max="2"
+                          step="0.1"
+                          value={config.duration}
+                          onChange={(e) => setConfig(prev => ({ ...prev, duration: parseFloat(e.target.value) }))}
+                          aria-label="Animation duration"
+                          aria-valuemin={0.2}
+                          aria-valuemax={2}
+                          aria-valuenow={config.duration}
+                        />
+                        <div className="config-slider-value">{config.duration}s</div>
+                      </div>
                     </div>
                     
                     <div className="config-item">
                       <label>Sensitivity: {config.tolerance}</label>
-                      <input
-                        type="range"
-                        min="10"
-                        max="100"
-                        step="5"
-                        value={config.tolerance}
-                        onChange={(e) => setConfig(prev => ({ ...prev, tolerance: parseInt(e.target.value) }))}
-                      />
+                      <div className="config-slider-wrapper">
+                        <input
+                          type="range"
+                          min="10"
+                          max="100"
+                          step="5"
+                          value={config.tolerance}
+                          onChange={(e) => setConfig(prev => ({ ...prev, tolerance: parseInt(e.target.value) }))}
+                          aria-label="Scroll sensitivity"
+                          aria-valuemin={10}
+                          aria-valuemax={100}
+                          aria-valuenow={config.tolerance}
+                        />
+                        <div className="config-slider-value">{config.tolerance}</div>
+                      </div>
                     </div>
                     
                     <div className="config-item config-item--checkbox">
@@ -331,11 +494,19 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                     </div>
                     
                     <button 
+                      ref={lastFocusableRef}
                       onClick={applyConfig}
                       className="apply-btn"
+                      disabled={!hasConfigChanged()}
                     >
-                      Apply Changes
+                      {hasConfigChanged() ? 'Apply Changes' : 'No Changes'}
                     </button>
+                    {hasConfigChanged() && (
+                      <div className="config-change-indicator" role="status" aria-live="polite">
+                        <span className="config-change-dot"></span>
+                        <span className="sr-only">Configuration has been modified</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -344,5 +515,6 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
         </div>
       )}
     </div>
+    </>
   );
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@primeinc/story-scroller-demo",
+  "name": "@primeinc/storyscroller-demo",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -29,11 +29,12 @@
     "quality": "npm run lint && npm run typecheck && npm run build",
     "deploy:vercel": "vercel --prod",
     "deploy:netlify": "netlify deploy --prod",
+    "deploy:github": "node scripts/deploy-github-pages.js",
     "sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@primeinc/story-scroller": "workspace:../package",
+    "@primeinc/storyscroller": "workspace:../package",
     "@vitejs/plugin-react": "^4.2.1",
     "gsap": "^3.12.5",
     "lenis": "^1.3.4",

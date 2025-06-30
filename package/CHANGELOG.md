@@ -193,11 +193,11 @@ MIT License - see [LICENSE](./LICENSE) file for details.
 
 ### 🔗 Links
 
-- [Documentation](https://github.com/primeinc/storyscroller#readme)
-- [GitHub Repository](https://github.com/primeinc/storyscroller)
+- [Documentation](https://github.com/primeinc/StoryScroller#readme)
+- [GitHub Repository](https://github.com/primeinc/StoryScroller)
 - [NPM Package](https://www.npmjs.com/package/@primeinc/story-scroller)
 - [Demo Application](https://storyscroller-demo.vercel.app)
 
 ---
 
-For questions, bug reports, or feature requests, please visit our [GitHub Issues](https://github.com/primeinc/storyscroller/issues).
+For questions, bug reports, or feature requests, please visit our [GitHub Issues](https://github.com/primeinc/StoryScroller/issues).

@@ -1,7 +1,7 @@
 {
   "summary": {
     "version": "1.0.0",
-    "timestamp": "2025-06-30T03:14:41.876Z",
+    "timestamp": "2025-06-30T03:54:08.372Z",
     "overallScore": 100,
     "critical": [],
     "recommendations": [
@@ -9,10 +9,10 @@
     ]
   },
   "bundleSize": {
-    "core": 48382,
+    "core": 49039,
     "css": 63,
-    "total": 48445,
-    "gzippedEstimate": 14514,
+    "total": 49102,
+    "gzippedEstimate": 14711,
     "targets": {
       "core": 51200,
       "withDeps": 153600,
@@ -26,7 +26,7 @@
   "timing": {},
   "memory": {},
   "meta": {
-    "timestamp": "2025-06-30T03:14:41.876Z",
+    "timestamp": "2025-06-30T03:54:08.372Z",
     "version": "1.0.0",
     "nodeVersion": "v20.17.0",
     "platform": "linux"

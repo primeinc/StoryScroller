@@ -20,7 +20,7 @@ We take security seriously. If you discover a security vulnerability in StoryScr
 Instead, please report security vulnerabilities by:
 
 1. **Email**: Send details to [security@primeinc.com](mailto:security@primeinc.com)
-2. **GitHub Security**: Use GitHub's [private vulnerability reporting](https://github.com/primeinc/storyscroller/security/advisories/new)
+2. **GitHub Security**: Use GitHub's [private vulnerability reporting](https://github.com/primeinc/StoryScroller/security/advisories/new)
 
 ### What to Include
 

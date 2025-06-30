@@ -1,9 +1,9 @@
 # StoryScroller
 
-[![npm version](https://badge.fury.io/js/@primeinc%2Fstory-scroller.svg)](https://badge.fury.io/js/@primeinc%2Fstory-scroller)
+[![npm version](https://badge.fury.io/js/@primeinc%2Fstoryscroller.svg)](https://badge.fury.io/js/@primeinc%2Fstoryscroller)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@primeinc/story-scroller)](https://bundlephobia.com/package/@primeinc/story-scroller)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/@primeinc/storyscroller)](https://bundlephobia.com/package/@primeinc/storyscroller)
 
 A high-performance React component for narrative-driven scroll experiences. Built with GSAP and Lenis for buttery-smooth section-based navigation with full motion control.
 
@@ -18,14 +18,14 @@ A high-performance React component for narrative-driven scroll experiences. Buil
 ## Installation
 
 ```bash
-pnpm add @primeinc/story-scroller
+pnpm add @primeinc/storyscroller
 ```
 
 ## Quick Start
 
 ```tsx
-import { StoryScroller } from '@primeinc/story-scroller'
-import '@primeinc/story-scroller/styles'
+import { StoryScroller } from '@primeinc/storyscroller'
+import '@primeinc/storyscroller/styles'
 
 function App() {
   const sections = [

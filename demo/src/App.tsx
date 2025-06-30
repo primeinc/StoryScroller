@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { 
   StoryScrollerWithErrorBoundary, 
   type StoryScrollerConfig 
-} from '@primeinc/story-scroller';
+} from '@primeinc/storyscroller';
 import { ControlHub } from './components/ControlHub';
 
 // Accessibility helper for reduced motion detection
@@ -46,7 +46,7 @@ const createSections = () => [
       </div>
     </div>
     
-    <a href="https://github.com/primeinc/storyscroller" className="section-cta" aria-describedby="hero-title" target="_blank" rel="noopener noreferrer">
+    <a href="https://github.com/primeinc/StoryScroller" className="section-cta" aria-describedby="hero-title" target="_blank" rel="noopener noreferrer">
       View on GitHub →
     </a>
   </section>,
@@ -112,7 +112,7 @@ const createSections = () => [
       or simply scroll to experience the smooth section snapping.
     </p>
     <a 
-      href="https://github.com/primeinc/story-scroller" 
+      href="https://github.com/primeinc/StoryScroller" 
       className="section-cta"
       aria-describedby="ready-title"
       target="_blank"

@@ -1,6 +1,6 @@
 # StoryScroller Performance Report
 
-Generated: 2025-06-30T03:14:41.876Z  
+Generated: 2025-06-30T03:54:08.372Z  
 Version: 1.0.0  
 Overall Score: 100/100
 
@@ -8,10 +8,10 @@ Overall Score: 100/100
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| Core Bundle | 47.2KB | 50.0KB | ✅ |
+| Core Bundle | 47.9KB | 50.0KB | ✅ |
 | CSS Bundle | 0.1KB | - | ✅ |
-| Total Bundle | 47.3KB | 150.0KB | ✅ |
-| Gzipped (est) | 14.2KB | 35.0KB | ✅ |
+| Total Bundle | 48.0KB | 150.0KB | ✅ |
+| Gzipped (est) | 14.4KB | 35.0KB | ✅ |
 
 ## Code Quality
 

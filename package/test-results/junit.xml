@@ -1,0 +1,362 @@
+<testsuites id="" name="" tests="80" failures="0" skipped="80" errors="0" time="0.054497999999999935">
+<testsuite name="functional/critical-navigation-issues.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="chromium" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should handle multiple wheel events appropriately" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should update state immediately when navigation starts" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should maintain scroll position and section consistency" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should handle complex navigation sequences without state corruption" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should maintain queue integrity during rapid navigation requests" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should complete wheel navigation within performance targets" classname="functional/critical-navigation-issues.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should not have excessive console errors during navigation" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="chromium" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/critical-navigation-issues.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="firefox" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should handle multiple wheel events appropriately" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should update state immediately when navigation starts" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should maintain scroll position and section consistency" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should handle complex navigation sequences without state corruption" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should maintain queue integrity during rapid navigation requests" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should complete wheel navigation within performance targets" classname="functional/critical-navigation-issues.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should not have excessive console errors during navigation" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="firefox" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/critical-navigation-issues.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="webkit" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should handle multiple wheel events appropriately" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should update state immediately when navigation starts" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should maintain scroll position and section consistency" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should handle complex navigation sequences without state corruption" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should maintain queue integrity during rapid navigation requests" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should complete wheel navigation within performance targets" classname="functional/critical-navigation-issues.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should not have excessive console errors during navigation" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="webkit" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/critical-navigation-issues.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="mobile-chrome" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should handle multiple wheel events appropriately" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should update state immediately when navigation starts" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should maintain scroll position and section consistency" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should handle complex navigation sequences without state corruption" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should maintain queue integrity during rapid navigation requests" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should complete wheel navigation within performance targets" classname="functional/critical-navigation-issues.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should not have excessive console errors during navigation" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="mobile-chrome" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/critical-navigation-issues.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="mobile-safari" tests="10" failures="0" skipped="10" time="0" errors="0">
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should trigger navigation on wheel events (CURRENTLY FAILS - wheel events blocked)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 1. Mouse Wheel Navigation Broken › should handle multiple wheel events appropriately" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should allow rapid button navigation with reasonable timing (CURRENTLY FAILS - excessive delays)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 2. Button Navigation Delays Too Long › should update state immediately when navigation starts" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should handle initial scroll position mismatch (CURRENTLY FAILS - sync issues)" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 3. State Synchronization Issues › should maintain scroll position and section consistency" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should handle complex navigation sequences without state corruption" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 4. Multi-Navigation Sequence Test › should maintain queue integrity during rapid navigation requests" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should complete wheel navigation within performance targets" classname="functional/critical-navigation-issues.test.ts" time="0">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="Critical Navigation Issues Test Suite › 5. Performance and Timing Validation › should not have excessive console errors during navigation" classname="functional/critical-navigation-issues.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T04:52:31.673Z" hostname="mobile-safari" tests="6" failures="0" skipped="6" time="0" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="0">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
