@@ -6,9 +6,9 @@
 /** Timing constants for animations and debouncing */
 export const TIMING = {
   /** Base animation duration in seconds */
-  BASE_DURATION: 1.2,
+  BASE_DURATION: 0.8,
   /** Base animation duration in seconds (alias for compatibility) */
-  BASE_ANIMATION_DURATION: 1.2,
+  BASE_ANIMATION_DURATION: 0.8,
   /** Minimum animation duration to prevent jarring transitions */
   MIN_DURATION: 0.3,
   /** Maximum animation duration to prevent sluggish feel */
@@ -38,7 +38,7 @@ export const TIMING = {
 /** Physics parameters for smooth scrolling */
 export const PHYSICS = {
   /** Base duration in seconds for a single-section scroll animation */
-  BASE_ANIMATION_DURATION: 1.2,
+  BASE_ANIMATION_DURATION: 0.8,
   /** Lenis lerp (smoothing) factor (0-1, lower is smoother) */
   LENIS_LERP: 0.1,
   /** Lenis wheel sensitivity multiplier */
@@ -46,7 +46,7 @@ export const PHYSICS = {
   /** Wheel scroll multiplier (reduced for better control) */
   WHEEL_MULTIPLIER: 0.8,
   /** Default easing function */
-  DEFAULT_EASING: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  DEFAULT_EASING: (t: number) => t === 0 ? 0 : t === 1 ? 1 : Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   /** Observer tolerance for trackpad debouncing (higher = less sensitive) */
   OBSERVER_TOLERANCE: 50,
   /** Touch gesture multiplier */
@@ -56,7 +56,7 @@ export const PHYSICS = {
   /** Duration multiplier for touch devices */
   TOUCH_DURATION_MULTIPLIER: 0.8,
   /** Lenis duration multiplier (slightly faster for responsiveness) */
-  LENIS_DURATION_MULTIPLIER: 0.8,
+  LENIS_DURATION_MULTIPLIER: 0.7,
 } as const;
 
 /** Parameters for the magnetic snap effect */
@@ -112,7 +112,7 @@ export const SCROLLTRIGGER_CONFIG = {
 /** Easing functions */
 export const EASING_FUNCTIONS = {
   /** Default exponential ease-out */
-  DEFAULT: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  DEFAULT: (t: number) => t === 0 ? 0 : t === 1 ? 1 : Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   /** Smooth cubic ease-out for natural deceleration */
   CUBIC_OUT: (t: number) => 1 - Math.pow(1 - t, 3),
   /** Power2 ease in-out (GSAP compatible) */

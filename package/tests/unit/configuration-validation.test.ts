@@ -30,7 +30,7 @@ describe('Configuration Validation', () => {
       }
       
       expect(processedConfig.keyboardNavigation).toBe(true)
-      expect(processedConfig.duration).toBe(1.2)
+      expect(processedConfig.duration).toBe(0.8)
       expect(processedConfig.easing).toBe(EASING_FUNCTIONS.CUBIC_OUT)
       expect(processedConfig.tolerance).toBe(50)
       expect(processedConfig.preventDefault).toBe(true)

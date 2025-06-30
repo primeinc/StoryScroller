@@ -1,0 +1,115 @@
+<testsuites id="" name="" tests="30" failures="1" skipped="1" errors="0" time="72.142288">
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T00:59:28.900Z" hostname="chromium" tests="6" failures="0" skipped="0" time="14.968" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="2.712">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="2.026">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="1.477">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="2.494">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="2.966">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="3.293">
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T00:59:28.900Z" hostname="firefox" tests="6" failures="1" skipped="0" time="18.628" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="3.131">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="3.506">
+<failure message="scroll-performance.test.ts:40:3 should respond to user input quickly" type="FAILURE">
+<![CDATA[  [firefox] › functional/scroll-performance.test.ts:40:3 › StoryScroller Performance Validation › should respond to user input quickly 
+
+    Error: expect(received).toBeLessThan(expected)
+
+    Expected: < 100
+    Received:   205
+
+      89 |     // Target: User input should be acknowledged within 100ms
+      90 |     expect(responseDetected).toBe(true);
+    > 91 |     expect(responseTime).toBeLessThan(100);
+         |                          ^
+      92 |   });
+      93 |
+      94 |   test('should handle wheel events properly', async ({ setupPage: page, logger, screenshots, browserName, isMobile }) => {
+        at /home/will/local_dev/storyscroller/package/tests/functional/scroll-performance.test.ts:91:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results/functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/test-failed-1.png]]
+
+[[ATTACHMENT|functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/video.webm]]
+
+[[ATTACHMENT|functional-scroll-performa-b732e-spond-to-user-input-quickly-firefox/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="1.43">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="2.484">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="3.072">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="5.005">
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T00:59:28.900Z" hostname="webkit" tests="6" failures="0" skipped="0" time="21.9" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="3.465">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="2.832">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="2.698">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="3.8">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="4.369">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="4.736">
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T00:59:28.900Z" hostname="mobile-chrome" tests="6" failures="0" skipped="0" time="28.978" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="5.127">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="4.261">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="3.855">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="4.991">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="5.292">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="5.452">
+</testcase>
+</testsuite>
+<testsuite name="functional/scroll-performance.test.ts" timestamp="2025-06-30T00:59:28.900Z" hostname="mobile-safari" tests="6" failures="0" skipped="1" time="26.002" errors="0">
+<testcase name="StoryScroller Performance Validation › should complete animations within performance target" classname="functional/scroll-performance.test.ts" time="4.223">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should respond to user input quickly" classname="functional/scroll-performance.test.ts" time="3.512">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should handle wheel events properly" classname="functional/scroll-performance.test.ts" time="3.905">
+<properties>
+<property name="skip" value="">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have conflicting animation systems" classname="functional/scroll-performance.test.ts" time="4.59">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should have reasonable scroll physics" classname="functional/scroll-performance.test.ts" time="4.792">
+</testcase>
+<testcase name="StoryScroller Performance Validation › should not have excessive console errors (quality check)" classname="functional/scroll-performance.test.ts" time="4.98">
+</testcase>
+</testsuite>
+</testsuites>

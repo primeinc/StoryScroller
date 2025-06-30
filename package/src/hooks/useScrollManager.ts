@@ -95,12 +95,17 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     lastNavigationTime: Date.now()
   });
 
+  // Track current section in a ref for immediate access
+  const currentSectionRef = useRef(scrollState.getState().currentSection);
+
   // Update stateRef whenever state changes
   useEffect(() => {
+    const newState = scrollState.getState();
     stateRef.current = {
-      ...scrollState.getState(),
+      ...newState,
       lastNavigationTime: stateRef.current.lastNavigationTime
     };
+    currentSectionRef.current = newState.currentSection;
   }, [scrollState]);
 
   const processNavigationQueue = useCallback(async () => {
@@ -150,11 +155,25 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
         debouncing.markAnimationEnd(animationId);
         
         // Update state
+        console.log('📊 [processNavigationQueue] Updating state after animation:', {
+          previousSection: currentSectionRef.current,
+          newSection: request.targetSection,
+          targetY
+        });
+        
         scrollState.updateState({
           currentSection: request.targetSection,
           targetSection: null,
           isAnimating: false,
           scrollPosition: targetY
+        });
+        
+        // Update our ref immediately
+        currentSectionRef.current = request.targetSection;
+        
+        console.log('📊 [processNavigationQueue] State after update:', {
+          currentSection: currentSectionRef.current,
+          isAnimating: scrollState.queries.isAnimating()
         });
 
         // Call completion callback
@@ -179,11 +198,17 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
 
   const gotoSection = useCallback((index: number, options?: NavigationOptions) => {
     const clampedIndex = Math.max(0, Math.min(sections.length - 1, index));
+    // Get the latest current section directly from the ref
+    const currentSection = currentSectionRef.current;
     
     console.log('🎯 [gotoSection] Request:', {
       requested: index,
       clamped: clampedIndex,
-      current: scrollState.queries.getCurrentSection()
+      current: currentSection,
+      queueStatus: {
+        pending: animationQueue.current.requests.length,
+        processing: animationQueue.current.processing
+      }
     });
 
     const request = animationQueue.current.enqueue({ 
@@ -193,24 +218,40 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
       options 
     });
 
+    console.log('📥 [gotoSection] Enqueue result:', {
+      requestId: request?.id || 'null',
+      queueLength: animationQueue.current.requests.length
+    });
+
     if (request) {
       processNavigationQueue();
     }
-  }, [sections.length, scrollState, processNavigationQueue]);
+  }, [sections.length, processNavigationQueue]);
 
   const nextSection = useCallback(() => {
-    const current = scrollState.queries.getCurrentSection();
+    // Get the latest current section directly from the ref
+    const current = currentSectionRef.current;
+    console.log('🔄 [nextSection] Called:', {
+      currentSection: current,
+      maxSection: sections.length - 1,
+      canNavigate: current < sections.length - 1
+    });
     if (current < sections.length - 1) {
       gotoSection(current + 1);
     }
-  }, [gotoSection, scrollState, sections.length]);
+  }, [gotoSection, sections.length]);
 
   const prevSection = useCallback(() => {
-    const current = scrollState.queries.getCurrentSection();
+    // Get the latest current section directly from the ref
+    const current = currentSectionRef.current;
+    console.log('🔄 [prevSection] Called:', {
+      currentSection: current,
+      canNavigate: current > 0
+    });
     if (current > 0) {
       gotoSection(current - 1);
     }
-  }, [gotoSection, scrollState]);
+  }, [gotoSection]);
 
   const setupInputHandlers = useCallback(() => {
     // Observer for wheel/touch input
@@ -239,7 +280,8 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
 
         // Determine if we should navigate
         if (Math.abs(delta) > tolerance) {
-          const current = scrollState.queries.getCurrentSection();
+          // Get the latest current section directly from the ref
+          const current = currentSectionRef.current;
           const target = current + direction;
 
           if (target >= 0 && target < sections.length) {
@@ -352,7 +394,11 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
 
     // Set up periodic state verification
     controllers.current.verificationIntervalId = setInterval(() => {
-      scrollState.verifyState();
+      const verified = scrollState.verifyState();
+      // If state was corrected, update our ref
+      if (!verified) {
+        currentSectionRef.current = scrollState.queries.getCurrentSection();
+      }
     }, TIMING.STATE_VERIFICATION_INTERVAL);
 
     console.log('✅ [reinitialize] Scroll system initialized');
@@ -409,6 +455,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     prevSection,
     forceSync: () => {
       const currentSection = Math.round(browserService.current.getScrollY() / browserService.current.getInnerHeight());
+      currentSectionRef.current = currentSection; // Update our ref too
       forceSync(currentSection, stateRef, controllers.current, browserService.current, scrollState.updateState);
     },
     emergencyReset: () => {

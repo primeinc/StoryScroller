@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- heading "StoryScroller" [level=1]
+- paragraph: Production-ready narrative scrolling for React
+- paragraph: Seamlessly blend storytelling with smooth scrolling animations. Built with GSAP, Lenis, and React 18 for maximum performance.
+- link "Explore Features":
+  - /url: "#features"
+- heading "Features" [level=1]
+- paragraph: Everything you need for narrative motion
+- list:
+  - listitem: 🎯 Magnetic snap scrolling with physics-based easing
+  - listitem: ⚡ Optimized performance with debounced state management
+  - listitem: 🎛️ Comprehensive configuration options
+  - listitem: 🛡️ Built-in error boundaries and recovery
+  - listitem: 📱 Touch and keyboard navigation support
+  - listitem: 🎨 Completely customizable styling
+- heading "Motion" [level=1]
+- paragraph: Designed for complex animations
+- paragraph: Leverage GSAP's powerful animation engine with Lenis smooth scrolling. Perfect for creating immersive storytelling experiences with precise control over timing, easing, and section transitions.
+- text: ✨ 🌟 💫
+- heading "Integration" [level=1]
+- paragraph: GSAP + Lenis + React 18
+- paragraph: Simple integration with existing React applications. Comes with TypeScript support, comprehensive error handling, and optimized performance patterns out of the box.
+- code: "<StoryScrollerWithErrorBoundary sections={sections} duration={1.2} enableMagneticSnap={true} onSectionChange={(index) => { console.log('Section:', index) }} />"
+- heading "Ready" [level=1]
+- paragraph: Start building narrative experiences
+- paragraph: This demo showcases the full capabilities of StoryScroller. Try the navigation controls, keyboard shortcuts (↑↓), or simply scroll to experience the smooth section snapping.
+- link "Get Started →":
+  - /url: https://github.com/primeinc/story-scroller
+- navigation:
+  - button "Previous section" [disabled]: ← Prev
+  - text: 1 / 5
+  - button "Next section": Next →
+  - text: Animating
+- button "Go to section 1"
+- button "Go to section 2"
+- button "Go to section 3"
+- button "Go to section 4"
+- button "Go to section 5"
+- heading "Debug Info" [level=4]
+- text: "Current: 1 Animating: Yes Last Navigation: 8:59:48 PM"
+```
