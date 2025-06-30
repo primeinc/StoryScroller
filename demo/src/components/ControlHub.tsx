@@ -4,6 +4,13 @@ interface ControlHubProps {
   sectionsCount: number;
 }
 
+interface DemoConfig {
+  duration: number;
+  tolerance: number;
+  enableMagneticSnap: boolean;
+  magneticThreshold: number;
+}
+
 type ControlMode = 'minimal' | 'standard' | 'advanced';
 type TabType = 'navigation' | 'performance' | 'configuration';
 
@@ -24,10 +31,10 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   const [frameTime, setFrameTime] = useState(16.67);
   
   // Configuration state
-  const [config, setConfig] = useState({
+  const [config, setConfig] = useState<DemoConfig>({
     duration: 1.2,
     tolerance: 50,
-    magneticSnap: true,
+    enableMagneticSnap: true,
     magneticThreshold: 0.15,
   });
 
@@ -316,8 +323,8 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                       <label>
                         <input
                           type="checkbox"
-                          checked={config.magneticSnap}
-                          onChange={(e) => setConfig(prev => ({ ...prev, magneticSnap: e.target.checked }))}
+                          checked={config.enableMagneticSnap}
+                          onChange={(e) => setConfig(prev => ({ ...prev, enableMagneticSnap: e.target.checked }))}
                         />
                         Magnetic Snap
                       </label>

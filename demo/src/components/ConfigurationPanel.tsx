@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 interface DemoConfig {
   duration: number;
   tolerance: number;
-  magneticSnap: boolean;
+  enableMagneticSnap: boolean;
   magneticThreshold: number;
 }
 
@@ -18,7 +18,7 @@ export function ConfigurationPanel() {
   const [config, setConfig] = useState<DemoConfig>({
     duration: 1.2,
     tolerance: 50,
-    magneticSnap: true,
+    enableMagneticSnap: true,
     magneticThreshold: 0.15,
   });
   
@@ -78,12 +78,12 @@ export function ConfigurationPanel() {
           </div>
           
           <div className="config-group">
-            <label htmlFor="magneticSnap">
+            <label htmlFor="enableMagneticSnap">
               <input
-                id="magneticSnap"
+                id="enableMagneticSnap"
                 type="checkbox"
-                checked={config.magneticSnap}
-                onChange={(e) => setConfig(prev => ({ ...prev, magneticSnap: e.target.checked }))}
+                checked={config.enableMagneticSnap}
+                onChange={(e) => setConfig(prev => ({ ...prev, enableMagneticSnap: e.target.checked }))}
               />
               Magnetic Snap
             </label>
@@ -103,7 +103,7 @@ export function ConfigurationPanel() {
               value={config.magneticThreshold}
               onChange={(e) => setConfig(prev => ({ ...prev, magneticThreshold: parseFloat(e.target.value) }))}
               aria-describedby="threshold-help"
-              disabled={!config.magneticSnap}
+              disabled={!config.enableMagneticSnap}
             />
             <small id="threshold-help" className="config-help">
               Distance threshold for magnetic snap
@@ -113,7 +113,7 @@ export function ConfigurationPanel() {
           <button 
             onClick={applyConfig} 
             className="apply-config"
-            disabled={!config.magneticSnap && config.magneticThreshold !== 0.15}
+            disabled={!config.enableMagneticSnap && config.magneticThreshold !== 0.15}
           >
             Apply Changes
           </button>

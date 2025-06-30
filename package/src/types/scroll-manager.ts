@@ -218,6 +218,8 @@ export interface ScrollManagerAPI {
   getState?: () => ScrollState;
   /** Get animation queue status (for debugging). */
   getQueueStatus?: () => { pending: number; processing: boolean };
+  /** Update configuration settings dynamically. */
+  updateConfig?: (newConfig: Partial<ScrollManagerConfig>) => void;
 }
 
 /**

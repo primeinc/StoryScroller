@@ -62,10 +62,11 @@ export const StoryScroller: React.FC<StoryScrollerProps> = (props) => {
         getState: scrollManager.getState,
         getQueueStatus: scrollManager.getQueueStatus,
         forceSync: scrollManager.forceSync,
-        emergencyReset: scrollManager.emergencyReset
+        emergencyReset: scrollManager.emergencyReset,
+        updateConfig: scrollManager.updateConfig
       };
     }
-  }, [scrollManager.gotoSection, scrollManager.nextSection, scrollManager.prevSection, scrollManager.getState, scrollManager.getQueueStatus, scrollManager.forceSync, scrollManager.emergencyReset]);
+  }, [scrollManager.gotoSection, scrollManager.nextSection, scrollManager.prevSection, scrollManager.getState, scrollManager.getQueueStatus, scrollManager.forceSync, scrollManager.emergencyReset, scrollManager.updateConfig]);
 
   // Check for reduced motion preference
   const prefersReducedMotion = typeof window !== 'undefined' && 

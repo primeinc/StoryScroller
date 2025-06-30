@@ -44,6 +44,7 @@
     "release:major": "npm version major && npm run build && npm publish",
     "license:add": "node scripts/add-license-headers.js",
     "bundle:analyze": "npm run build && du -h dist/*.js",
+    "benchmark": "node scripts/benchmark.js",
     "clean": "rimraf dist coverage test-results playwright-report",
     "prepare": "npm run build"
   },

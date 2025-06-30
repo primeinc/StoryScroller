@@ -27,7 +27,7 @@
  * to create a stable and predictable scroll experience.
  */
 
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -64,7 +64,10 @@ const initLenis = async () => {
   return lenis;
 };
 
-export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI {
+export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollManagerAPI {
+  
+  // Make config state-based for dynamic updates
+  const [currentConfig, setCurrentConfig] = useState<ScrollManagerConfig>(initialConfig);
   
   const { 
     sections, 
@@ -76,7 +79,23 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     preventDefault = true,
     invertDirection = false,
     browserService: providedBrowserService
-  } = config;
+  } = currentConfig;
+
+  // Function to update configuration dynamically
+  const updateConfig = useCallback((newConfig: Partial<ScrollManagerConfig>) => {
+    console.log('🔧 [updateConfig] Updating configuration:', newConfig);
+    
+    setCurrentConfig(prev => {
+      const updated = { ...prev, ...newConfig };
+      console.log('🔧 [updateConfig] New config:', updated);
+      return updated;
+    });
+    
+    // If Observer settings change, we need to reinitialize it
+    if (newConfig.tolerance !== undefined) {
+      console.log('🔧 [updateConfig] Observer tolerance changed, will reinitialize on next effect');
+    }
+  }, []);
 
   // Check for reduced motion preference and adjust duration accordingly
   const prefersReducedMotion = useRef(false);
@@ -640,6 +659,7 @@ export function useScrollManager(config: ScrollManagerConfig): ScrollManagerAPI 
     getQueueStatus: () => ({
       pending: animationQueue.current.requests.length,
       processing: animationQueue.current.processing
-    })
+    }),
+    updateConfig
   };
 }

@@ -189,7 +189,7 @@ describe('ConfigurationPanel Component', () => {
       expect(mockStoryScrollerAPI.updateConfig).toHaveBeenCalledWith({
         duration: 1.2,
         tolerance: 50,
-        magneticSnap: true,
+        enableMagneticSnap: true,
         magneticThreshold: 0.15,
       });
     });
@@ -210,7 +210,7 @@ describe('ConfigurationPanel Component', () => {
       expect(mockStoryScrollerAPI.updateConfig).toHaveBeenCalledWith({
         duration: 2.0,
         tolerance: 80,
-        magneticSnap: true,
+        enableMagneticSnap: true,
         magneticThreshold: 0.15,
       });
     });

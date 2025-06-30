@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simplified favicon version -->
+  <g>
+    <!-- Primary ribbon flow - simplified -->
+    <path d="M16 4 Q8 4 8 12 Q8 20 16 20 Q24 20 24 28 Q24 36 16 36" stroke="#4F46E5" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <!-- Secondary ribbon flow -->
+    <path d="M16 4 Q24 4 24 12 Q24 20 16 20 Q8 20 8 28 Q8 36 16 36" stroke="#22D3EE" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>

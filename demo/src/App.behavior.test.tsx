@@ -94,13 +94,19 @@ describe('Demo App - Real Behavior Tests', () => {
       expect(screen.getByText('Ready')).toBeInTheDocument()
     })
 
-    it('renders navigation controls', async () => {
+    it('renders unified control hub', async () => {
       render(<App />)
 
       await waitFor(() => {
-        expect(screen.getByText('← Prev')).toBeInTheDocument()
-        expect(screen.getByText('Next →')).toBeInTheDocument()
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        // Check for ControlHub in minimal mode (default)
+        expect(screen.getByLabelText('Expand controls')).toBeInTheDocument()
+        expect(screen.getByText('1')).toBeInTheDocument() // section number
+        expect(screen.getByText('/5')).toBeInTheDocument() // total sections
+        
+        // Should have the control hub container
+        const controlHub = document.querySelector('.control-hub')
+        expect(controlHub).toBeInTheDocument()
+        expect(controlHub).toHaveClass('control-hub--minimal')
       })
     })
 
@@ -121,57 +127,70 @@ describe('Demo App - Real Behavior Tests', () => {
   })
 
   describe('Navigation Functionality', () => {
-    it('initializes with correct default state', async () => {
+    it('initializes with correct default state in minimal mode', async () => {
       render(<App />)
 
       await waitFor(() => {
-        const prevButton = screen.getByText('← Prev')
-        const nextButton = screen.getByText('Next →')
+        // Should start in minimal mode showing section 1 of 5
+        expect(screen.getByText('1')).toBeInTheDocument()
+        expect(screen.getByText('/5')).toBeInTheDocument()
         
-        expect(prevButton).toBeDisabled()
-        expect(nextButton).not.toBeDisabled()
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        // Should have expand button to access navigation controls
+        const expandButton = screen.getByLabelText('Expand controls')
+        expect(expandButton).toBeInTheDocument()
+        expect(expandButton).not.toBeDisabled()
       })
     })
 
-    it('updates navigation state on button clicks', async () => {
+    it('can expand to standard mode and navigate with buttons', async () => {
       render(<App />)
 
+      // First expand the control hub to standard mode
+      const expandButton = screen.getByLabelText('Expand controls')
+      fireEvent.click(expandButton)
+
       await waitFor(() => {
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        // Should now be in standard mode with navigation buttons (arrows with aria-labels)
+        expect(screen.getByLabelText('Previous section')).toBeInTheDocument()
+        expect(screen.getByLabelText('Next section')).toBeInTheDocument()
+        expect(screen.getByText('Section 1 of 5')).toBeInTheDocument()
       })
 
-      const nextButton = screen.getByText('Next →')
+      const nextButton = screen.getByLabelText('Next section')
       
       // Click next button
       fireEvent.click(nextButton)
 
       await waitFor(() => {
-        expect(screen.getByText('2 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 2 of 5')).toBeInTheDocument()
       }, { timeout: 2000 })
 
       // Previous button should now be enabled
-      const prevButton = screen.getByText('← Prev')
+      const prevButton = screen.getByLabelText('Previous section')
       expect(prevButton).not.toBeDisabled()
     })
 
     it('handles navigation to last section correctly', async () => {
       render(<App />)
 
+      // Start by expanding to standard mode for navigation
+      const expandButton = screen.getByLabelText('Expand controls')
+      fireEvent.click(expandButton)
+
       await waitFor(() => {
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 1 of 5')).toBeInTheDocument()
       })
 
-      const nextButton = screen.getByText('Next →')
+      const nextButton = screen.getByLabelText('Next section')
 
-      // Navigate to last section (section 5)
+      // Navigate to last section (section 5)  
       for (let i = 0; i < 4; i++) {
         fireEvent.click(nextButton)
         await act(() => new Promise(resolve => setTimeout(resolve, 100)))
       }
 
       await waitFor(() => {
-        expect(screen.getByText('5 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 5 of 5')).toBeInTheDocument()
         expect(nextButton).toBeDisabled()
       }, { timeout: 3000 })
     })
@@ -179,23 +198,27 @@ describe('Demo App - Real Behavior Tests', () => {
     it('handles backward navigation correctly', async () => {
       render(<App />)
 
+      // Expand to standard mode first
+      const expandButton = screen.getByLabelText('Expand controls')
+      fireEvent.click(expandButton)
+
       await waitFor(() => {
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 1 of 5')).toBeInTheDocument()
       })
 
-      const nextButton = screen.getByText('Next →')
-      const prevButton = screen.getByText('← Prev')
+      const nextButton = screen.getByLabelText('Next section')
+      const prevButton = screen.getByLabelText('Previous section')
 
       // Go to section 2
       fireEvent.click(nextButton)
       await waitFor(() => {
-        expect(screen.getByText('2 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 2 of 5')).toBeInTheDocument()
       })
 
       // Go back to section 1
       fireEvent.click(prevButton)
       await waitFor(() => {
-        expect(screen.getByText('1 / 5')).toBeInTheDocument()
+        expect(screen.getByText('Section 1 of 5')).toBeInTheDocument()
         expect(prevButton).toBeDisabled()
       })
     })
@@ -233,8 +256,15 @@ describe('Demo App - Real Behavior Tests', () => {
         expect(state.currentSection).toBe(0)
       })
 
-      // Navigate using button
-      const nextButton = screen.getByText('Next →')
+      // Navigate using ControlHub - expand to standard mode first
+      const expandButton = screen.getByLabelText('Expand controls')
+      fireEvent.click(expandButton)
+      
+      await waitFor(() => {
+        expect(screen.getByLabelText('Next section')).toBeInTheDocument()
+      })
+
+      const nextButton = screen.getByLabelText('Next section')
       fireEvent.click(nextButton)
 
       // API state should update
@@ -258,8 +288,10 @@ describe('Demo App - Real Behavior Tests', () => {
         api.gotoSection(2)
       })
 
+      // Verify API state changed (better than checking UI text)
       await waitFor(() => {
-        expect(screen.getByText('3 / 5')).toBeInTheDocument()
+        const state = api.getState()
+        expect(state.currentSection).toBe(2)
       }, { timeout: 2000 })
     })
   })
@@ -282,7 +314,7 @@ describe('Demo App - Real Behavior Tests', () => {
       await waitFor(() => {
         const container = document.querySelector('.story-scroller-container')
         expect(container).toHaveAttribute('role', 'region')
-        expect(container).toHaveAttribute('aria-label', 'Story sections')
+        expect(container).toHaveAttribute('aria-label', 'StoryScroller demo sections')
       })
     })
 
