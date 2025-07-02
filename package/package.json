@@ -21,6 +21,10 @@
     "CHANGELOG.md",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=20.17.0",
+    "pnpm": ">=9.12.0"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -36,6 +40,7 @@
     "test:unit": "vitest",
     "test:unit:run": "vitest run",
     "test:unit:ui": "vitest --ui",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 playwright test",
     "test:all": "npm run test:unit:run && npm run test",
     "quality": "npm run lint && npm run typecheck && npm run build",
     "prerelease": "npm run quality && npm run test:all",
@@ -45,7 +50,7 @@
     "license:add": "node scripts/add-license-headers.js",
     "bundle:analyze": "npm run build && du -h dist/*.js",
     "benchmark": "node scripts/benchmark.js",
-    "clean": "rimraf dist coverage test-results playwright-report",
+    "clean": "rimraf dist coverage test-results playwright-report .turbo",
     "prepare": "npm run build"
   },
   "peerDependencies": {
@@ -70,6 +75,7 @@
     "eslint": "^9.0.0",
     "jsdom": "^24.0.0",
     "rimraf": "^5.0.5",
+    "start-server-and-test": "^2.0.3",
     "tsup": "^8.3.5",
     "typescript": "^5.8.3",
     "vitest": "^1.4.0"
