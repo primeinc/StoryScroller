@@ -13,8 +13,7 @@ export default defineConfig(({ command, mode }) => {
     
     plugins: [
       react({
-        // Enable React Fast Refresh in development
-        fastRefresh: !isProduction,
+        // Enable React Fast Refresh in development (Note: fastRefresh is deprecated, now enabled by default)
       }),
     ],
     
@@ -47,13 +46,13 @@ export default defineConfig(({ command, mode }) => {
           // Asset file naming
           assetFileNames: (assetInfo) => {
             const info = assetInfo.name?.split('.') || []
-            let extType = info[info.length - 1]
+            let extType = info[info.length - 1] || 'assets'
             
-            if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            if (extType && /png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
               extType = 'images'
-            } else if (/woff2?|eot|ttf|otf/i.test(extType)) {
+            } else if (extType && /woff2?|eot|ttf|otf/i.test(extType)) {
               extType = 'fonts'
-            } else if (/css/i.test(extType)) {
+            } else if (extType && /css/i.test(extType)) {
               extType = 'styles'
             }
             

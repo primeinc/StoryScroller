@@ -21,7 +21,7 @@ export default [
       // Basic rules that work without plugins
       'no-console': 'off', // Allow console logs for debugging
       'no-debugger': 'error',
-      'no-duplicate-imports': 'error',
+      'no-duplicate-imports': 'error',     
       'prefer-const': 'error',
       // Disable rules that don't work well with TypeScript
       'no-unused-vars': 'off', // TypeScript handles this

@@ -144,7 +144,7 @@ describe('PerformanceMonitor Component', () => {
   describe('Performance Calculation', () => {
     it('calculates FPS correctly over time', async () => {
       let frameCount = 0
-      let startTime = 1000
+      const startTime = 1000
       
       // Mock performance.now to simulate frames
       vi.spyOn(performance, 'now').mockImplementation(() => {
@@ -165,7 +165,7 @@ describe('PerformanceMonitor Component', () => {
 
     it('handles varying frame rates', async () => {
       let frameCount = 0
-      let startTime = 1000
+      const startTime = 1000
       
       // Mock performance.now to simulate 30fps
       vi.spyOn(performance, 'now').mockImplementation(() => {

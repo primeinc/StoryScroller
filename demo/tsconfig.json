@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"],
+    "types": ["vite/client", "vitest/globals"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -23,6 +23,7 @@
   },
   "include": [
     "src",
+    "tests",
     "vite.config.ts",
     "index.html"
   ],
