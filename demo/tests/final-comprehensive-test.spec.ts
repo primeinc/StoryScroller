@@ -27,7 +27,7 @@ test.describe('StoryScroller Demo - Final Comprehensive Test', () => {
       performance: { fpsDisplay: false, validFps: false },
       accessibility: { ariaLive: false, skipLink: false, announcements: false },
       responsive: { desktop: false, tablet: false, mobile: false },
-      errors: []
+      errors: [] as string[]
     };
 
     // Monitor console errors
@@ -103,7 +103,7 @@ test.describe('StoryScroller Demo - Final Comprehensive Test', () => {
 
     // 5. Test dot navigation
     const dots = await page.locator('button[aria-label*="section" i], button.dot, button[class*="dot"]').all();
-    if (dots.length > 0) {
+    if (dots.length > 2 && dots[2]) {
       await dots[2].click();
       await page.waitForTimeout(1500);
       currentSection = await page.locator('[aria-current="true"]').getAttribute('data-section-idx');

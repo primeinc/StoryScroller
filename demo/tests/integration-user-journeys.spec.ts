@@ -279,26 +279,20 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       const box = await container.boundingBox();
       
       if (box) {
-        // Swipe up to next section
-        await page.touchscreen.swipe({
-          startX: box.x + box.width / 2,
-          startY: box.y + box.height * 0.7,
-          endX: box.x + box.width / 2,
-          endY: box.y + box.height * 0.3,
-          steps: 10,
-        });
+        // Swipe up to next section using drag actions
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.7);
+        await page.mouse.down();
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.3);
+        await page.mouse.up();
         
         await page.waitForTimeout(1500);
         await expect(page.getByText('Section 4 of 5')).toBeVisible();
         
-        // Swipe down to previous
-        await page.touchscreen.swipe({
-          startX: box.x + box.width / 2,
-          startY: box.y + box.height * 0.3,
-          endX: box.x + box.width / 2,
-          endY: box.y + box.height * 0.7,
-          steps: 10,
-        });
+        // Swipe down to previous using drag actions
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.3);
+        await page.mouse.down();
+        await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.7);
+        await page.mouse.up();
         
         await page.waitForTimeout(1500);
         await expect(page.locator('.current-section').filter({ hasText: 'Section 3 of 5' })).toBeVisible();
@@ -514,7 +508,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Toggle multiple times
       for (let i = 0; i < 3; i++) {
         await magneticSnap.click();
-        await expect(magneticSnap).toHaveChecked(!initialState === (i % 2 === 0));
+        expect(await magneticSnap.isChecked()).toBe(!initialState === (i % 2 === 0));
       }
       
       // Step 5: Test real-time preview
@@ -587,9 +581,10 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       const fps = parseInt(fpsValue || '0');
       expect(fps).toBeGreaterThan(30); // Should still be smooth
       
-      // Check memory
-      const metrics = await page.metrics();
-      expect(metrics.JSHeapUsedSize).toBeLessThan(50 * 1024 * 1024);
+      // Check memory usage with CDP (Chrome DevTools Protocol)
+      const cdpSession = await page.context().newCDPSession(page);
+      const heapUsage = await cdpSession.send('Runtime.getHeapUsage');
+      expect(heapUsage.usedSize).toBeLessThan(50 * 1024 * 1024);
     });
   });
 

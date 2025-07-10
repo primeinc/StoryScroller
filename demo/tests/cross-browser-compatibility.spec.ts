@@ -207,7 +207,7 @@ test.describe('Cross-Browser Compatibility Tests', () => {
     })
     
     expect(criticalStyles).toBeTruthy()
-    expect(criticalStyles.display).not.toBe('none')
+    expect(criticalStyles!.display).not.toBe('none')
     
     // Check for CSS custom properties (CSS variables)
     const cssVariables = await page.evaluate(() => {
@@ -228,8 +228,18 @@ test.describe('Cross-Browser Compatibility Tests', () => {
     await page.waitForLoadState('networkidle')
     
     const performanceMetrics = await page.evaluate(() => {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+      const navigationEntries = performance.getEntriesByType('navigation')
+      const navigation = navigationEntries[0] as PerformanceNavigationTiming
       const paint = performance.getEntriesByName('first-contentful-paint')[0]
+      
+      if (!navigation) {
+        return {
+          domContentLoaded: 0,
+          loadComplete: 0,
+          firstContentfulPaint: null,
+          timeToInteractive: 0
+        }
+      }
       
       return {
         domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart),

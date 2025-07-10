@@ -1,7 +1,9 @@
 import { test, expect } from '@playwright/test'
 
 // Define browser capabilities matrix
-const BROWSER_TARGETS = {
+type BrowserTargetKey = 'Chrome 90+' | 'Firefox 88+' | 'Safari 14+' | 'Edge 90+' | 'Mobile Safari 14+' | 'Chrome Android 90+';
+
+const BROWSER_TARGETS: Record<BrowserTargetKey, { engine: string; minVersion: number; mobile?: boolean }> = {
   'Chrome 90+': { engine: 'chromium', minVersion: 90 },
   'Firefox 88+': { engine: 'firefox', minVersion: 88 },
   'Safari 14+': { engine: 'webkit', minVersion: 14 },
@@ -45,7 +47,7 @@ test.describe('Compatibility Report Generator', () => {
       return {
         react: typeof (window as any).React !== 'undefined' || 
                document.querySelector('[data-reactroot]') !== null ||
-               document.querySelector('#root')?._reactRootContainer !== undefined,
+               (document.querySelector('#root') as any)?._reactRootContainer !== undefined,
         gsap: typeof (window as any).gsap !== 'undefined',
         lenis: typeof (window as any).Lenis !== 'undefined' || 
                document.querySelector('[data-lenis-prevent]') !== null
@@ -179,15 +181,15 @@ test.describe('Compatibility Report Generator', () => {
       browser: browserName,
       feature: 'No JavaScript errors',
       status: errors.length === 0 ? 'pass' : 'fail',
-      notes: errors.length > 0 ? `${errors.length} errors found` : undefined
+      ...(errors.length > 0 ? { notes: `${errors.length} errors found` } : {})
     })
   })
 })
 
 test.afterAll(async () => {
   // Generate compatibility matrix
-  const browsers = [...new Set(results.map(r => r.browser))]
-  const features = [...new Set(results.map(r => r.feature))]
+  const browsers = Array.from(new Set(results.map(r => r.browser)))
+  const features = Array.from(new Set(results.map(r => r.feature)))
   
   console.log('\n' + '='.repeat(80))
   console.log('STORYSCROLLER 1.0 - CROSS-BROWSER COMPATIBILITY REPORT')
@@ -249,7 +251,7 @@ test.afterAll(async () => {
   // Browser support summary
   console.log('\n\nBROWSER SUPPORT SUMMARY:')
   console.log('-'.repeat(80))
-  const targetBrowsers = Object.keys(BROWSER_TARGETS)
+  const targetBrowsers = Object.keys(BROWSER_TARGETS) as BrowserTargetKey[]
   targetBrowsers.forEach(target => {
     const supported = browsers.some(b => b.toLowerCase().includes(BROWSER_TARGETS[target].engine))
     console.log(`${target}: ${supported ? '✅ Tested' : '⚠️  Not tested'}`)

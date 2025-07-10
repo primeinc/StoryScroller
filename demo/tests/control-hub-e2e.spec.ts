@@ -182,22 +182,20 @@ test.describe('ControlHub E2E Tests', () => {
       // Get button dimensions
       const prevButton = page.getByLabel('Previous section')
       const prevBox = await prevButton.boundingBox()
-      expect(prevBox.width).toBeGreaterThanOrEqual(44)
-      expect(prevBox.height).toBeGreaterThanOrEqual(44)
+      expect(prevBox).toBeTruthy()
+      expect(prevBox!.width).toBeGreaterThanOrEqual(44)
+      expect(prevBox!.height).toBeGreaterThanOrEqual(44)
       
       // Test swipe navigation
       const storyScroller = page.locator('.story-scroller-container')
       const box = await storyScroller.boundingBox()
+      expect(box).toBeTruthy()
       
-      // Swipe up to go to next section
-      await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2)
-      await page.touchscreen.swipe({
-        startX: box.x + box.width / 2,
-        startY: box.y + box.height * 0.8,
-        endX: box.x + box.width / 2,
-        endY: box.y + box.height * 0.2,
-        steps: 10,
-      })
+      // Swipe up to go to next section using drag actions
+      await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height * 0.8);
+      await page.mouse.down();
+      await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height * 0.2);
+      await page.mouse.up();
       
       await page.waitForTimeout(1500)
       await expect(page.getByText('Section 2 of 5')).toBeVisible()
@@ -210,8 +208,9 @@ test.describe('ControlHub E2E Tests', () => {
       // Progress ring should be touch-friendly
       const progressRing = page.locator('.progress-ring')
       const ringBox = await progressRing.boundingBox()
-      expect(ringBox.width).toBeGreaterThanOrEqual(44)
-      expect(ringBox.height).toBeGreaterThanOrEqual(44)
+      expect(ringBox).toBeTruthy()
+      expect(ringBox!.width).toBeGreaterThanOrEqual(44)
+      expect(ringBox!.height).toBeGreaterThanOrEqual(44)
     })
   })
 
@@ -377,11 +376,13 @@ test.describe('ControlHub E2E Tests', () => {
       
       const fpsValue = page.locator('.metric-value').first()
       const fpsText = await fpsValue.textContent()
-      expect(parseInt(fpsText)).toBeGreaterThan(0)
+      expect(fpsText).toBeTruthy()
+      expect(parseInt(fpsText!)).toBeGreaterThan(0)
       
       const frameTimeValue = page.locator('.metric-value').nth(1)
       const frameTimeText = await frameTimeValue.textContent()
-      expect(parseFloat(frameTimeText)).toBeGreaterThan(0)
+      expect(frameTimeText).toBeTruthy()
+      expect(parseFloat(frameTimeText!)).toBeGreaterThan(0)
     })
   })
 

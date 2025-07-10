@@ -815,7 +815,7 @@ describe('ControlHub Component', () => {
 
     it('should handle configuration update failures', async () => {
       // Make updateConfig return undefined
-      mockStoryScrollerAPI.updateConfig = undefined
+      mockStoryScrollerAPI.updateConfig = undefined as any
       
       const user = userEvent.setup()
       render(<ControlHub sectionsCount={5} />)

@@ -16,7 +16,7 @@ const getCurrentSection = async (page: Page): Promise<number> => {
   
   const debugInfo = await page.locator('text=Current Section:').textContent()
   const match = debugInfo?.match(/Current Section: (\d+)/)
-  return match ? parseInt(match[1]) : 0
+  return match && match[1] ? parseInt(match[1]) : 0
 }
 
 test.describe('StoryScroller Integration Tests', () => {
@@ -34,7 +34,8 @@ test.describe('StoryScroller Integration Tests', () => {
     
     // Check navigation state
     const navText = await page.locator('.demo-nav span').textContent()
-    expect(navText).toContain('1 / 5')
+    expect(navText).toBeTruthy()
+    expect(navText!).toContain('1 / 5')
     
     // Check that first dot is active
     const firstDot = page.locator('.demo-nav-dot').first()
@@ -200,27 +201,36 @@ test.describe('StoryScroller Integration Tests', () => {
     
     // Check that onSectionChange callback was triggered
     const navText = await page.locator('.demo-nav span').textContent()
-    expect(navText).toContain('2 / 5')
+    expect(navText).toBeTruthy()
+    expect(navText!).toContain('2 / 5')
   })
 
   test('should handle touch/swipe on mobile', async ({ page, browserName, isMobile }) => {
     test.skip(!isMobile, 'Touch events only on mobile')
     
-    // Swipe up to go to next section
-    await page.locator('[data-testid="section-0"]').swipe({
-      direction: 'up',
-      distance: 100,
-    })
+    // Swipe up to go to next section using drag actions
+    const section0 = page.locator('[data-testid="section-0"]');
+    const box0 = await section0.boundingBox();
+    if (box0) {
+      await page.mouse.move(box0.x + box0.width / 2, box0.y + box0.height * 0.8);
+      await page.mouse.down();
+      await page.mouse.move(box0.x + box0.width / 2, box0.y + box0.height * 0.2);
+      await page.mouse.up();
+    }
     await waitForAnimation(page)
     
     const section2 = await getCurrentSection(page)
     expect(section2).toBe(1)
     
-    // Swipe down to go back
-    await page.locator('[data-testid="section-1"]').swipe({
-      direction: 'down',
-      distance: 100,
-    })
+    // Swipe down to go back using drag actions
+    const section1El = page.locator('[data-testid="section-1"]');
+    const box1 = await section1El.boundingBox();
+    if (box1) {
+      await page.mouse.move(box1.x + box1.width / 2, box1.y + box1.height * 0.2);
+      await page.mouse.down();
+      await page.mouse.move(box1.x + box1.width / 2, box1.y + box1.height * 0.8);
+      await page.mouse.up();
+    }
     await waitForAnimation(page)
     
     const section1 = await getCurrentSection(page)

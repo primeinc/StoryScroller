@@ -11,16 +11,16 @@ import '@testing-library/jest-dom'
 import { PerformanceMonitor } from './PerformanceMonitor'
 
 describe('PerformanceMonitor Component', () => {
-  let mockRequestAnimationFrame: ReturnType<typeof vi.fn>
-  let mockCancelAnimationFrame: ReturnType<typeof vi.fn>
+  let mockRequestAnimationFrame: ReturnType<typeof vi.fn<[FrameRequestCallback], number>>
+  let mockCancelAnimationFrame: ReturnType<typeof vi.fn<[number], void>>
 
   beforeEach(() => {
     // Mock requestAnimationFrame for controlled testing
-    mockRequestAnimationFrame = vi.fn((callback) => {
+    mockRequestAnimationFrame = vi.fn<[FrameRequestCallback], number>((callback: FrameRequestCallback) => {
       setTimeout(callback, 16) // Simulate 60fps
       return 1
     })
-    mockCancelAnimationFrame = vi.fn()
+    mockCancelAnimationFrame = vi.fn<[number], void>()
     
     vi.spyOn(window, 'requestAnimationFrame').mockImplementation(mockRequestAnimationFrame)
     vi.spyOn(window, 'cancelAnimationFrame').mockImplementation(mockCancelAnimationFrame)

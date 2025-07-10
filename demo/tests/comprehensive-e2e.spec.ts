@@ -33,9 +33,11 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
 
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
-      await expect(section).toBeVisible();
-      const sectionId = await section.getAttribute('data-section-id');
-      expect(sectionId).toBe(`section-${i + 1}`);
+      if (section) {
+        await expect(section).toBeVisible();
+        const sectionId = await section.getAttribute('data-section-id');
+        expect(sectionId).toBe(`section-${i + 1}`);
+      }
     }
   });
 
@@ -123,24 +125,30 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     expect(dots).toHaveLength(5);
     
     // Click on section 3 dot
-    await dots[2].click();
-    await page.waitForTimeout(1500);
-    await expect(page.locator('[data-section-id="section-3"]')).toBeInViewport();
-    
-    // Check active state
-    await expect(dots[2]).toHaveAttribute('aria-current', 'true');
+    if (dots[2]) {
+      await dots[2].click();
+      await page.waitForTimeout(1500);
+      await expect(page.locator('[data-section-id="section-3"]')).toBeInViewport();
+      
+      // Check active state
+      await expect(dots[2]).toHaveAttribute('aria-current', 'true');
+    }
     
     // Click on section 5 dot
-    await dots[4].click();
-    await page.waitForTimeout(1500);
-    await expect(page.locator('[data-section-id="section-5"]')).toBeInViewport();
-    await expect(dots[4]).toHaveAttribute('aria-current', 'true');
+    if (dots[4]) {
+      await dots[4].click();
+      await page.waitForTimeout(1500);
+      await expect(page.locator('[data-section-id="section-5"]')).toBeInViewport();
+      await expect(dots[4]).toHaveAttribute('aria-current', 'true');
+    }
     
     // Click on section 1 dot
-    await dots[0].click();
-    await page.waitForTimeout(1500);
-    await expect(page.locator('[data-section-id="section-1"]')).toBeInViewport();
-    await expect(dots[0]).toHaveAttribute('aria-current', 'true');
+    if (dots[0]) {
+      await dots[0].click();
+      await page.waitForTimeout(1500);
+      await expect(page.locator('[data-section-id="section-1"]')).toBeInViewport();
+      await expect(dots[0]).toHaveAttribute('aria-current', 'true');
+    }
   });
 
   test('ControlHub mode transitions work correctly', async () => {
@@ -214,6 +222,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     const fpsValues: number[] = [];
     for (let i = 0; i < 5; i++) {
       const fpsText = await fpsDisplay.textContent();
+      expect(fpsText).toBeTruthy();
       const fps = parseFloat(fpsText?.match(/(\d+(\.\d+)?)/)?.[1] || '0');
       fpsValues.push(fps);
       await page.waitForTimeout(1000);
@@ -229,7 +238,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
   test('Accessibility features work correctly', async () => {
     // Check for ARIA live region
     const liveRegion = page.locator('[aria-live="polite"]');
-    await expect(liveRegion).toBeInDOM();
+    await expect(liveRegion).toBeAttached();
     
     // Navigate and check announcements
     await page.keyboard.press('ArrowDown');
@@ -237,7 +246,8 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     
     // Check that section navigation is announced
     const announcement = await liveRegion.textContent();
-    expect(announcement).toContain('Section 2');
+    expect(announcement).toBeTruthy();
+    expect(announcement!).toContain('Section 2');
     
     // Check keyboard focus indicators
     await page.keyboard.press('Tab');
@@ -260,6 +270,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     
     // Get initial position
     const initialTop = await section1.boundingBox();
+    expect(initialTop).toBeTruthy();
     
     // Start navigation
     await page.keyboard.press('ArrowDown');
@@ -269,13 +280,15 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     for (let i = 0; i < 10; i++) {
       await page.waitForTimeout(100);
       const box = await section1.boundingBox();
-      if (box) positions.push(box.y);
+      if (box && box.y !== undefined) positions.push(box.y);
     }
     
     // Verify smooth transition (positions should gradually change)
     let smoothTransition = true;
     for (let i = 1; i < positions.length; i++) {
-      if (Math.abs(positions[i] - positions[i-1]) > 200) {
+      const current = positions[i];
+      const previous = positions[i-1];
+      if (current !== undefined && previous !== undefined && Math.abs(current - previous) > 200) {
         smoothTransition = false;
         break;
       }

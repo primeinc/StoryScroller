@@ -51,7 +51,7 @@ const getDetailedState = async (page: Page) => {
     if (debugInfo) {
       const currentText = debugInfo.textContent || ''
       const match = currentText.match(/Current: (\d+)/)
-      if (match) {
+      if (match && match[1]) {
         currentSection = parseInt(match[1]) - 1 // Convert to 0-based index
       }
     }
@@ -61,7 +61,7 @@ const getDetailedState = async (page: Page) => {
     if (navInfo) {
       const navText = navInfo.textContent || ''
       const match = navText.match(/(\d+) \/ \d+/)
-      if (match) {
+      if (match && match[1]) {
         navSection = parseInt(match[1]) - 1 // Convert to 0-based index
       }
     }
@@ -71,7 +71,7 @@ const getDetailedState = async (page: Page) => {
     if (progressBar) {
       const style = window.getComputedStyle(progressBar)
       const widthMatch = style.width.match(/(\d+(?:\.\d+)?)%/)
-      if (widthMatch) {
+      if (widthMatch && widthMatch[1]) {
         progressPercent = parseFloat(widthMatch[1])
       }
     }
@@ -197,7 +197,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     await logStep(page, 'Initial screenshot captured')
     
     // Verify we start on section 0
-    const initialState = await getDetailledState(page)
+    const initialState = await getDetailedState(page)
     expect(initialState.currentSection).toBe(0)
     expect(initialState.navSection).toBe(0)
     await logStep(page, 'Verified starting on section 0')

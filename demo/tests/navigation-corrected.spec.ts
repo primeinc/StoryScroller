@@ -18,14 +18,14 @@ const getCurrentSection = async (page: Page): Promise<{ debug: number, nav: numb
     let debugSection = 1
     if (debugInfo) {
       const match = debugInfo.textContent?.match(/Current: (\d+)/)
-      if (match) debugSection = parseInt(match[1])
+      if (match && match[1]) debugSection = parseInt(match[1])
     }
     
     // Extract nav section (1-based)
     let navSection = 1
     if (navInfo) {
       const match = navInfo.textContent?.match(/(\d+) \/ \d+/)
-      if (match) navSection = parseInt(match[1])
+      if (match && match[1]) navSection = parseInt(match[1])
     }
     
     // Get progress bar width in pixels
@@ -33,7 +33,7 @@ const getCurrentSection = async (page: Page): Promise<{ debug: number, nav: numb
     if (progressBar) {
       const width = window.getComputedStyle(progressBar).width
       const match = width.match(/(\d+(?:\.\d+)?)px/)
-      if (match) progressPx = parseFloat(match[1])
+      if (match && match[1]) progressPx = parseFloat(match[1])
     }
     
     return { debug: debugSection, nav: navSection, progress: progressPx }

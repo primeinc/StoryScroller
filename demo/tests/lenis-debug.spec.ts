@@ -29,8 +29,10 @@ test.describe('Lenis Animation Completion Debug', () => {
       // Access Lenis through React fiber (hacky but works for debugging)
       const reactFiber = (storyScroller as any)._reactInternalFiber || 
                         (storyScroller as any)._reactInternalInstance ||
-                        Object.keys(storyScroller).find(k => k.startsWith('__reactInternalInstance')) &&
-                        (storyScroller as any)[Object.keys(storyScroller).find(k => k.startsWith('__reactInternalInstance'))!];
+                        (() => {
+                          const key = Object.keys(storyScroller).find(k => k.startsWith('__reactInternalInstance'));
+                          return key ? (storyScroller as any)[key] : undefined;
+                        })();
       
       console.log('React Fiber found:', !!reactFiber);
       
@@ -336,7 +338,7 @@ test.describe('Lenis Animation Completion Debug', () => {
     console.log('Lenis API test results:', scrollResult);
     
     // Check if callbacks are working
-    if (scrollResult.callbackScroll && !scrollResult.callbackScroll.callbackFired) {
+    if ('callbackScroll' in scrollResult && scrollResult.callbackScroll && !scrollResult.callbackScroll.callbackFired) {
       throw new Error('Lenis onComplete callback is not firing!');
     }
   });

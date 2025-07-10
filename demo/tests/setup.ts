@@ -17,8 +17,8 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock requestAnimationFrame for performance monitoring tests
-global.requestAnimationFrame = (callback: FrameRequestCallback) => {
-  return setTimeout(() => callback(Date.now()), 16);
+global.requestAnimationFrame = (callback: FrameRequestCallback): number => {
+  return setTimeout(() => callback(Date.now()), 16) as unknown as number;
 };
 
 global.cancelAnimationFrame = (id: number) => {

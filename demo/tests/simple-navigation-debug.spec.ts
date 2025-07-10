@@ -129,8 +129,8 @@ test.describe('Simple Navigation Debug', () => {
     const navSectionMatch = finalState.navText.match(/(\d+) \/ \d+/)
 
     if (currentSectionMatch && navSectionMatch) {
-      const debugSection = parseInt(currentSectionMatch[1])
-      const navSection = parseInt(navSectionMatch[1])
+      const debugSection = parseInt(currentSectionMatch[1] || '0')
+      const navSection = parseInt(navSectionMatch[1] || '0')
       
       console.log('📍 Section Analysis:')
       console.log(`  Debug shows: ${debugSection} (1-based)`)

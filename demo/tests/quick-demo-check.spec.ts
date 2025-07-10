@@ -7,7 +7,7 @@ test('Quick demo functionality check', async ({ page }) => {
     navigationWorks: false,
     controlsVisible: false,
     fpsDisplayed: false,
-    consoleErrors: []
+    consoleErrors: [] as string[]
   };
 
   // Check server is running
