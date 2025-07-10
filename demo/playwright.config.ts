@@ -27,37 +27,71 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // Essential tests - run on every commit
     {
       name: 'chromium',
       use: { 
         ...devices['Desktop Chrome'],
-        // Enable smooth scrolling for tests
         launchOptions: {
           args: ['--enable-smooth-scrolling']
         }
       },
+      testMatch: [
+        '**/basic-integration.spec.ts',
+        '**/quick-demo-check.spec.ts',
+        '**/control-hub-e2e.spec.ts'
+      ]
     },
 
-    // Temporarily disabled for CI stability - focus on Chromium tests
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
+    // Comprehensive tests - run on main branch only
+    {
+      name: 'chromium-comprehensive',
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--enable-smooth-scrolling']
+        }
+      },
+      testMatch: [
+        '**/comprehensive-e2e.spec.ts',
+        '**/final-comprehensive-test.spec.ts',
+        '**/integration-user-journeys.spec.ts',
+        '**/narrative-flow.spec.ts'
+      ]
+    },
 
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    // Debug tests - run manually or on special branches
+    {
+      name: 'chromium-debug',
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--enable-smooth-scrolling']
+        }
+      },
+      testMatch: [
+        '**/debug-*.spec.ts',
+        '**/lenis-debug.spec.ts',
+        '**/scroll-direction-debug.spec.ts',
+        '**/simple-navigation-debug.spec.ts',
+        '**/inspect-page.spec.ts'
+      ]
+    },
 
-    // /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    // Performance tests - run weekly or on releases
+    {
+      name: 'chromium-performance',
+      use: { 
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: ['--enable-smooth-scrolling']
+        }
+      },
+      testMatch: [
+        '**/performance-baseline.spec.ts',
+        '**/cross-browser-compatibility.spec.ts'
+      ]
+    }
   ],
 
   /* Run your local dev server before starting the tests */
