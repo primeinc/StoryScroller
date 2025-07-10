@@ -7,6 +7,28 @@ import { test, expect, Page } from '@playwright/test'
  * to understand what's happening with button navigation.
  */
 
+// Helper to ensure ControlHub is expanded for navigation access
+const ensureControlHubExpanded = async (page: Page): Promise<void> => {
+  const controlHub = page.locator('[data-testid="control-hub"]')
+  await expect(controlHub).toBeVisible()
+  
+  // Check if already in standard mode
+  const isStandardMode = await controlHub.locator('.hub-standard').isVisible().catch(() => false)
+  
+  if (!isStandardMode) {
+    // Click expand button to go from minimal to standard mode
+    const expandButton = controlHub.locator('.hub-expand')
+    if (await expandButton.isVisible()) {
+      await expandButton.click()
+      await page.waitForTimeout(200) // Wait for transition
+    }
+  }
+  
+  // Verify we can see navigation buttons
+  await expect(controlHub.locator('.nav-btn--next')).toBeVisible()
+  await expect(controlHub.locator('.nav-btn--prev')).toBeVisible()
+}
+
 test.describe('Simple Navigation Debug', () => {
   test('debug button navigation step by step', async ({ page }) => {
     // Capture console logs
@@ -22,6 +44,9 @@ test.describe('Simple Navigation Debug', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
 
+    // Ensure ControlHub is expanded for navigation access
+    await ensureControlHubExpanded(page)
+
     console.log('📄 Page loaded, capturing initial state...')
 
     // Take initial screenshot
@@ -32,12 +57,10 @@ test.describe('Simple Navigation Debug', () => {
 
     // Get initial state
     const initialState = await page.evaluate(() => {
-      const debugInfo = document.querySelector('.debug-info')
-      const navInfo = document.querySelector('.nav-info .current-section')
+      const navInfo = document.querySelector('.current-section')
       const progressBar = document.querySelector('.progress-fill')
       
       return {
-        debugText: debugInfo?.textContent || 'Not found',
         navText: navInfo?.textContent || 'Not found',
         progressWidth: progressBar ? window.getComputedStyle(progressBar).width : 'Not found',
         scrollY: window.scrollY,
@@ -48,7 +71,7 @@ test.describe('Simple Navigation Debug', () => {
     console.log('📊 Initial State:', JSON.stringify(initialState, null, 2))
 
     // Check if Next button is available and enabled
-    const nextButton = page.locator('button:has-text("Next →")')
+    const nextButton = page.locator('.nav-btn--next')
     const isNextVisible = await nextButton.isVisible()
     const isNextEnabled = await nextButton.isEnabled()
 
@@ -67,12 +90,10 @@ test.describe('Simple Navigation Debug', () => {
     await page.waitForTimeout(500)
 
     const immediateState = await page.evaluate(() => {
-      const debugInfo = document.querySelector('.debug-info')
-      const navInfo = document.querySelector('.nav-info .current-section')
+      const navInfo = document.querySelector('.current-section')
       const progressBar = document.querySelector('.progress-fill')
       
       return {
-        debugText: debugInfo?.textContent || 'Not found',
         navText: navInfo?.textContent || 'Not found',
         progressWidth: progressBar ? window.getComputedStyle(progressBar).width : 'Not found',
         scrollY: window.scrollY,
@@ -86,12 +107,10 @@ test.describe('Simple Navigation Debug', () => {
     await page.waitForTimeout(2000)
 
     const finalState = await page.evaluate(() => {
-      const debugInfo = document.querySelector('.debug-info')
-      const navInfo = document.querySelector('.nav-info .current-section')
+      const navInfo = document.querySelector('.current-section')
       const progressBar = document.querySelector('.progress-fill')
       
       return {
-        debugText: debugInfo?.textContent || 'Not found',
         navText: navInfo?.textContent || 'Not found',
         progressWidth: progressBar ? window.getComputedStyle(progressBar).width : 'Not found',
         scrollY: window.scrollY,
@@ -112,8 +131,7 @@ test.describe('Simple Navigation Debug', () => {
     consoleLogs.forEach(log => console.log(`  ${log}`))
 
     // Simple verification - just check if state changed
-    const stateChanged = initialState.debugText !== finalState.debugText || 
-                        initialState.navText !== finalState.navText ||
+    const stateChanged = initialState.navText !== finalState.navText ||
                         initialState.scrollY !== finalState.scrollY
 
     console.log('🔄 State Changed:', stateChanged)
@@ -125,18 +143,14 @@ test.describe('Simple Navigation Debug', () => {
     }
 
     // Try to understand the exact section parsing
-    const currentSectionMatch = finalState.debugText.match(/Current: (\d+)/)
     const navSectionMatch = finalState.navText.match(/(\d+) \/ \d+/)
 
-    if (currentSectionMatch && navSectionMatch) {
-      const debugSection = parseInt(currentSectionMatch[1])
-      const navSection = parseInt(navSectionMatch[1])
+    if (navSectionMatch) {
+      const navSection = parseInt(navSectionMatch[1] || '0')
       
       console.log('📍 Section Analysis:')
-      console.log(`  Debug shows: ${debugSection} (1-based)`)
       console.log(`  Nav shows: ${navSection} (1-based)`)
-      console.log(`  Expected after 1 click: 2 (1-based) or 1 (0-based)`)
-      console.log(`  Sections match: ${debugSection === navSection}`)
+      console.log(`  Expected after 1 click: 2 (1-based)`)
     }
 
     // Don't fail the test, just report findings
@@ -156,17 +170,18 @@ test.describe('Simple Navigation Debug', () => {
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
 
-    const nextButton = page.locator('button:has-text("Next →")')
+    // Ensure ControlHub is expanded for navigation access
+    await ensureControlHubExpanded(page)
+
+    const nextButton = page.locator('.nav-btn--next')
 
     // Click Next multiple times and track each state
     for (let i = 0; i < 3; i++) {
       console.log(`\n🔄 Click ${i + 1}:`)
 
       const beforeClick = await page.evaluate(() => {
-        const debugInfo = document.querySelector('.debug-info')
-        const navInfo = document.querySelector('.nav-info .current-section')
+        const navInfo = document.querySelector('.current-section')
         return {
-          debug: debugInfo?.textContent || 'Not found',
           nav: navInfo?.textContent || 'Not found'
         }
       })
@@ -178,10 +193,8 @@ test.describe('Simple Navigation Debug', () => {
         await page.waitForTimeout(1500) // Wait for animation
 
         const afterClick = await page.evaluate(() => {
-          const debugInfo = document.querySelector('.debug-info')
-          const navInfo = document.querySelector('.nav-info .current-section')
+          const navInfo = document.querySelector('.current-section')
           return {
-            debug: debugInfo?.textContent || 'Not found',
             nav: navInfo?.textContent || 'Not found'
           }
         })

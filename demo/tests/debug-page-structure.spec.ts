@@ -58,7 +58,7 @@ test('Debug page structure', async ({ page }) => {
       '#story-scroller'
     ]
     
-    const results = {}
+    const results: Record<string, number> = {}
     selectors.forEach(selector => {
       const elements = document.querySelectorAll(selector)
       if (elements.length > 0) {

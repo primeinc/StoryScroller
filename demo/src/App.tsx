@@ -12,14 +12,14 @@ const prefersReducedMotion = () => {
 
 // Rich content sections that showcase the package capabilities
 const createSections = () => [
-  <section key="hero" className="section-content section-1" aria-labelledby="hero-title">
+  <section key="hero" className="section-content section-1" aria-labelledby="hero-title" data-section-id="section-1" data-testid="section-0">
     <div className="hero-metrics">
       <div className="metric-card">
         <span className="metric-value">47KB</span>
         <span className="metric-label">Bundle Size</span>
       </div>
       <div className="metric-card">
-        <span className="metric-value">60 FPS</span>
+        <span className="metric-value">60Hz</span>
         <span className="metric-label">Performance</span>
       </div>
       <div className="metric-card">
@@ -51,7 +51,7 @@ const createSections = () => [
     </a>
   </section>,
 
-  <section key="features" className="section-content section-2" aria-labelledby="features-title">
+  <section key="features" className="section-content section-2" aria-labelledby="features-title" data-section-id="section-2" data-testid="section-1">
     <h1 id="features-title" className="section-title">Features</h1>
     <p className="section-subtitle">Everything you need for narrative motion</p>
     <div className="section-description">
@@ -66,7 +66,7 @@ const createSections = () => [
     </div>
   </section>,
 
-  <section key="motion" className="section-content section-3" aria-labelledby="motion-title">
+  <section key="motion" className="section-content section-3" aria-labelledby="motion-title" data-section-id="section-3" data-testid="section-2">
     <h1 id="motion-title" className="section-title">Motion</h1>
     <p className="section-subtitle">Designed for complex animations</p>
     <p className="section-description">
@@ -81,7 +81,7 @@ const createSections = () => [
     </div>
   </section>,
 
-  <section key="integration" className="section-content section-4" aria-labelledby="integration-title">
+  <section key="integration" className="section-content section-4" aria-labelledby="integration-title" data-section-id="section-4" data-testid="section-3">
     <h1 id="integration-title" className="section-title">Integration</h1>
     <p className="section-subtitle">GSAP + Lenis + React 18</p>
     <p className="section-description">
@@ -103,7 +103,7 @@ const createSections = () => [
     </div>
   </section>,
 
-  <section key="demo" className="section-content section-5" aria-labelledby="ready-title">
+  <section key="demo" className="section-content section-5" aria-labelledby="ready-title" data-section-id="section-5" data-testid="section-4">
     <h1 id="ready-title" className="section-title">Ready</h1>
     <p className="section-subtitle">Start building narrative experiences</p>
     <p className="section-description">

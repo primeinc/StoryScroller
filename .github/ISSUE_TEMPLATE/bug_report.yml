@@ -125,7 +125,7 @@ body:
       description: Please provide a minimal code sample that reproduces the issue
       render: typescript
       placeholder: |
-        import { StoryScroller } from '@primeinc/story-scroller'
+        import { StoryScroller } from '@primeinc/storyscroller'
         
         function App() {
           return (

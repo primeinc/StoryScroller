@@ -5,7 +5,7 @@ interface ControlHubProps {
 }
 
 interface DemoConfig {
-  duration: number;
+  duration: number; // in milliseconds for UI
   tolerance: number;
   enableMagneticSnap: boolean;
   magneticThreshold: number;
@@ -28,6 +28,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [forceUpdateCounter, setForceUpdateCounter] = useState(0);
   
   // Refs for focus management
   const advancedModeRef = useRef<HTMLDivElement>(null);
@@ -41,25 +42,67 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   
   // Configuration state
   const [config, setConfig] = useState<DemoConfig>({
-    duration: 1.2,
+    duration: 1200,
     tolerance: 50,
     enableMagneticSnap: true,
     magneticThreshold: 0.15,
   });
   const [previousConfig, setPreviousConfig] = useState<DemoConfig>(config);
 
-  // Poll StoryScroller state
+  // Listen for immediate state changes from StoryScroller API
   useEffect(() => {
+    // Force initial state sync with a slight delay to ensure API is ready
+    const initialSync = () => {
+      if ((window as any).storyScrollerAPI?.getState) {
+        const state = (window as any).storyScrollerAPI.getState();
+        console.log('🎯 [ControlHub] Initial state sync:', state);
+        setCurrentIndex(state.currentSection);
+        setIsAnimating(state.isAnimating);
+      } else {
+        // Retry if API not ready yet
+        setTimeout(initialSync, 50);
+      }
+    };
+    
+    initialSync();
+
+    // Listen for immediate state change events
+    const handleStateChange = (event: CustomEvent) => {
+      const { currentSection, isAnimating } = event.detail;
+      console.log('🎯 [ControlHub] Received immediate state change:', event.detail);
+      setCurrentIndex(currentSection);
+      setIsAnimating(isAnimating);
+    };
+
+    window.addEventListener('storyScrollerStateChange', handleStateChange as EventListener);
+
+    // High-frequency polling for reliable test synchronization (16ms = 60fps)
     const interval = setInterval(() => {
       if ((window as any).storyScrollerAPI?.getState) {
         const state = (window as any).storyScrollerAPI.getState();
-        setCurrentIndex(state.currentSection);
-        setIsAnimating(state.isAnimating);
+        // Force update state - use callback form to ensure we're getting latest state
+        setCurrentIndex(prevIndex => {
+          if (prevIndex !== state.currentSection) {
+            console.log('🎯 [ControlHub] Polling update:', { from: prevIndex, to: state.currentSection });
+            // Force a re-render to ensure UI updates
+            setForceUpdateCounter(prev => prev + 1);
+          }
+          return state.currentSection;
+        });
+        setIsAnimating(prevAnimating => {
+          if (prevAnimating !== state.isAnimating) {
+            console.log('🎯 [ControlHub] Animation state update:', { from: prevAnimating, to: state.isAnimating });
+          }
+          return state.isAnimating;
+        });
       }
-    }, 100);
+    }, 16); // 60fps for smooth updates and reliable test sync
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      window.removeEventListener('storyScrollerStateChange', handleStateChange as EventListener);
+      clearInterval(interval);
+    };
+  }, []); // Remove deps to avoid recreating interval unnecessarily
 
   // Performance monitoring
   useEffect(() => {
@@ -104,7 +147,12 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
 
   const applyConfig = () => {
     if ((window as any).storyScrollerAPI?.updateConfig) {
-      (window as any).storyScrollerAPI.updateConfig(config);
+      // Convert duration from milliseconds to seconds for the API
+      const apiConfig = {
+        ...config,
+        duration: config.duration / 1000
+      };
+      (window as any).storyScrollerAPI.updateConfig(apiConfig);
       setPreviousConfig(config);
       showSuccessToast('Configuration applied successfully!');
     }
@@ -135,13 +183,13 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
         // Shift + Tab
         if (document.activeElement === firstElement) {
           e.preventDefault();
-          lastElement.focus();
+          lastElement?.focus();
         }
       } else {
         // Tab
         if (document.activeElement === lastElement) {
           e.preventDefault();
-          firstElement.focus();
+          firstElement?.focus();
         }
       }
     }
@@ -247,11 +295,11 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
         </div>
       )}
 
-      <div className={`control-hub control-hub--${mode} ${isTransitioning ? 'transitioning' : ''}`}>
+      <div className={`control-hub control-hub--${mode} ${isTransitioning ? 'transitioning' : ''}`} data-testid="control-hub">
       {/* Minimal Mode: Just progress indicator */}
       {mode === 'minimal' && (
         <div className="hub-minimal">
-          <div className="progress-ring">
+          <div className="progress-ring" aria-label={`Story progress: section ${currentIndex + 1} of ${sectionsCount}`}>
             <svg className="progress-circle" viewBox="0 0 36 36">
               <defs>
                 <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -274,14 +322,15 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               />
             </svg>
             <div className="progress-content">
-              <span className="section-number">{currentIndex + 1}</span>
-              <span className="section-total">/{sectionsCount}</span>
+              <span className="section-number" aria-hidden="true">{currentIndex + 1}</span>
+              <span className="section-total" aria-hidden="true">/{sectionsCount}</span>
             </div>
           </div>
           <button 
             className="hub-expand"
             onClick={() => handleModeChange('standard')}
             aria-label="Expand controls"
+            tabIndex={0}
           >
             <SettingsIcon />
           </button>
@@ -300,6 +349,18 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               </div>
             </div>
             <div className="hub-actions">
+              <button 
+                onClick={() => {
+                  if (mode === 'standard') {
+                    handleModeChange('minimal');
+                  } else if (mode === 'minimal') {
+                    handleOpenAdvanced();
+                  }
+                }}
+                className="hub-action"
+              >
+                Mode: {mode}
+              </button>
               <button 
                 onClick={handleOpenAdvanced}
                 className="hub-action"
@@ -331,9 +392,11 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               {Array.from({ length: sectionsCount }, (_, index) => (
                 <button
                   key={index}
-                  className={`section-dot ${index === currentIndex ? 'active' : ''}`}
+                  className={`section-dot demo-nav-dot ${index === currentIndex ? 'active' : ''}`}
                   onClick={() => handleSectionClick(index)}
                   aria-label={`Go to section ${index + 1}`}
+                  aria-current={index === currentIndex ? 'true' : 'false'}
+                  data-section-idx={index}
                 />
               ))}
             </div>
@@ -441,25 +504,26 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
               </div>
 
               {/* Configuration Tab */}
-              <div className={`tab-pane ${activeTab === 'configuration' ? 'active' : ''}`}>
+              <div className={`tab-pane ${activeTab === 'configuration' ? 'active' : ''}`} data-testid="config-panel">
                 <div className="control-group">
                   <div className="config-controls">
                     <div className="config-item">
-                      <label>Duration: {config.duration}s</label>
+                      <label>Duration: {config.duration}ms</label>
                       <div className="config-slider-wrapper">
                         <input
                           type="range"
-                          min="0.2"
-                          max="2"
-                          step="0.1"
+                          min="500"
+                          max="3000"
+                          step="100"
                           value={config.duration}
-                          onChange={(e) => setConfig(prev => ({ ...prev, duration: parseFloat(e.target.value) }))}
+                          onChange={(e) => setConfig(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
                           aria-label="Animation duration"
-                          aria-valuemin={0.2}
-                          aria-valuemax={2}
+                          aria-valuemin={500}
+                          aria-valuemax={3000}
                           aria-valuenow={config.duration}
+                          data-testid="duration-slider"
                         />
-                        <div className="config-slider-value">{config.duration}s</div>
+                        <div className="config-slider-value">{config.duration}ms</div>
                       </div>
                     </div>
                     
@@ -469,14 +533,15 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                         <input
                           type="range"
                           min="10"
-                          max="100"
+                          max="200"
                           step="5"
                           value={config.tolerance}
                           onChange={(e) => setConfig(prev => ({ ...prev, tolerance: parseInt(e.target.value) }))}
                           aria-label="Scroll sensitivity"
                           aria-valuemin={10}
-                          aria-valuemax={100}
+                          aria-valuemax={200}
                           aria-valuenow={config.tolerance}
+                          data-testid="tolerance-slider"
                         />
                         <div className="config-slider-value">{config.tolerance}</div>
                       </div>
@@ -504,6 +569,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
                     {hasConfigChanged() && (
                       <div className="config-change-indicator" role="status" aria-live="polite">
                         <span className="config-change-dot"></span>
+                        <span>Changes pending</span>
                         <span className="sr-only">Configuration has been modified</span>
                       </div>
                     )}

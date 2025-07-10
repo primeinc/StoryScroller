@@ -67,8 +67,7 @@ body {
 .control-hub {
   position: fixed;
   bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 32px;
   z-index: 50;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -163,8 +162,8 @@ body {
 
 .progress-ring {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
 }
 
 .progress-circle {
@@ -224,6 +223,13 @@ body {
 }
 
 .hub-expand:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hub-expand:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
   color: white;
   background: rgba(255, 255, 255, 0.1);
 }
@@ -799,8 +805,8 @@ body {
   }
   
   .progress-ring {
-    width: 32px;
-    height: 32px;
+    width: 44px;
+    height: 44px;
   }
   
   .section-number {

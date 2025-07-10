@@ -7,11 +7,11 @@ test('Quick demo functionality check', async ({ page }) => {
     navigationWorks: false,
     controlsVisible: false,
     fpsDisplayed: false,
-    consoleErrors: []
+    consoleErrors: [] as string[]
   };
 
   // Check server is running
-  await page.goto('http://localhost:5184');
+  await page.goto('/');
   results.serverRunning = true;
 
   // Count sections

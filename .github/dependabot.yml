@@ -1,0 +1,219 @@
+version: 2
+updates:
+  # Root package dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    assignees:
+      - "primeinc-dev-team"
+    reviewers:
+      - "primeinc-dev-team" 
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "automated"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    ignore:
+      # Ignore major version updates for critical dependencies
+      # These should be handled manually with proper testing
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "gsap"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "lenis"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group React ecosystem updates
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      
+      # Group GSAP ecosystem updates
+      gsap:
+        patterns:
+          - "gsap*"
+          - "@gsap/*"
+      
+      # Group testing dependencies
+      testing:
+        patterns:
+          - "*test*"
+          - "vitest*"
+          - "playwright*"
+          - "@testing-library/*"
+          - "jest*"
+          - "jsdom"
+      
+      # Group build tools
+      build-tools:
+        patterns:
+          - "tsup"
+          - "typescript"
+          - "vite*"
+          - "@vitejs/*"
+          - "eslint*"
+          - "prettier*"
+
+  # Package dependencies
+  - package-ecosystem: "npm"
+    directory: "/package"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:30"
+      timezone: "UTC"
+    assignees:
+      - "primeinc-dev-team"
+    reviewers:
+      - "primeinc-dev-team"
+    commit-message:
+      prefix: "⬆️ package:"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "package"
+      - "automated"
+    open-pull-requests-limit: 8
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    ignore:
+      # Ignore major version updates for critical dependencies
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "gsap"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "lenis"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group React ecosystem updates
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      
+      # Group GSAP ecosystem updates
+      gsap:
+        patterns:
+          - "gsap*"
+          - "@gsap/*"
+      
+      # Group testing dependencies
+      testing:
+        patterns:
+          - "*test*"
+          - "vitest*"
+          - "playwright*"
+          - "@testing-library/*"
+          - "jest*"
+          - "jsdom"
+      
+      # Group build tools
+      build-tools:
+        patterns:
+          - "tsup"
+          - "typescript"
+          - "vite*"
+          - "@vitejs/*"
+          - "eslint*"
+          - "prettier*"
+
+  # Demo app dependencies
+  - package-ecosystem: "npm"
+    directory: "/demo"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "10:00"
+      timezone: "UTC"
+    assignees:
+      - "primeinc-dev-team"
+    reviewers:
+      - "primeinc-dev-team"
+    commit-message:
+      prefix: "⬆️ demo:"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "demo"
+      - "automated"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    ignore:
+      # Ignore major version updates for critical dependencies
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "gsap"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "lenis"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Group React ecosystem updates
+      react:
+        patterns:
+          - "react*"
+          - "@types/react*"
+      
+      # Group GSAP ecosystem updates
+      gsap:
+        patterns:
+          - "gsap*"
+          - "@gsap/*"
+      
+      # Group testing dependencies
+      testing:
+        patterns:
+          - "*test*"
+          - "vitest*"
+          - "playwright*"
+          - "@testing-library/*"
+          - "jest*"
+          - "jsdom"
+      
+      # Group build tools
+      build-tools:
+        patterns:
+          - "tsup"
+          - "typescript"
+          - "vite*"
+          - "@vitejs/*"
+          - "eslint*"
+          - "prettier*"
+
+  # GitHub Actions updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "UTC"
+    assignees:
+      - "primeinc-dev-team"
+    reviewers:
+      - "primeinc-dev-team"
+    commit-message:
+      prefix: "⬆️ actions:"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "automated"
+    open-pull-requests-limit: 3

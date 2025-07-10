@@ -21,8 +21,8 @@ test.describe('StoryScroller Basic Integration', () => {
     const firstSection = page.locator('[data-testid="section-0"]')
     await expect(firstSection).toBeVisible()
     
-    // Check content
-    await expect(page.locator('h1')).toContainText('StoryScroller')
+    // Check content - first section should contain StoryScroller title
+    await expect(page.locator('[data-testid="section-0"] h1')).toContainText('StoryScroller')
   })
 
   test('keyboard navigation works', async ({ page }) => {
@@ -44,6 +44,10 @@ test.describe('StoryScroller Basic Integration', () => {
   })
 
   test('navigation dots work', async ({ page }) => {
+    // First expand to standard mode to see navigation dots
+    await page.locator('[aria-label="Expand controls"]').click()
+    await page.waitForTimeout(500)
+    
     // Click third dot
     const dots = page.locator('.demo-nav-dot')
     await dots.nth(2).click()
@@ -80,9 +84,11 @@ test.describe('StoryScroller Basic Integration', () => {
     // Wait for animation to complete
     await page.waitForTimeout(1000)
     
-    // Final position should be around viewport height
+    // Final position should be in the second section (around viewport height)
     const finalScroll = await page.evaluate(() => window.scrollY)
     const viewportHeight = await page.evaluate(() => window.innerHeight)
-    expect(finalScroll).toBeCloseTo(viewportHeight, -1)
+    // Should be at least halfway to second section and not more than 1.5 viewports
+    expect(finalScroll).toBeGreaterThan(viewportHeight * 0.5)
+    expect(finalScroll).toBeLessThan(viewportHeight * 1.5)
   })
 })

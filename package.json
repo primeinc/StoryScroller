@@ -12,21 +12,28 @@
   },
   "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "dev": "pnpm --filter demo dev",
-    "dev:package": "pnpm --filter package dev",
-    "build": "pnpm --filter package build && pnpm --filter demo build",
-    "build:package": "pnpm --filter package build",
-    "build:demo": "pnpm --filter demo build",
-    "test": "pnpm --filter package test && pnpm --filter demo test",
-    "test:package": "pnpm --filter package test",
-    "test:demo": "pnpm --filter demo test",
-    "lint": "pnpm --filter package lint && pnpm --filter demo lint",
-    "typecheck": "pnpm --filter package typecheck",
-    "clean": "pnpm --filter package clean && pnpm --filter demo clean",
+    "dev": "turbo run dev --filter @primeinc/storyscroller-demo",
+    "dev:package": "turbo run dev --filter @primeinc/storyscroller",
+    "build": "turbo run build",
+    "build:package": "turbo run build --filter @primeinc/storyscroller",
+    "build:demo": "turbo run build --filter @primeinc/storyscroller-demo",
+    "test": "turbo run test",
+    "test:package": "turbo run test --filter @primeinc/storyscroller",
+    "test:demo": "turbo run test --filter @primeinc/storyscroller-demo",
+    "test:e2e": "turbo run test:e2e --filter @primeinc/storyscroller-demo",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean",
     "install:all": "pnpm install"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "turbo": "^2.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.0"
+    }
   }
 }

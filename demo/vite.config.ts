@@ -13,8 +13,7 @@ export default defineConfig(({ command, mode }) => {
     
     plugins: [
       react({
-        // Enable React Fast Refresh in development
-        fastRefresh: !isProduction,
+        // Enable React Fast Refresh in development (Note: fastRefresh is deprecated, now enabled by default)
       }),
     ],
     
@@ -47,13 +46,13 @@ export default defineConfig(({ command, mode }) => {
           // Asset file naming
           assetFileNames: (assetInfo) => {
             const info = assetInfo.name?.split('.') || []
-            let extType = info[info.length - 1]
+            let extType = info[info.length - 1] || 'assets'
             
-            if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            if (extType && /png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
               extType = 'images'
-            } else if (/woff2?|eot|ttf|otf/i.test(extType)) {
+            } else if (extType && /woff2?|eot|ttf|otf/i.test(extType)) {
               extType = 'fonts'
-            } else if (/css/i.test(extType)) {
+            } else if (extType && /css/i.test(extType)) {
               extType = 'styles'
             }
             
@@ -98,12 +97,19 @@ export default defineConfig(({ command, mode }) => {
       ],
     },
     
+    // Vitest configuration - only for unit tests
     test: {
       environment: 'jsdom',
       globals: true,
-      setupFiles: ['./tests/setup.ts'],
-      include: ['src/**/*.test.{js,jsx,ts,tsx}', 'tests/**/*.test.{js,jsx,ts,tsx}'],
-      exclude: ['tests/**/*.spec.{js,jsx,ts,tsx}', '**/node_modules/**', '**/dist/**'],
+      setupFiles: ['./tests/vitest.setup.ts'],
+      // Only include unit test files, exclude E2E spec files
+      include: ['src/**/*.test.{js,jsx,ts,tsx}'],
+      exclude: [
+        'tests/**/*.spec.{js,jsx,ts,tsx}', // Exclude Playwright E2E tests
+        'tests/**/*.test.{js,jsx,ts,tsx}', // Exclude test files in tests dir
+        '**/node_modules/**', 
+        '**/dist/**'
+      ],
     },
   }
 })

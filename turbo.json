@@ -1,0 +1,47 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": ["build"]
+    },
+    "test:unit": {
+      "outputs": ["coverage/**"]
+    },
+    "test:e2e": {
+      "outputs": ["test-results/**", "playwright-report/**"],
+      "dependsOn": ["build"],
+      "passThroughEnv": ["PLAYWRIGHT_*", "CI"]
+    },
+    "e2e": {
+      "outputs": ["test-results/**", "playwright-report/**"],
+      "dependsOn": ["build"],
+      "passThroughEnv": ["PLAYWRIGHT_*", "CI"]
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "preview": {
+      "cache": false,
+      "persistent": true
+    },
+    "deploy": {
+      "dependsOn": ["build"],
+      "outputs": []
+    }
+  }
+}

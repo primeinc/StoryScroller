@@ -124,6 +124,18 @@ export interface StoryScrollerConfig {
    * @default true
    */
   enableMagneticSnap?: boolean
+  
+  /**
+   * Custom accessibility label for the story scroller container.
+   * @default "Story sections"
+   */
+  ariaLabel?: string
+  
+  /**
+   * Optional custom labels for each section, used for screen reader announcements.
+   * If not provided, sections will be labeled as "Section 1", "Section 2", etc.
+   */
+  sectionLabels?: string[]
 }
 
 /**
@@ -149,24 +161,5 @@ export interface StoryScrollerProps extends StoryScrollerConfig {
    * Optional inline styles for the container element.
    */
   style?: React.CSSProperties
-  
-  /**
-   * Custom accessibility label for the story scroller container.
-   * @default "Story sections"
-   */
-  ariaLabel?: string
-  
-  /**
-   * Optional custom labels for each section, used for screen reader announcements.
-   * If not provided, sections will be labeled as "Section 1", "Section 2", etc.
-   * @example
-   * ```tsx
-   * <StoryScroller 
-   *   sections={[...]}
-   *   sectionLabels={["Introduction", "Features", "Conclusion"]}
-   * />
-   * ```
-   */
-  sectionLabels?: string[]
 }
 

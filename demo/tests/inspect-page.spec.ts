@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 
 test('Inspect page structure', async ({ page }) => {
-  await page.goto('http://localhost:5184');
+  await page.goto('/');
   await page.waitForLoadState('networkidle');
   
   // Take screenshot
