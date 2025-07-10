@@ -355,7 +355,7 @@ jobs:
           echo "Package.json version: $(node -p "require('./package/package.json').version")"
 
       - name: Publish to NPM
-        run: cd package && pnpm publish --provenance --access public
+        run: cd package && pnpm publish --provenance --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
