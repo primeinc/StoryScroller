@@ -344,7 +344,7 @@ jobs:
           sleep 5
 
       - name: Run Lighthouse audit
-        uses: treosh/lighthouse-ci-action@v10
+        uses: treosh/lighthouse-ci-action@v12
         with:
           configPath: './demo/lighthouse.config.js'
           uploadArtifacts: true
