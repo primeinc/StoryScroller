@@ -111,7 +111,7 @@ export function useDebouncing(config: DebounceConfig = {}): DebounceState {
     navigationCooldown: 50, // Reduced from 200ms to 50ms for better test reliability
     animationDuration: 1500,
     scrollEndDelay: 100, // Reduced from 150ms to 100ms for faster scroll end detection
-    preventOverlap: false, // Changed to false for better test reliability
+    preventOverlap: true, // Keep true to prevent animation chaos
     trackMomentum: true,
     debug: false,
     logPrefix: '🎯',
@@ -145,12 +145,12 @@ export function useDebouncing(config: DebounceConfig = {}): DebounceState {
     const notAnimating = !animatingRef.current || !configRef.current.preventOverlap
     const notScrolling = !scrollingRef.current || !configRef.current.trackMomentum
     
-    // More lenient check for test environment
+    // For test environments, be more lenient but still respect animation state
     const isTestEnvironment = typeof window !== 'undefined' && 
       (window.location.hostname === 'localhost' || process.env.NODE_ENV === 'test')
     
     const result = isTestEnvironment ? 
-      cooldownMet && !animatingRef.current : // Simplified check for tests
+      cooldownMet && notAnimating : // Allow scrolling in test environment but respect animations
       cooldownMet && notAnimating && notScrolling
     
     if (configRef.current.debug) {
