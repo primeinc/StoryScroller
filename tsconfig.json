@@ -30,7 +30,6 @@
   },
   "references": [
     { "path": "./package" },
-    { "path": "./demo" },
-    { "path": "./dev-tools" }
+    { "path": "./demo" }
   ]
 }

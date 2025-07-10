@@ -21,7 +21,6 @@ storyscroller/
 │   ├── src/             # Demo source code
 │   ├── tests/           # E2E and integration tests
 │   └── playwright-report/ # Test results
-├── dev-tools/           # Shared development utilities
 └── docs/                # Project documentation
     ├── StoryScroller.md
     ├── StoryScroller-research.md
