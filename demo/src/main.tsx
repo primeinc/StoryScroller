@@ -5,9 +5,9 @@ import './index.css'
 
 // Import and register GSAP plugins at app level
 import { gsap } from 'gsap'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Observer } from 'gsap/Observer'
+import ScrollToPlugin from 'gsap/ScrollToPlugin.js'
+import ScrollTrigger from 'gsap/ScrollTrigger.js'
+import Observer from 'gsap/Observer.js'
 
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger, Observer)
 

@@ -20,7 +20,7 @@
     "test:unit": "vitest",
     "test:unit:run": "vitest run",
     "test:all": "npm run test:unit:run && npm run test",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 test",
+    "test:e2e": "playwright test",
     "quality": "npm run lint && npm run typecheck && npm run build",
     "predeploy": "vite build --base=/StoryScroller/",
     "deploy": "gh-pages -d dist",

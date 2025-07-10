@@ -192,7 +192,7 @@ jobs:
         run: pnpm run build
 
       - name: Run Integration Tests
-        run: pnpm run test:e2e -- --project=${{ matrix.browser }}
+        run: pnpm run test:e2e --project=${{ matrix.browser }}
 
       - name: Upload test results
         uses: actions/upload-artifact@v4

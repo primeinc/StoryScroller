@@ -10,7 +10,7 @@ export default defineConfig({
   treeshake: true,
   splitting: false,
   sourcemap: true,
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', 'gsap', 'lenis'],
   onSuccess: async () => {
     // Copy CSS files to dist
     try {

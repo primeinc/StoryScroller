@@ -29,9 +29,9 @@
 
 import { useRef, useCallback, useEffect, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { Observer } from 'gsap/Observer';
+import ScrollTrigger from 'gsap/ScrollTrigger.js';
+import ScrollToPlugin from 'gsap/ScrollToPlugin.js';
+import Observer from 'gsap/Observer.js';
 import type { 
   ScrollManagerAPI, 
   ScrollManagerConfig, 
@@ -371,7 +371,7 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
       type: 'wheel,touch',
       tolerance,
       preventDefault,
-      onChangeY: (self) => {
+      onChangeY: (self: any) => {
         console.log('🎯 [Observer] onChangeY triggered!', { deltaY: self.deltaY, velocityY: self.velocityY, eventType: self.event?.type });
         
         const velocity = self.velocityY || 0;
