@@ -129,7 +129,7 @@ describe('Debouncing and Throttling', () => {
 
   describe('Navigation cooldown throttling', () => {
     it('should enforce cooldown between navigations', async () => {
-      const navigationCooldown = TIMING.NAVIGATION_COOLDOWN // 100ms
+      const navigationCooldown = TIMING.NAVIGATION_COOLDOWN // 50ms
       let lastNavigationTime = 0
       
       const canNavigate = () => {
@@ -152,11 +152,11 @@ describe('Debouncing and Throttling', () => {
       expect(navigate()).toBe(false)
       
       // Navigation during cooldown should fail (wait less than cooldown period)
-      await wait(70) // Less than 100ms cooldown
+      await wait(30) // Less than 50ms cooldown
       expect(navigate()).toBe(false)
       
       // Navigation after cooldown should succeed
-      await wait(50) // Total 120ms > 100ms cooldown
+      await wait(30) // Total 60ms > 50ms cooldown
       expect(navigate()).toBe(true)
     })
 

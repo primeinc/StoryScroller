@@ -187,7 +187,7 @@ export function useScrollState(config: ScrollManagerConfig) {
     // Check 4: Scroll position drift (more lenient during tests)
     const expectedScrollY = state.currentSection * viewportHeight
     const scrollDrift = Math.abs(actualScrollY - expectedScrollY)
-    const driftThreshold = isTestEnvironment ? viewportHeight * 0.2 : viewportHeight * 0.1
+    const driftThreshold = isTestEnvironment ? viewportHeight * 0.15 : viewportHeight * 0.1
     
     if (scrollDrift > driftThreshold && !state.isAnimating && !state.isScrolling) {
       console.warn('🔍 State verification: Scroll position drift', {
