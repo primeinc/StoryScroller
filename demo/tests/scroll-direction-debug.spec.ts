@@ -22,7 +22,7 @@ test.describe('Scroll Direction Debug', () => {
     })
 
     // Go to page
-    await page.goto('http://localhost:5174')
+    await page.goto('/')
     await page.waitForLoadState('networkidle')
     
     // Wait for StoryScroller to initialize

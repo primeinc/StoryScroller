@@ -5,7 +5,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
 
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
-    await page.goto('http://localhost:5184');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
   });
 
@@ -92,6 +92,10 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
   });
 
   test('Button navigation works correctly', async () => {
+    // First expand to standard mode to see navigation buttons
+    await page.locator('[aria-label="Expand controls"]').click();
+    await page.waitForTimeout(500);
+    
     // Check next button exists and works
     const nextButton = page.locator('button[aria-label="Next section"]');
     await expect(nextButton).toBeVisible();
@@ -121,6 +125,10 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
   });
 
   test('Dot navigation works correctly', async () => {
+    // First expand to standard mode to see navigation dots
+    await page.locator('[aria-label="Expand controls"]').click();
+    await page.waitForTimeout(500);
+    
     const dots = await page.locator('[aria-label^="Go to section"]').all();
     expect(dots).toHaveLength(5);
     
@@ -155,26 +163,33 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     const controlHub = page.locator('[data-testid="control-hub"]');
     await expect(controlHub).toBeVisible();
     
-    // Check initial mode (should be standard)
+    // Start in minimal mode, expand to standard
+    await expect(page.locator('.control-hub--minimal')).toBeVisible();
+    await page.locator('[aria-label="Expand controls"]').click();
+    await expect(page.locator('.control-hub--standard')).toBeVisible();
+    
+    // Now check the mode toggle button (should show current mode: standard)
     const modeToggle = page.locator('button:has-text("Mode:")');
     await expect(modeToggle).toContainText('standard');
     
     // Switch to minimal mode
     await modeToggle.click();
     await page.waitForTimeout(500);
-    await expect(modeToggle).toContainText('minimal');
+    await expect(page.locator('.control-hub--minimal')).toBeVisible();
     
     // Verify minimal mode hides certain controls
     const configPanel = page.locator('[data-testid="config-panel"]');
     await expect(configPanel).not.toBeVisible();
     
-    // Switch to advanced mode
-    await modeToggle.click();
-    await modeToggle.click();
+    // Switch to advanced mode from minimal
+    await page.locator('[aria-label="Expand controls"]').click();
+    await page.locator('[aria-label="Advanced controls"]').click();
     await page.waitForTimeout(500);
-    await expect(modeToggle).toContainText('advanced');
+    await expect(page.locator('.control-hub--advanced')).toBeVisible();
     
-    // Verify advanced mode shows all controls
+    // Verify advanced mode shows all controls  
+    // Config panel only visible when Configuration tab is active
+    await page.getByRole('button', { name: 'Configuration' }).click();
     await expect(configPanel).toBeVisible();
   });
 
@@ -214,8 +229,12 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
   });
 
   test('Performance monitoring shows realistic FPS', async () => {
-    // Look for FPS display
-    const fpsDisplay = page.locator('text=/\\d+(\\.\\d+)?\\s*FPS/');
+    // Expand to standard mode to see FPS display
+    await page.locator('[aria-label="Expand controls"]').click();
+    await page.waitForTimeout(500);
+    
+    // Look for FPS display in control hub
+    const fpsDisplay = page.locator('.badge--fps');
     await expect(fpsDisplay).toBeVisible();
     
     // Get FPS values over time
@@ -236,8 +255,8 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
   });
 
   test('Accessibility features work correctly', async () => {
-    // Check for ARIA live region
-    const liveRegion = page.locator('[aria-live="polite"]');
+    // Check for ARIA live region (from StoryScroller)
+    const liveRegion = page.locator('.story-scroller-live-region[aria-live="polite"]');
     await expect(liveRegion).toBeAttached();
     
     // Navigate and check announcements
@@ -247,7 +266,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     // Check that section navigation is announced
     const announcement = await liveRegion.textContent();
     expect(announcement).toBeTruthy();
-    expect(announcement!).toContain('Section 2');
+    expect(announcement!).toContain('section 2 of 5');
     
     // Check keyboard focus indicators
     await page.keyboard.press('Tab');

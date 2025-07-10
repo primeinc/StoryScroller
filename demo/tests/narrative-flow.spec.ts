@@ -34,7 +34,7 @@ test.describe('StoryScroller Narrative Demo', () => {
 
     // Enable reduced motion for faster tests
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    await page.goto('http://localhost:5174')
+    await page.goto('/')
   })
 
   test.afterEach(async ({ page }, testInfo) => {

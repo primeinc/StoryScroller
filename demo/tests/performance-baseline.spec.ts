@@ -8,7 +8,7 @@ import { test, expect } from '@playwright/test'
 test.describe('StoryScroller Performance Baseline', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to demo with performance monitoring
-    await page.goto('http://localhost:5174')
+    await page.goto('/')
     await page.waitForLoadState('networkidle')
     
     // Wait for StoryScroller to initialize

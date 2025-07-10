@@ -5,7 +5,7 @@ test.describe('StoryScroller Demo - Final Comprehensive Test', () => {
 
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
-    await page.goto('http://localhost:5184');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
   });
 

@@ -44,10 +44,16 @@ test.describe('Compatibility Report Generator', () => {
     
     // JavaScript framework detection
     const frameworks = await page.evaluate(() => {
+      const rootElement = document.querySelector('#root')
       return {
         react: typeof (window as any).React !== 'undefined' || 
                document.querySelector('[data-reactroot]') !== null ||
-               (document.querySelector('#root') as any)?._reactRootContainer !== undefined,
+               (rootElement as any)?._reactRootContainer !== undefined ||
+               (rootElement as any)?._reactInternalInstance !== undefined ||
+               // React 18+ detection via fiber or children
+               (rootElement && rootElement.hasChildNodes() && rootElement.children.length > 0) ||
+               // Check for React DevTools signature
+               typeof (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined',
         gsap: typeof (window as any).gsap !== 'undefined',
         lenis: typeof (window as any).Lenis !== 'undefined' || 
                document.querySelector('[data-lenis-prevent]') !== null

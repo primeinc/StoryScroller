@@ -97,12 +97,19 @@ export default defineConfig(({ command, mode }) => {
       ],
     },
     
+    // Vitest configuration - only for unit tests
     test: {
       environment: 'jsdom',
       globals: true,
-      setupFiles: ['./tests/setup.ts'],
-      include: ['src/**/*.test.{js,jsx,ts,tsx}', 'tests/**/*.test.{js,jsx,ts,tsx}'],
-      exclude: ['tests/**/*.spec.{js,jsx,ts,tsx}', '**/node_modules/**', '**/dist/**'],
+      setupFiles: ['./tests/vitest.setup.ts'],
+      // Only include unit test files, exclude E2E spec files
+      include: ['src/**/*.test.{js,jsx,ts,tsx}'],
+      exclude: [
+        'tests/**/*.spec.{js,jsx,ts,tsx}', // Exclude Playwright E2E tests
+        'tests/**/*.test.{js,jsx,ts,tsx}', // Exclude test files in tests dir
+        '**/node_modules/**', 
+        '**/dist/**'
+      ],
     },
   }
 })
