@@ -141,7 +141,7 @@ jobs:
             ${{ runner.os }}-turbo-
 
       - name: Run Unit Tests
-        run: pnpm run test:package -- --coverage
+        run: pnpm --filter @primeinc/storyscroller run test:unit:run -- --coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4

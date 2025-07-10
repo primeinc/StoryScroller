@@ -39,7 +39,7 @@ export const TIMING = {
   /** Debounce threshold for rapid scroll events (ms) */
   DEBOUNCE_THRESHOLD: 100,
   /** Time in ms to ignore duplicate navigation requests for the same target */
-  DEDUPLICATION_THRESHOLD: 100,
+  DEDUPLICATION_THRESHOLD: 50,
   /** Time to wait before considering scroll ended (ms) */
   SCROLL_END_TIMEOUT: 150,
   /** Hydration delay for Next.js (ms) */
@@ -51,7 +51,7 @@ export const TIMING = {
   /** Threshold in ms to consider an animation "stuck" if it hasn't completed */
   STUCK_ANIMATION_THRESHOLD: 5000,
   /** Navigation cooldown to prevent rapid section changes (optimized for button responsiveness) */
-  NAVIGATION_COOLDOWN: 50,
+  NAVIGATION_COOLDOWN: 100,
   /** Position check delay after animation */
   POSITION_CHECK_DELAY: 100,
   /** ScrollTrigger config delay to avoid hydration errors */

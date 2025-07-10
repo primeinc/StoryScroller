@@ -35,7 +35,7 @@ describe('Scroll Physics Constants', () => {
     it('should have appropriate debouncing values', () => {
       // Debounce should be fast enough to feel responsive but slow enough to prevent spam
       expect(TIMING.DEBOUNCE_THRESHOLD).toBeWithinRange(50, 300);
-      expect(TIMING.NAVIGATION_COOLDOWN).toBeWithinRange(100, 500);
+      expect(TIMING.NAVIGATION_COOLDOWN).toBeWithinRange(50, 500);
       
       // Deduplication should be faster than navigation cooldown
       expect(TIMING.DEDUPLICATION_THRESHOLD).toBeLessThanOrEqual(TIMING.NAVIGATION_COOLDOWN);

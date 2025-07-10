@@ -242,12 +242,12 @@ describe('Error Handling and Recovery', () => {
       
       const request2 = {
         targetSection: 2,
-        timestamp: Date.now() + 50, // 50ms later
+        timestamp: Date.now() + 30, // 30ms later (less than 50ms threshold)
       }
       
       const request3 = {
         targetSection: 2,
-        timestamp: Date.now() + 150, // 150ms later
+        timestamp: Date.now() + 60, // 60ms later (after 50ms threshold)
       }
       
       // Check if request should be added
