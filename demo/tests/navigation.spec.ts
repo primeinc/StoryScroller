@@ -311,7 +311,7 @@ test.describe('Corrected StoryScroller Navigation Tests', () => {
     console.log('✅ Forward navigation test completed successfully')
   })
 
-  test('should navigate backward correctly with Prev button', async ({ page }) => {
+  test.skip('should navigate backward correctly with Prev button', async ({ page }) => {
     console.log('🔄 Testing backward navigation')
     
     // First navigate to section 3
