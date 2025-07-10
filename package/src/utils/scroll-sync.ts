@@ -42,7 +42,7 @@ export async function forceSync(
 
   // Use gsap from global or import
   const gsap = (window as any).gsap || (await import('gsap')).default;
-  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger.js')).ScrollTrigger;
+  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger.js')).default;
   
   gsap.killTweensOf(window);
   controllers.lenis?.stop();
@@ -72,7 +72,7 @@ export async function emergencyReset(
   console.error("🚨 EMERGENCY RESET triggered. Reinitializing scroll system.");
 
   const gsap = (window as any).gsap || (await import('gsap')).default;
-  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger.js')).ScrollTrigger;
+  const ScrollTrigger = (window as any).ScrollTrigger || (await import('gsap/ScrollTrigger.js')).default;
 
   gsap.killTweensOf('*');
   ScrollTrigger.killAll();

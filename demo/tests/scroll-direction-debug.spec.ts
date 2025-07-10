@@ -36,11 +36,17 @@ test.describe('Scroll Direction Debug', () => {
     
     // Get initial state
     const initialScrollY = await page.evaluate(() => window.scrollY)
-    const initialSection = await page.locator('text=1 / 5').isVisible()
+    const initialSection = await page.evaluate(() => {
+      const api = (window as any).storyScrollerAPI;
+      if (api && api.getState) {
+        return api.getState().currentSection;
+      }
+      return null;
+    })
     
     console.log('=== INITIAL STATE ===')
     console.log('ScrollY:', initialScrollY)
-    console.log('On section 1:', initialSection)
+    console.log('Current section:', initialSection)
     
     // Clear console log array to focus on scroll event
     consoleMessages = []
@@ -68,11 +74,19 @@ test.describe('Scroll Direction Debug', () => {
     
     // Get final state
     const finalScrollY = await page.evaluate(() => window.scrollY)
-    const finalSection1 = await page.locator('text=1 / 5').isVisible()
-    const finalSection2 = await page.locator('text=2 / 5').isVisible()
+    const finalSection = await page.evaluate(() => {
+      const api = (window as any).storyScrollerAPI;
+      if (api && api.getState) {
+        return api.getState().currentSection;
+      }
+      return null;
+    })
+    const finalSection1 = finalSection === 0;
+    const finalSection2 = finalSection === 1;
     
     console.log('=== FINAL STATE ===')
     console.log('ScrollY:', finalScrollY)
+    console.log('Final section:', finalSection)
     console.log('Still on section 1:', finalSection1)
     console.log('Now on section 2:', finalSection2)
     
@@ -94,10 +108,11 @@ test.describe('Scroll Direction Debug', () => {
       '',
       '=== INITIAL STATE ===',
       `ScrollY: ${initialScrollY}`,
-      `On section 1: ${initialSection}`,
+      `Initial section: ${initialSection}`,
       '',
       '=== FINAL STATE ===',
       `ScrollY: ${finalScrollY}`,
+      `Final section: ${finalSection}`,
       `Still on section 1: ${finalSection1}`,
       `Now on section 2: ${finalSection2}`,
       '',
@@ -111,7 +126,7 @@ test.describe('Scroll Direction Debug', () => {
       '',
       '=== ANALYSIS ===',
       `Did scroll position change? ${finalScrollY !== initialScrollY}`,
-      `Did section change? ${finalSection2 && !finalSection1}`,
+      `Did section change? ${finalSection !== initialSection}`,
       `Was navigation successful? ${finalSection2}`,
     ].join('\n')
     

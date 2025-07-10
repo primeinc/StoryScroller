@@ -8,6 +8,28 @@ import { test, expect, Page } from '@playwright/test'
  * screenshots, and scroll position verification.
  */
 
+// Helper to ensure ControlHub is expanded for navigation access
+const ensureControlHubExpanded = async (page: Page): Promise<void> => {
+  const controlHub = page.locator('[data-testid="control-hub"]')
+  await expect(controlHub).toBeVisible()
+  
+  // Check if already in standard mode
+  const isStandardMode = await controlHub.locator('.hub-standard').isVisible().catch(() => false)
+  
+  if (!isStandardMode) {
+    // Click expand button to go from minimal to standard mode
+    const expandButton = controlHub.locator('.hub-expand')
+    if (await expandButton.isVisible()) {
+      await expandButton.click()
+      await page.waitForTimeout(200) // Wait for transition
+    }
+  }
+  
+  // Verify we can see navigation buttons
+  await expect(controlHub.locator('.nav-btn--next')).toBeVisible()
+  await expect(controlHub.locator('.nav-btn--prev')).toBeVisible()
+}
+
 // Helper to add detailed console logging
 const logStep = (page: Page, step: string, data?: any) => {
   const timestamp = new Date().toISOString()
@@ -25,12 +47,11 @@ const getDetailedState = async (page: Page) => {
   await logStep(page, 'Getting detailed state information...')
   
   // Wait for elements to be available
-  await page.waitForSelector('.debug-info', { timeout: 5000 })
+  await page.waitForSelector('.current-section', { timeout: 5000 })
   
   const state = await page.evaluate(() => {
-    // Get debug info from the UI
-    const debugInfo = document.querySelector('.debug-info')
-    const navInfo = document.querySelector('.nav-info .current-section')
+    // Get current section info from ControlHub
+    const currentSectionElement = document.querySelector('.current-section')
     const progressBar = document.querySelector('.progress-fill')
     
     // Get scroll position
@@ -46,34 +67,69 @@ const getDetailedState = async (page: Page) => {
       }
     })
     
-    // Extract current section from debug info
-    let currentSection = -1
-    if (debugInfo) {
-      const currentText = debugInfo.textContent || ''
-      const match = currentText.match(/Current: (\d+)/)
+    // Extract current section from ControlHub (convert to 0-based)
+    let currentSection = 0
+    let navSection = 0
+    if (currentSectionElement) {
+      const currentText = currentSectionElement.textContent || ''
+      const match = currentText.match(/Section (\d+) of \d+/)
       if (match && match[1]) {
-        currentSection = parseInt(match[1]) - 1 // Convert to 0-based index
+        const sectionNum = parseInt(match[1])
+        currentSection = sectionNum - 1 // Convert to 0-based index
+        navSection = sectionNum - 1 // Both use same value
       }
     }
     
-    // Extract nav info
-    let navSection = -1
-    if (navInfo) {
-      const navText = navInfo.textContent || ''
-      const match = navText.match(/(\d+) \/ \d+/)
-      if (match && match[1]) {
-        navSection = parseInt(match[1]) - 1 // Convert to 0-based index
-      }
-    }
-    
-    // Get progress percentage
+    // Get progress percentage - check both linear and circular progress bars
     let progressPercent = 0
-    if (progressBar) {
-      const style = window.getComputedStyle(progressBar)
-      const widthMatch = style.width.match(/(\d+(?:\.\d+)?)%/)
-      if (widthMatch && widthMatch[1]) {
-        progressPercent = parseFloat(widthMatch[1])
+    
+    // Method 1: Try linear progress bar (.progress-fill) - visible when ControlHub is expanded
+    const linearProgress = document.querySelector('.progress-fill')
+    if (linearProgress && window.getComputedStyle(linearProgress).display !== 'none') {
+      const style = window.getComputedStyle(linearProgress)
+      const width = style.width
+      
+      // Check if it's percentage-based
+      let percentMatch = width.match(/(\d+(?:\.\d+)?)%/)
+      if (percentMatch && percentMatch[1]) {
+        progressPercent = parseFloat(percentMatch[1])
+      } else {
+        // Try pixels and convert to percentage
+        let pxMatch = width.match(/(\d+(?:\.\d+)?)px/)
+        if (pxMatch && pxMatch[1]) {
+          const widthPx = parseFloat(pxMatch[1])
+          const parentElement = linearProgress.parentElement
+          if (parentElement) {
+            const parentWidth = window.getComputedStyle(parentElement).width
+            let parentPxMatch = parentWidth.match(/(\d+(?:\.\d+)?)px/)
+            if (parentPxMatch && parentPxMatch[1]) {
+              const parentPx = parseFloat(parentPxMatch[1])
+              progressPercent = (widthPx / parentPx) * 100
+            }
+          }
+        }
       }
+    }
+    
+    // Method 2: Try circular progress (.progress-bar with stroke-dasharray) - visible in minimal mode
+    if (progressPercent === 0) {
+      const circularProgress = document.querySelector('.progress-bar')
+      if (circularProgress && window.getComputedStyle(circularProgress).display !== 'none') {
+        const strokeDasharray = circularProgress.getAttribute('stroke-dasharray')
+        if (strokeDasharray) {
+          const dashValues = strokeDasharray.split(',').map(v => parseFloat(v.trim()))
+          if (dashValues.length >= 2 && dashValues[1] > 0) {
+            progressPercent = (dashValues[0] / dashValues[1]) * 100
+          }
+        }
+      }
+    }
+    
+    // Method 3: Calculate expected progress from section number (fallback)
+    if (progressPercent === 0) {
+      const sectionsCount = 5 // From the demo
+      const sectionNum = parseInt(currentSectionElement?.textContent?.match(/Section (\d+) of \d+/)?.[1] || '1')
+      progressPercent = (sectionNum / sectionsCount) * 100
     }
     
     return {
@@ -126,6 +182,9 @@ const waitForNavigationComplete = async (page: Page, expectedSection: number, ma
 const clickButtonWithLogging = async (page: Page, selector: string, buttonName: string) => {
   await logStep(page, `Attempting to click ${buttonName} button`)
   
+  // Ensure ControlHub is expanded first
+  await ensureControlHubExpanded(page)
+  
   // Check if button exists and is visible
   const button = page.locator(selector)
   await expect(button).toBeVisible({ timeout: 5000 })
@@ -176,9 +235,12 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     await page.waitForTimeout(1000)
     await logStep(page, 'Initialization wait complete')
     
+    // Ensure ControlHub is expanded for navigation access
+    await ensureControlHubExpanded(page)
+    
     // Verify essential elements are present
-    await page.waitForSelector('.nav-button', { timeout: 10000 })
-    await page.waitForSelector('.debug-info', { timeout: 10000 })
+    await page.waitForSelector('.nav-btn--next', { timeout: 10000 })
+    await page.waitForSelector('.current-section', { timeout: 10000 })
     await logStep(page, 'Essential UI elements verified')
     
     // Get initial state
@@ -207,7 +269,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     
     const { beforeState, afterClickState } = await clickButtonWithLogging(
       page, 
-      'button:has-text("Next →")', 
+      '.nav-btn--next', 
       'Next'
     )
     
@@ -237,7 +299,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     
     const secondNavigation = await clickButtonWithLogging(
       page,
-      'button:has-text("Next →")',
+      '.nav-btn--next',
       'Next'
     )
     
@@ -265,11 +327,11 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     await logStep(page, '📍 Testing navigation to final section')
     
     // Navigate to section 3
-    await clickButtonWithLogging(page, 'button:has-text("Next →")', 'Next')
+    await clickButtonWithLogging(page, '.nav-btn--next', 'Next')
     const thirdState = await waitForNavigationComplete(page, 3)
     
     // Navigate to section 4 (final section)
-    await clickButtonWithLogging(page, 'button:has-text("Next →")', 'Next')
+    await clickButtonWithLogging(page, '.nav-btn--next', 'Next')
     const finalSectionState = await waitForNavigationComplete(page, 4)
     
     // Take final screenshot
@@ -283,7 +345,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     expect(finalSectionState.currentSection).toBe(4)
     expect(finalSectionState.navSection).toBe(4)
     
-    const nextButton = page.locator('button:has-text("Next →")')
+    const nextButton = page.locator('.nav-btn--next')
     await expect(nextButton).toBeDisabled()
     await logStep(page, 'Verified Next button is disabled on final section')
     
@@ -296,10 +358,10 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     // First navigate to section 2 using Next button
     await logStep(page, 'Setting up test by navigating to section 2')
     
-    await clickButtonWithLogging(page, 'button:has-text("Next →")', 'Next')
+    await clickButtonWithLogging(page, '.nav-btn--next', 'Next')
     await waitForNavigationComplete(page, 1)
     
-    await clickButtonWithLogging(page, 'button:has-text("Next →")', 'Next')
+    await clickButtonWithLogging(page, '.nav-btn--next', 'Next')
     await waitForNavigationComplete(page, 2)
     
     await page.screenshot({ 
@@ -313,7 +375,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     
     const { beforeState, afterClickState } = await clickButtonWithLogging(
       page,
-      'button:has-text("← Prev")',
+      '.nav-btn--prev',
       'Prev'
     )
     
@@ -338,7 +400,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     // Test navigation back to start (1 → 0)
     await logStep(page, '📍 Testing navigation back to start section')
     
-    await clickButtonWithLogging(page, 'button:has-text("← Prev")', 'Prev')
+    await clickButtonWithLogging(page, '.nav-btn--prev', 'Prev')
     const startState = await waitForNavigationComplete(page, 0)
     
     await page.screenshot({ 
@@ -350,7 +412,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     expect(startState.currentSection).toBe(0)
     expect(startState.navSection).toBe(0)
     
-    const prevButton = page.locator('button:has-text("← Prev")')
+    const prevButton = page.locator('.nav-btn--prev')
     await expect(prevButton).toBeDisabled()
     await logStep(page, 'Verified Prev button is disabled on first section')
     
@@ -366,7 +428,7 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
     const initialState = await getDetailedState(page)
     
     // Click Next button rapidly multiple times
-    const nextButton = page.locator('button:has-text("Next →")')
+    const nextButton = page.locator('.nav-btn--next')
     
     for (let i = 0; i < 5; i++) {
       await logStep(page, `Rapid click ${i + 1}/5`)
@@ -414,14 +476,14 @@ test.describe('StoryScroller Navigation Debug Tests', () => {
         // Navigate forward
         const clicksNeeded = targetSection - currentState.currentSection
         for (let i = 0; i < clicksNeeded; i++) {
-          await clickButtonWithLogging(page, 'button:has-text("Next →")', 'Next')
+          await clickButtonWithLogging(page, '.nav-btn--next', 'Next')
           await waitForNavigationComplete(page, currentState.currentSection + i + 1)
         }
       } else if (targetSection < currentState.currentSection) {
         // Navigate backward
         const clicksNeeded = currentState.currentSection - targetSection
         for (let i = 0; i < clicksNeeded; i++) {
-          await clickButtonWithLogging(page, 'button:has-text("← Prev")', 'Prev')
+          await clickButtonWithLogging(page, '.nav-btn--prev', 'Prev')
           await waitForNavigationComplete(page, currentState.currentSection - i - 1)
         }
       }

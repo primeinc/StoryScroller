@@ -56,7 +56,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
         setCurrentIndex(state.currentSection);
         setIsAnimating(state.isAnimating);
       }
-    }, 100);
+    }, 16); // 60fps for smooth updates
 
     return () => clearInterval(interval);
   }, []);

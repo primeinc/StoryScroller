@@ -11,138 +11,94 @@ test.describe('Lenis Animation Completion Debug', () => {
     await page.goto('/');
     
     // Wait for StoryScroller to be ready
-    await page.waitForSelector('.story-scroller', { state: 'visible' });
+    await page.waitForSelector('.story-scroller-container', { state: 'visible' });
     await page.waitForTimeout(1000); // Let Lenis initialize
 
-    // Inject debugging code into the page
+    // Inject debugging code into the page - test StoryScroller API instead of looking for Lenis
     await page.evaluate(() => {
-      // Add global debug flag
-      (window as any).LENIS_DEBUG = true;
+      console.log('🧪 [TEST] Starting debug injection...');
       
-      // Get Lenis instance from StoryScroller
-      const storyScroller = document.querySelector('.story-scroller');
-      if (!storyScroller) {
-        console.error('No StoryScroller found');
-        return;
-      }
-
-      // Access Lenis through React fiber (hacky but works for debugging)
-      const reactFiber = (storyScroller as any)._reactInternalFiber || 
-                        (storyScroller as any)._reactInternalInstance ||
-                        (() => {
-                          const key = Object.keys(storyScroller).find(k => k.startsWith('__reactInternalInstance'));
-                          return key ? (storyScroller as any)[key] : undefined;
-                        })();
-      
-      console.log('React Fiber found:', !!reactFiber);
-      
-      // Try to find Lenis instance in window or global scope
-      const lenis = (window as any).lenis || (window as any).__lenis;
-      if (lenis) {
-        console.log('Found Lenis instance:', lenis);
-        console.log('Lenis version:', lenis.version);
-        console.log('Lenis options:', lenis.options);
-        
-        // Patch scrollTo to debug
-        const originalScrollTo = lenis.scrollTo.bind(lenis);
-        lenis.scrollTo = function(target: any, options: any = {}) {
-          console.log('Lenis scrollTo called with:', { target, options });
+      // Wait for StoryScroller API to be available
+      const waitForAPI = setInterval(() => {
+        if ((window as any).storyScrollerAPI) {
+          clearInterval(waitForAPI);
+          console.log('✅ [TEST] StoryScroller API found!');
           
-          // Wrap the onComplete callback
-          const originalOnComplete = options.onComplete;
-          options.onComplete = function() {
-            console.log('Lenis onComplete callback fired!');
-            if (originalOnComplete) {
-              originalOnComplete();
-            }
-          };
+          // Test the API directly instead of looking for Lenis
+          const api = (window as any).storyScrollerAPI;
+          console.log('📊 [TEST] Available API methods:', Object.keys(api));
           
-          // Call original scrollTo
-          const result = originalScrollTo(target, options);
-          console.log('Lenis scrollTo returned:', result);
+          // Get initial state
+          const initialState = api.getState();
+          console.log('📊 [TEST] Initial state:', initialState);
           
-          // Monitor scroll position
-          let lastProgress = 0;
-          const checkProgress = setInterval(() => {
-            const progress = lenis.progress;
-            const targetProgress = lenis.targetProgress;
-            const velocity = lenis.velocity;
-            const isScrolling = lenis.isScrolling;
-            
-            if (Math.abs(progress - lastProgress) > 0.001) {
-              console.log('Lenis state:', {
-                progress,
-                targetProgress,
-                velocity,
-                isScrolling,
-                delta: progress - lastProgress
-              });
-              lastProgress = progress;
-            }
-            
-            // Stop monitoring when not scrolling
-            if (!isScrolling && Math.abs(velocity) < 0.01) {
-              clearInterval(checkProgress);
-              console.log('Lenis stopped scrolling');
-            }
-          }, 100);
-          
-          return result;
-        };
-        
-        // Also monitor the raf callback
-        if (lenis.raf) {
-          const originalRaf = lenis.raf.bind(lenis);
-          lenis.raf = function(time: number) {
-            if ((window as any).LENIS_DEBUG) {
-              console.log('Lenis RAF called at:', time);
-            }
-            return originalRaf(time);
-          };
+          // Since we can't directly access Lenis, we'll test the StoryScroller API
+          // which uses Lenis internally through GSAP animations
+          console.log('🎯 [TEST] StoryScroller API ready for testing');
+        } else {
+          console.log('⏳ [TEST] Waiting for StoryScroller API...');
         }
-      } else {
-        console.error('Lenis instance not found in window');
-      }
+      }, 100);
       
-      // Also check for GSAP
-      const gsap = (window as any).gsap;
-      if (gsap) {
-        console.log('GSAP found, version:', gsap.version);
-      }
+      // Fallback timeout
+      setTimeout(() => {
+        clearInterval(waitForAPI);
+        if (!(window as any).storyScrollerAPI) {
+          console.error('❌ [TEST] StoryScroller API not available after timeout');
+        }
+      }, 5000);
     });
 
-    // Get initial section
+    // Get initial section from StoryScroller API
     const initialSection = await page.evaluate(() => {
-      const indicators = document.querySelectorAll('.story-navigation button');
-      const activeIndicator = Array.from(indicators).findIndex(btn => 
-        btn.getAttribute('aria-current') === 'true'
-      );
-      return activeIndicator;
+      const api = (window as any).storyScrollerAPI;
+      if (api && api.getState) {
+        const state = api.getState();
+        return state.currentSection || 0;
+      }
+      return 0;
     });
     
     console.log('Initial section:', initialSection);
 
-    // Create a promise to track navigation completion
+    // Create a promise to track navigation completion using StoryScroller API
     const navigationCompletePromise = page.evaluate(() => {
       return new Promise((resolve) => {
-        // Track various completion signals
+        const api = (window as any).storyScrollerAPI;
+        if (!api) {
+          console.error('StoryScroller API not available');
+          resolve({ success: false, error: 'API not available' });
+          return;
+        }
+        
+        // Track completion signals
         const completionSignals = {
-          lenisOnComplete: false,
-          gsapComplete: false,
           stateUpdated: false,
-          scrollPositionReached: false
+          animationComplete: false,
+          targetReached: false
         };
         
-        // Monitor for state updates
+        // Monitor for state updates using the API
         const checkState = setInterval(() => {
-          const indicators = document.querySelectorAll('.story-navigation button');
-          const activeIndicator = Array.from(indicators).findIndex(btn => 
-            btn.getAttribute('aria-current') === 'true'
-          );
+          const state = api.getState();
           
-          if (activeIndicator === 1) {
+          // Check if we reached target section
+          if (state.currentSection === 1) {
             completionSignals.stateUpdated = true;
-            console.log('State updated to section 1');
+            console.log('✅ State updated to section 1');
+          }
+          
+          // Check if animation is complete
+          if (!state.isAnimating && state.currentSection === 1) {
+            completionSignals.animationComplete = true;
+            console.log('✅ Animation complete');
+          }
+          
+          // If all conditions are met, resolve
+          if (completionSignals.stateUpdated && completionSignals.animationComplete) {
+            clearInterval(checkState);
+            console.log('✅ Navigation fully complete');
+            resolve(completionSignals);
           }
         }, 100);
         
@@ -152,147 +108,131 @@ test.describe('Lenis Animation Completion Debug', () => {
           console.log('Navigation timeout reached. Completion signals:', completionSignals);
           resolve(completionSignals);
         }, 5000);
-        
-        // Store resolver globally for other code to use
-        (window as any).__navigationResolver = (signal: string) => {
-          (completionSignals as any)[signal] = true;
-          console.log(`Signal received: ${signal}`, completionSignals);
-          
-          // Check if all expected signals are received
-          if (completionSignals.lenisOnComplete || completionSignals.gsapComplete) {
-            clearInterval(checkState);
-            setTimeout(() => resolve(completionSignals), 100);
-          }
-        };
       });
     });
 
-    // Click on second navigation indicator
-    console.log('Clicking navigation indicator 1...');
-    await page.click('.story-navigation button:nth-child(2)');
+    // Navigate to section 1 using the API directly
+    console.log('Navigating to section 1 using API...');
+    await page.evaluate(() => {
+      const api = (window as any).storyScrollerAPI;
+      if (api) {
+        api.gotoSection(1);
+      }
+    });
     
     // Wait for navigation to complete
     const completionSignals = await navigationCompletePromise;
     console.log('Final completion signals:', completionSignals);
     
-    // Check final state
+    // Check final state using StoryScroller API
     const finalState = await page.evaluate(() => {
-      const indicators = document.querySelectorAll('.story-navigation button');
-      const activeIndicator = Array.from(indicators).findIndex(btn => 
-        btn.getAttribute('aria-current') === 'true'
-      );
+      const api = (window as any).storyScrollerAPI;
+      if (!api) {
+        return { error: 'API not available' };
+      }
       
-      const scrollContainer = document.querySelector('.story-scroller');
-      const scrollTop = scrollContainer?.scrollTop || 0;
-      const scrollHeight = scrollContainer?.scrollHeight || 0;
-      const clientHeight = scrollContainer?.clientHeight || 0;
-      
-      // Check if Lenis is still available
-      const lenis = (window as any).lenis || (window as any).__lenis;
-      const lenisState = lenis ? {
-        progress: lenis.progress,
-        targetProgress: lenis.targetProgress,
-        velocity: lenis.velocity,
-        isScrolling: lenis.isScrolling,
-        scroll: lenis.scroll,
-        limit: lenis.limit
-      } : null;
+      const state = api.getState();
+      const scrollTop = window.scrollY || 0;
+      const scrollHeight = document.documentElement.scrollHeight || 0;
+      const clientHeight = window.innerHeight || 0;
       
       return {
-        activeSection: activeIndicator,
+        activeSection: state.currentSection,
         scrollPosition: {
           scrollTop,
           scrollHeight,
           clientHeight,
           scrollPercentage: scrollTop / (scrollHeight - clientHeight)
         },
-        lenisState
+        storyScrollerState: state,
+        // Include navigation dots state for verification
+        navigationState: {
+          activeDot: document.querySelector('.section-dot[aria-current="true"]')?.getAttribute('data-section-idx') || 'none'
+        }
       };
     });
     
     console.log('Final state:', finalState);
     
-    // Assertions
+    // Assertions - Test StoryScroller functionality instead of Lenis directly
     expect(finalState.activeSection).toBe(1);
     expect(completionSignals).toBeTruthy();
     
     // Check which completion signals fired
-    if (!(completionSignals as any).lenisOnComplete) {
-      console.error('ERROR: Lenis onComplete callback never fired!');
+    if (!(completionSignals as any).stateUpdated) {
+      console.error('ERROR: State update never happened!');
     }
-    if (!(completionSignals as any).gsapComplete) {
-      console.log('Note: GSAP complete callback did not fire (may not be used)');
+    if (!(completionSignals as any).animationComplete) {
+      console.error('ERROR: Animation never completed!');
     }
     
-    // Additional Lenis-specific checks
+    // Additional StoryScroller API checks
     await page.evaluate(() => {
-      const lenis = (window as any).lenis || (window as any).__lenis;
-      if (lenis) {
-        console.log('Final Lenis diagnostics:');
-        console.log('- Instance exists:', !!lenis);
-        console.log('- Has scrollTo method:', typeof lenis.scrollTo === 'function');
-        console.log('- Has on method:', typeof lenis.on === 'function');
-        console.log('- Has emit method:', typeof lenis.emit === 'function');
-        console.log('- Options:', lenis.options);
-        console.log('- Root element:', lenis.rootElement);
-        console.log('- Animated scroll:', lenis.animatedScroll);
-        
-        // Check if there are any event listeners
-        if (lenis._emitter) {
-          console.log('- Event emitter exists:', !!lenis._emitter);
-          console.log('- Event listeners:', lenis._emitter._events);
-        }
+      const api = (window as any).storyScrollerAPI;
+      if (api) {
+        console.log('Final StoryScroller diagnostics:');
+        console.log('- API exists:', !!api);
+        console.log('- Has gotoSection method:', typeof api.gotoSection === 'function');
+        console.log('- Has getState method:', typeof api.getState === 'function');
+        console.log('- Has nextSection method:', typeof api.nextSection === 'function');
+        console.log('- Has prevSection method:', typeof api.prevSection === 'function');
+        console.log('- Current state:', api.getState());
+        console.log('- Queue status:', api.getQueueStatus());
+      } else {
+        console.error('StoryScroller API not available for diagnostics');
       }
     });
   });
 
-  test('test Lenis scrollTo with manual API calls', async ({ page }) => {
+  test('test StoryScroller API with manual navigation calls', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('.story-scroller', { state: 'visible' });
+    await page.waitForSelector('.story-scroller-container', { state: 'visible' });
     await page.waitForTimeout(1000);
 
-    // Directly test Lenis scrollTo API
+    // Directly test StoryScroller API instead of Lenis
     const scrollResult = await page.evaluate(async () => {
-      const lenis = (window as any).lenis || (window as any).__lenis;
-      if (!lenis) {
-        return { error: 'Lenis not found' };
+      const api = (window as any).storyScrollerAPI;
+      if (!api) {
+        return { error: 'StoryScroller API not found' };
       }
 
       const results = {
-        immediateScroll: null as any,
-        animatedScroll: null as any,
-        callbackScroll: null as any
+        immediateNavigation: null as any,
+        animatedNavigation: null as any,
+        callbackNavigation: null as any
       };
 
-      // Test 1: Immediate scroll
-      console.log('Test 1: Immediate scroll to 500px');
-      lenis.scrollTo(500, { immediate: true });
-      results.immediateScroll = {
-        scroll: lenis.scroll,
-        targetScroll: lenis.targetScroll,
-        isScrolling: lenis.isScrolling
-      };
-
-      // Wait a bit
-      await new Promise(resolve => setTimeout(resolve, 100));
-
-      // Test 2: Animated scroll without callback
-      console.log('Test 2: Animated scroll to 1000px without callback');
-      lenis.scrollTo(1000, { duration: 1 });
+      // Test 1: Immediate navigation using force flag
+      console.log('Test 1: Immediate navigation to section 1');
+      api.gotoSection(1, { force: true, duration: 0 });
       
-      // Monitor the scroll
+      // Wait a bit and check state
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      const state1 = api.getState();
+      results.immediateNavigation = {
+        currentSection: state1.currentSection,
+        isAnimating: state1.isAnimating,
+        scrollPosition: state1.scrollPosition
+      };
+
+      // Test 2: Animated navigation without callback
+      console.log('Test 2: Animated navigation to section 2');
+      api.gotoSection(2, { duration: 1 });
+      
+      // Monitor the navigation
       await new Promise(resolve => {
         let checkCount = 0;
         const checkInterval = setInterval(() => {
           checkCount++;
-          console.log(`Check ${checkCount}: scroll=${lenis.scroll}, target=${lenis.targetScroll}, scrolling=${lenis.isScrolling}`);
+          const state = api.getState();
+          console.log(`Check ${checkCount}: section=${state.currentSection}, animating=${state.isAnimating}`);
           
-          if (!lenis.isScrolling || checkCount > 20) {
+          if (!state.isAnimating || checkCount > 20) {
             clearInterval(checkInterval);
-            results.animatedScroll = {
-              scroll: lenis.scroll,
-              targetScroll: lenis.targetScroll,
-              isScrolling: lenis.isScrolling,
+            results.animatedNavigation = {
+              currentSection: state.currentSection,
+              isAnimating: state.isAnimating,
               checksPerformed: checkCount
             };
             resolve(null);
@@ -300,19 +240,20 @@ test.describe('Lenis Animation Completion Debug', () => {
         }, 100);
       });
 
-      // Test 3: Animated scroll with callback
-      console.log('Test 3: Animated scroll to 1500px with onComplete callback');
+      // Test 3: Navigation with callback
+      console.log('Test 3: Navigation to section 3 with onComplete callback');
       const callbackPromise = new Promise(resolve => {
         const startTime = Date.now();
-        lenis.scrollTo(1500, { 
+        api.gotoSection(3, { 
           duration: 1,
           onComplete: () => {
             console.log('onComplete fired!');
-            results.callbackScroll = {
+            const finalState = api.getState();
+            results.callbackNavigation = {
               callbackFired: true,
               timeToComplete: Date.now() - startTime,
-              finalScroll: lenis.scroll,
-              finalTarget: lenis.targetScroll
+              finalSection: finalState.currentSection,
+              finalAnimating: finalState.isAnimating
             };
             resolve(null);
           }
@@ -321,11 +262,12 @@ test.describe('Lenis Animation Completion Debug', () => {
         // Fallback timeout
         setTimeout(() => {
           console.log('onComplete did NOT fire within 3 seconds');
-          results.callbackScroll = {
+          const finalState = api.getState();
+          results.callbackNavigation = {
             callbackFired: false,
             timeoutReached: true,
-            finalScroll: lenis.scroll,
-            finalTarget: lenis.targetScroll
+            finalSection: finalState.currentSection,
+            finalAnimating: finalState.isAnimating
           };
           resolve(null);
         }, 3000);
@@ -335,63 +277,84 @@ test.describe('Lenis Animation Completion Debug', () => {
       return results;
     });
 
-    console.log('Lenis API test results:', scrollResult);
+    console.log('StoryScroller API test results:', scrollResult);
     
     // Check if callbacks are working
-    if ('callbackScroll' in scrollResult && scrollResult.callbackScroll && !scrollResult.callbackScroll.callbackFired) {
-      throw new Error('Lenis onComplete callback is not firing!');
+    if ('callbackNavigation' in scrollResult && scrollResult.callbackNavigation && !scrollResult.callbackNavigation.callbackFired) {
+      throw new Error('StoryScroller onComplete callback is not firing!');
     }
   });
 
-  test('check Lenis RAF loop and animation frame', async ({ page }) => {
+  test('check StoryScroller animation system and performance', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('.story-scroller', { state: 'visible' });
+    await page.waitForSelector('.story-scroller-container', { state: 'visible' });
     await page.waitForTimeout(1000);
 
-    const rafResult = await page.evaluate(async () => {
-      const lenis = (window as any).lenis || (window as any).__lenis;
-      if (!lenis) {
-        return { error: 'Lenis not found' };
+    const animationResult = await page.evaluate(async () => {
+      const api = (window as any).storyScrollerAPI;
+      if (!api) {
+        return { error: 'StoryScroller API not found' };
       }
 
-      // Check if Lenis has its own RAF or uses external
-      const hasOwnRaf = typeof lenis.raf === 'function';
-      const usesExternalRaf = !hasOwnRaf;
+      // Check if GSAP is available (used by StoryScroller)
+      const gsap = (window as any).gsap;
+      const hasGsap = !!gsap;
       
-      console.log('Lenis RAF setup:', {
-        hasOwnRaf,
-        usesExternalRaf,
-        autoRaf: lenis.options?.autoRaf
+      console.log('Animation system setup:', {
+        hasGsap,
+        hasStoryScrollerAPI: !!api,
+        gsapVersion: gsap?.version
       });
 
-      // Monitor RAF calls
+      // Monitor animation frames during navigation
       let rafCallCount = 0;
       const originalRaf = window.requestAnimationFrame;
       window.requestAnimationFrame = function(callback) {
         rafCallCount++;
         return originalRaf.call(window, (time) => {
-          console.log(`RAF ${rafCallCount} at time:`, time);
+          if (rafCallCount <= 10) { // Log only first 10 calls to avoid spam
+            console.log(`RAF ${rafCallCount} at time:`, time);
+          }
           callback(time);
         });
       };
 
-      // Trigger a scroll
-      lenis.scrollTo(1000, { duration: 0.5 });
+      // Trigger a navigation
+      console.log('Starting navigation to section 2...');
+      const startTime = Date.now();
+      api.gotoSection(2, { duration: 0.5 });
 
-      // Wait and count RAF calls
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait for animation to complete
+      await new Promise(resolve => {
+        const checkInterval = setInterval(() => {
+          const state = api.getState();
+          if (!state.isAnimating) {
+            clearInterval(checkInterval);
+            resolve(null);
+          }
+        }, 50);
+      });
+
+      const endTime = Date.now();
 
       // Restore RAF
       window.requestAnimationFrame = originalRaf;
 
       return {
-        hasOwnRaf,
-        usesExternalRaf,
+        hasGsap,
+        hasStoryScrollerAPI: !!api,
         rafCallCount,
-        autoRaf: lenis.options?.autoRaf
+        animationDuration: endTime - startTime,
+        gsapVersion: gsap?.version,
+        finalState: api.getState()
       };
     });
 
-    console.log('RAF test results:', rafResult);
+    console.log('Animation system test results:', animationResult);
+    
+    // Verify that the animation system is working
+    expect(animationResult.hasGsap).toBe(true);
+    expect(animationResult.hasStoryScrollerAPI).toBe(true);
+    expect(animationResult.rafCallCount).toBeGreaterThan(0);
   });
 });
