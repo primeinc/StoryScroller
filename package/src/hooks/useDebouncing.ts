@@ -106,12 +106,12 @@ export function useDebouncing(config: DebounceConfig = {}): DebounceState {
   const activeAnimationsRef = useRef<Set<string>>(new Set())
   const scrollEndTimeoutRef = useRef<NodeJS.Timeout>()
   
-  // Configuration with defaults (optimized for test reliability)
+  // Configuration with defaults
   const configRef = useRef({
-    navigationCooldown: 50, // Reduced from 200ms to 50ms for better test reliability
+    navigationCooldown: 200,
     animationDuration: 1500,
-    scrollEndDelay: 100, // Reduced from 150ms to 100ms for faster scroll end detection
-    preventOverlap: true, // Keep true to prevent animation chaos
+    scrollEndDelay: 150,
+    preventOverlap: true,
     trackMomentum: true,
     debug: false,
     logPrefix: '🎯',
@@ -145,13 +145,7 @@ export function useDebouncing(config: DebounceConfig = {}): DebounceState {
     const notAnimating = !animatingRef.current || !configRef.current.preventOverlap
     const notScrolling = !scrollingRef.current || !configRef.current.trackMomentum
     
-    // For test environments, be more lenient but still respect animation state
-    const isTestEnvironment = typeof window !== 'undefined' && 
-      (window.location.hostname === 'localhost' || process.env.NODE_ENV === 'test')
-    
-    const result = isTestEnvironment ? 
-      cooldownMet && notAnimating : // Allow scrolling in test environment but respect animations
-      cooldownMet && notAnimating && notScrolling
+    const result = cooldownMet && notAnimating && notScrolling
     
     if (configRef.current.debug) {
       console.log(`${configRef.current.logPrefix} canNavigate:`, {
@@ -159,7 +153,6 @@ export function useDebouncing(config: DebounceConfig = {}): DebounceState {
         notAnimating,
         notScrolling,
         timeSinceLastNav,
-        isTestEnvironment,
         result
       })
     }

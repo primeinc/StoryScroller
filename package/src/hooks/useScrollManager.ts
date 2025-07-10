@@ -165,7 +165,7 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
   // Track current section in a ref for immediate access
   const currentSectionRef = useRef(scrollState.getState().currentSection);
 
-  // Update stateRef whenever state changes AND trigger immediate UI sync
+  // Update stateRef whenever state changes
   useEffect(() => {
     const newState = scrollState.getState();
     stateRef.current = {
@@ -173,20 +173,6 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
       lastNavigationTime: stateRef.current.lastNavigationTime
     };
     currentSectionRef.current = newState.currentSection;
-    
-    // Immediate UI sync - force update any polling UI components
-    if (typeof window !== 'undefined' && (window as any).storyScrollerAPI) {
-      // Dispatch a custom event to immediately notify UI components
-      const event = new CustomEvent('storyScrollerStateChange', {
-        detail: { 
-          currentSection: newState.currentSection,
-          isAnimating: newState.isAnimating,
-          targetSection: newState.targetSection,
-          timestamp: Date.now()
-        }
-      });
-      window.dispatchEvent(event);
-    }
   }, [scrollState]);
 
   const processNavigationQueue = useCallback(async () => {
@@ -242,19 +228,6 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
     // Update refs immediately for consistent state
     currentSectionRef.current = request.targetSection;
     stateRef.current.lastNavigationTime = Date.now();
-    
-    // Immediate UI sync - notify components of state change
-    if (typeof window !== 'undefined') {
-      const event = new CustomEvent('storyScrollerStateChange', {
-        detail: { 
-          currentSection: request.targetSection,
-          isAnimating: true,
-          targetSection: request.targetSection,
-          timestamp: Date.now()
-        }
-      });
-      window.dispatchEvent(event);
-    }
 
     // Kill any existing scroll animations
     gsap.killTweensOf(window);
@@ -286,19 +259,6 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
         
         // Update our ref immediately
         currentSectionRef.current = request.targetSection;
-        
-        // Immediate UI sync - notify components of animation completion
-        if (typeof window !== 'undefined') {
-          const event = new CustomEvent('storyScrollerStateChange', {
-            detail: { 
-              currentSection: request.targetSection,
-              isAnimating: false,
-              targetSection: null,
-              timestamp: Date.now()
-            }
-          });
-          window.dispatchEvent(event);
-        }
         
         console.log('📊 [processNavigationQueue] State after update:', {
           currentSection: currentSectionRef.current,
@@ -341,9 +301,8 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
     });
 
     // For button/programmatic navigation, be very responsive 
-    // Reduced timing constraints for better test reliability
     const canNavigateNow = options?.force || debouncing.canNavigate() || 
-      (Date.now() - stateRef.current.lastNavigationTime) > 10; // Allow very rapid button clicks (10ms for tests)
+      (Date.now() - stateRef.current.lastNavigationTime) > 20; // Allow very rapid button clicks
 
     if (!canNavigateNow && !options?.force) {
       console.log('🎯 [gotoSection] Navigation blocked by timing check');
@@ -439,10 +398,9 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
         if (isWheelEvent && isSignificantDelta) {
           // Check if we can navigate BEFORE marking scroll start to avoid self-blocking
           // For wheel events, we only check cooldown and animation state, not scrolling state
-          // Reduced cooldown for better test reliability
           const now = Date.now();
           const timeSinceLastNav = now - (stateRef.current.lastNavigationTime || 0);
-          const cooldownMet = timeSinceLastNav >= 50; // 50ms cooldown for wheel events (reduced for tests)
+          const cooldownMet = timeSinceLastNav >= 100; // 100ms cooldown for wheel events
           const notAnimating = !debouncing.isAnimating();
           const canNavigateNow = cooldownMet && notAnimating;
           
@@ -646,11 +604,10 @@ export function useScrollManager(initialConfig: ScrollManagerConfig): ScrollMana
   }, []);
 
   // Initialize on mount, cleanup on unmount
-  // Stable dependencies to prevent multiple Lenis reinitializations
   useEffect(() => {
     reinitialize();
     return destroy;
-  }, [sections.length]); // Only reinitialize if sections count changes
+  }, [reinitialize, destroy]);
 
   // Public API matching ScrollManagerAPI interface
   return {

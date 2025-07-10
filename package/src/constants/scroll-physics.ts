@@ -37,7 +37,7 @@ export const TIMING = {
   /** Maximum animation duration to prevent sluggish feel */
   MAX_DURATION: 2.5,
   /** Debounce threshold for rapid scroll events (ms) */
-  DEBOUNCE_THRESHOLD: 50, // Reduced from 100ms to 50ms for better test reliability
+  DEBOUNCE_THRESHOLD: 100,
   /** Time in ms to ignore duplicate navigation requests for the same target */
   DEDUPLICATION_THRESHOLD: 50,
   /** Time to wait before considering scroll ended (ms) */
@@ -45,13 +45,13 @@ export const TIMING = {
   /** Hydration delay for Next.js (ms) */
   HYDRATION_DELAY: 100,
   /** State verification interval (ms) */
-  STATE_CHECK_INTERVAL: 250, // Reduced from 500ms to 250ms for faster recovery
+  STATE_CHECK_INTERVAL: 500,
   /** Interval in ms for the periodic state verification check */
-  STATE_VERIFICATION_INTERVAL: 250, // Reduced from 500ms to 250ms for faster recovery
+  STATE_VERIFICATION_INTERVAL: 500,
   /** Threshold in ms to consider an animation "stuck" if it hasn't completed */
   STUCK_ANIMATION_THRESHOLD: 5000,
-  /** Navigation cooldown to prevent rapid section changes (optimized for button responsiveness and tests) */
-  NAVIGATION_COOLDOWN: 50, // Reduced from 100ms to 50ms for better test reliability
+  /** Navigation cooldown to prevent rapid section changes (optimized for button responsiveness) */
+  NAVIGATION_COOLDOWN: 100,
   /** Position check delay after animation */
   POSITION_CHECK_DELAY: 100,
   /** ScrollTrigger config delay to avoid hydration errors */
