@@ -65,8 +65,8 @@ const getCurrentSection = async (page: Page): Promise<{ debug: number, nav: numb
         const strokeDasharray = circularProgress.getAttribute('stroke-dasharray')
         if (strokeDasharray) {
           const dashValues = strokeDasharray.split(',').map(v => parseFloat(v.trim()))
-          if (dashValues.length >= 2 && dashValues[1] > 0) {
-            progressPx = (dashValues[0] / dashValues[1]) * 100
+          if (dashValues.length >= 2 && dashValues[1] !== undefined && dashValues[1] > 0) {
+            progressPx = ((dashValues[0] || 0) / dashValues[1]) * 100
           }
         }
       }

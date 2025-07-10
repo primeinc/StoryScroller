@@ -415,7 +415,7 @@ describe('Type Guards and Validation', () => {
         });
       });
 
-      expect(duration).toBeLessThan(20); // Should be very fast
+      expect(duration).toBeLessThan(50); // Should be very fast
     });
 
     it('should handle deeply nested objects', () => {

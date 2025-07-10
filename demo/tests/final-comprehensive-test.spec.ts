@@ -32,7 +32,7 @@ test.describe('StoryScroller Demo - Final Comprehensive Test', () => {
 
     // Detect if this is mobile Safari
     const isMobileSafari = await page.evaluate(() => {
-      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
     });
 
     // Monitor console errors

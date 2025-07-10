@@ -312,7 +312,7 @@ test.describe('StoryScroller Comprehensive E2E Test', () => {
     }
     
     // Verify that positions changed (indicating transition occurred)
-    const positionChanged = positions.some(pos => Math.abs(pos - positions[0]) > 50);
+    const positionChanged = positions.length > 1 && positions.some(pos => Math.abs(pos - (positions[0] || 0)) > 50);
     expect(positionChanged).toBe(true);
     
     // Verify that we eventually reach section 2

@@ -10,7 +10,7 @@
     - region "Introduction and overview, section 1 of 5":
       - heading "Introduction and overview" [level=2]
       - region "StoryScroller":
-        - text: 47KB Bundle Size 60 FPS Performance WCAG AA Accessible React 18+ Modern
+        - text: 47KB Bundle Size 60Hz Performance WCAG AA Accessible React 18+ Modern
         - heading "StoryScroller" [level=1]
         - paragraph: Production-ready narrative scrolling for React
         - paragraph: Seamlessly blend storytelling with smooth scrolling animations. Built with GSAP, Lenis, and React 18 for maximum performance.
@@ -53,7 +53,6 @@
         - link "Get Started →":
           - /url: https://github.com/primeinc/StoryScroller
 - img
-- text: 1/5
 - button "Expand controls":
   - img
 ```
