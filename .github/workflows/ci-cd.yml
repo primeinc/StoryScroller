@@ -144,7 +144,7 @@ jobs:
         run: pnpm --filter @primeinc/storyscroller run test:unit:run -- --coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           file: ./package/coverage/lcov.info
           fail_ci_if_error: false
