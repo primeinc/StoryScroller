@@ -1,0 +1,188 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for StoryScroller
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature! We appreciate your input in making StoryScroller better.
+        
+        💡 **Tip**: Before submitting, please check our [roadmap](../README.md#roadmap) and existing issues to see if your idea is already planned or discussed.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm you have completed the following
+      options:
+        - label: I have searched for existing feature requests
+          required: true
+        - label: I have checked the roadmap to see if this is already planned
+          required: true
+        - label: This feature request is not a duplicate of an existing issue
+          required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: A clear and concise summary of the feature you'd like to see
+      placeholder: Briefly describe the feature in 1-2 sentences
+    validations:
+      required: true
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature is this?
+      options:
+        - New Component API
+        - Animation Enhancement
+        - Accessibility Improvement
+        - Performance Optimization
+        - Developer Experience
+        - Documentation
+        - Testing/Quality
+        - Other
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What user need does it address?
+      placeholder: |
+        Describe the problem you're facing or the gap you've identified:
+        - What are you trying to accomplish?
+        - What challenges are you encountering?
+        - How are you currently working around this?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see
+      placeholder: |
+        How would you like this feature to work?
+        - What should the API look like?
+        - How should it behave?
+        - What should the user experience be?
+    validations:
+      required: true
+
+  - type: textarea
+    id: api-design
+    attributes:
+      label: API Design (if applicable)
+      description: If this involves new props or methods, show what the API might look like
+      render: typescript
+      placeholder: |
+        // Example API design
+        <StoryScroller
+          sections={sections}
+          newFeatureProp={true}
+          onNewEvent={(data) => console.log(data)}
+        />
+        
+        // Or new methods
+        const api = useStoryScrollerAPI()
+        api.newMethod({ option: 'value' })
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or features you've considered
+      placeholder: |
+        - Have you considered other approaches?
+        - Are there existing workarounds?
+        - How do other libraries handle this?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Important for my use case
+        - Critical for my project
+        - Blocking my adoption of StoryScroller
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Implementation Complexity (rough estimate)
+      description: How complex do you think this feature would be to implement?
+      options:
+        - Low (small API change, minimal code)
+        - Medium (new component logic, moderate changes)
+        - High (significant architecture changes)
+        - Unknown
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Provide specific examples of how this feature would be used
+      placeholder: |
+        1. **Marketing websites**: Feature would help with...
+        2. **Educational content**: Users could...
+        3. **Product showcases**: This would enable...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples from Other Libraries
+      description: Are there examples of this feature in other libraries or tools?
+      placeholder: |
+        - Library X does this with: [example]
+        - Website Y has a similar feature: [description]
+        - Reference implementation: [link]
+
+  - type: checkboxes
+    id: backwards-compatibility
+    attributes:
+      label: Backwards Compatibility
+      description: Consider the impact on existing users
+      options:
+        - label: This feature can be implemented without breaking existing APIs
+        - label: This feature would require breaking changes (major version bump)
+        - label: I'm not sure about backwards compatibility implications
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, mockups, or examples
+      placeholder: |
+        - Screenshots or mockups
+        - Links to relevant discussions
+        - Research or background information
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I would be willing to submit a PR to implement this feature
+        - label: I would be willing to help with design/planning
+        - label: I would be willing to help with testing/feedback
+
+  - type: dropdown
+    id: timeline
+    attributes:
+      label: Preferred Timeline
+      description: When would you ideally like to see this feature?
+      options:
+        - No specific timeline
+        - Next patch release (1.0.x)
+        - Next minor release (1.x.0)
+        - Next major release (2.0.0)
+        - As soon as possible
