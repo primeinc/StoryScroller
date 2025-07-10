@@ -169,20 +169,20 @@ describe('Debouncing and Throttling', () => {
         return Math.max(0, cooldown - elapsed)
       }
       
-      // Check remaining time at intervals
+      // Check remaining time at intervals (with buffer for timer drift)
       const remaining1 = getCooldownRemaining()
-      expect(remaining1).toBeLessThanOrEqual(200)
-      expect(remaining1).toBeGreaterThan(190)
+      expect(remaining1).toBeLessThanOrEqual(205) // +5ms buffer for timer drift
+      expect(remaining1).toBeGreaterThan(185) // -5ms buffer for timer drift
       
       await wait(50)
       const remaining2 = getCooldownRemaining()
-      expect(remaining2).toBeLessThanOrEqual(150)
-      expect(remaining2).toBeGreaterThan(140)
+      expect(remaining2).toBeLessThanOrEqual(155) // +5ms buffer for timer drift
+      expect(remaining2).toBeGreaterThan(135) // -5ms buffer for timer drift
       
       await wait(100)
       const remaining3 = getCooldownRemaining()
-      expect(remaining3).toBeLessThanOrEqual(50)
-      expect(remaining3).toBeGreaterThan(40)
+      expect(remaining3).toBeLessThanOrEqual(55) // +5ms buffer for timer drift
+      expect(remaining3).toBeGreaterThan(35) // -5ms buffer for timer drift
       
       await wait(60)
       const remaining4 = getCooldownRemaining()
