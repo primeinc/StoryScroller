@@ -12,15 +12,15 @@
   },
   "packageManager": "pnpm@9.12.0",
   "scripts": {
-    "dev": "turbo run dev --filter demo",
-    "dev:package": "turbo run dev --filter package",
+    "dev": "turbo run dev --filter @primeinc/storyscroller-demo",
+    "dev:package": "turbo run dev --filter @primeinc/storyscroller",
     "build": "turbo run build",
-    "build:package": "turbo run build --filter package",
-    "build:demo": "turbo run build --filter demo",
+    "build:package": "turbo run build --filter @primeinc/storyscroller",
+    "build:demo": "turbo run build --filter @primeinc/storyscroller-demo",
     "test": "turbo run test",
-    "test:package": "turbo run test --filter package",
-    "test:demo": "turbo run test --filter demo",
-    "test:e2e": "turbo run test:e2e --filter demo",
+    "test:package": "turbo run test --filter @primeinc/storyscroller",
+    "test:demo": "turbo run test --filter @primeinc/storyscroller-demo",
+    "test:e2e": "turbo run test:e2e --filter @primeinc/storyscroller-demo",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean",
@@ -30,5 +30,10 @@
     "prettier": "^3.2.5",
     "rimraf": "^6.0.1",
     "turbo": "^2.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.25.0"
+    }
   }
 }
