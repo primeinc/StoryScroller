@@ -24,7 +24,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
     // Attach console error check to page
     (page as any).consoleErrors = consoleErrors;
     
-    await page.goto('http://localhost:5184');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     await page.waitForFunction(() => (window as any).storyScrollerAPI);
   });
@@ -61,24 +61,24 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       
       // Verify standard mode elements
       await expect(page.locator('.control-hub--standard')).toBeVisible();
-      await expect(page.getByText('Section 1 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 1 of 5')).toBeVisible();
       
       // Step 4: Explore navigation methods
       // Method 1: Arrow buttons
       const nextButton = page.locator('[aria-label="Next section"]');
       await nextButton.click();
       await page.waitForTimeout(1500);
-      await expect(page.getByText('Section 2 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 2 of 5')).toBeVisible();
       
       // Method 2: Dot navigation
       await page.locator('[aria-label="Go to section 4"]').click();
       await page.waitForTimeout(1500);
-      await expect(page.getByText('Section 4 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 4 of 5')).toBeVisible();
       
       // Method 3: Keyboard navigation
       await page.keyboard.press('Home');
       await page.waitForTimeout(1500);
-      await expect(page.getByText('Section 1 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 1 of 5')).toBeVisible();
       
       // Step 5: Discover advanced mode
       const advancedButton = page.locator('[aria-label="Advanced controls"]');
@@ -101,7 +101,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Step 7: Make configuration changes
       const durationSlider = page.getByLabel('Animation duration');
       const originalDuration = await durationSlider.inputValue();
-      await durationSlider.fill('0.8');
+      await durationSlider.fill('800');
       
       const sensitivitySlider = page.getByLabel('Scroll sensitivity');
       await sensitivitySlider.fill('30');
@@ -131,7 +131,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Navigate with new settings
       const startTime = Date.now();
       await page.locator('[aria-label="Next section"]').click();
-      await expect(page.getByText('Section 2 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 2 of 5')).toBeVisible();
       const endTime = Date.now();
       
       // Animation should be around 800ms
@@ -286,7 +286,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
         await page.mouse.up();
         
         await page.waitForTimeout(1500);
-        await expect(page.getByText('Section 4 of 5')).toBeVisible();
+        await expect(page.getByTestId('control-hub').getByText('Section 4 of 5')).toBeVisible();
         
         // Swipe down to previous using drag actions
         await page.mouse.move(box.x + box.width / 2, box.y + box.height * 0.3);
@@ -384,7 +384,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Live regions are created dynamically (e.g., toast notifications)
       await page.locator('[aria-label="Advanced controls"]').click();
       await page.getByRole('button', { name: 'Configuration' }).click();
-      await page.getByLabel('Animation duration').fill('1.5');
+      await page.getByLabel('Animation duration').fill('1500');
       await page.getByRole('button', { name: 'Apply Changes' }).click();
       
       // Toast should have live region
@@ -512,7 +512,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       }
       
       // Step 5: Test real-time preview
-      await configs.duration.slider.fill('0.3');
+      await configs.duration.slider.fill('500');
       await configs.sensitivity.slider.fill('150');
       
       // Apply changes
@@ -526,7 +526,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Fast animation test
       const fastStart = Date.now();
       await page.locator('[aria-label="Next section"]').click();
-      await expect(page.getByText('Section 2 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 2 of 5')).toBeVisible();
       const fastEnd = Date.now();
       expect(fastEnd - fastStart).toBeLessThan(500);
       
@@ -568,7 +568,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       
       // Step 9: Performance impact test
       // Set extreme values
-      await configs.duration.slider.fill('0.2');
+      await configs.duration.slider.fill('500');
       await configs.sensitivity.slider.fill('200');
       await page.getByRole('button', { name: 'Apply Changes' }).click();
       await page.waitForTimeout(4000);
@@ -643,7 +643,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       const durationSlider = page.getByLabel('Animation duration');
       
       for (let i = 0; i < 10; i++) {
-        await durationSlider.fill(String(0.3 + (i * 0.15)));
+        await durationSlider.fill(String(500 + (i * 150)));
         await page.getByRole('button', { name: 'Apply Changes' }).click();
         await page.waitForTimeout(500);
       }
@@ -693,7 +693,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       await page.getByRole('button', { name: 'Configuration' }).click();
       
       // Set very slow animation
-      await page.getByLabel('Animation duration').fill('2');
+      await page.getByLabel('Animation duration').fill('2000');
       await page.getByRole('button', { name: 'Apply Changes' }).click();
       await page.waitForTimeout(4000);
       
@@ -708,7 +708,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       await page.waitForTimeout(1000);
       await expect(page.getByText('Animating')).toBeVisible(); // Still animating
       
-      await expect(page.getByText('Section 5 of 5')).toBeVisible({ timeout: 3000 });
+      await expect(page.getByTestId('control-hub').getByText('Section 5 of 5')).toBeVisible({ timeout: 3000 });
       const slowEnd = Date.now();
       
       expect(slowEnd - slowStart).toBeGreaterThan(1800);
@@ -741,11 +741,11 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       // Mix navigation methods
       await page.keyboard.press('ArrowDown'); // Keyboard
       await page.waitForTimeout(2000);
-      await expect(page.getByText('Section 2 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 2 of 5')).toBeVisible();
       
       await page.locator('[aria-label="Go to section 4"]').click(); // Dot
       await page.waitForTimeout(2000);
-      await expect(page.getByText('Section 4 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 4 of 5')).toBeVisible();
       
       await page.mouse.wheel(0, -100); // Scroll
       await page.waitForTimeout(2000);
@@ -753,7 +753,7 @@ test.describe('StoryScroller Integration Tests - User Journeys', () => {
       
       await page.locator('[aria-label="Previous section"]').click(); // Button
       await page.waitForTimeout(2000);
-      await expect(page.getByText('Section 2 of 5')).toBeVisible();
+      await expect(page.getByTestId('control-hub').getByText('Section 2 of 5')).toBeVisible();
       
       // Final state consistency check
       const currentSection = await page.evaluate(() => {
