@@ -28,6 +28,7 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [forceUpdateCounter, setForceUpdateCounter] = useState(0);
   
   // Refs for focus management
   const advancedModeRef = useRef<HTMLDivElement>(null);
@@ -48,18 +49,60 @@ export function ControlHub({ sectionsCount }: ControlHubProps) {
   });
   const [previousConfig, setPreviousConfig] = useState<DemoConfig>(config);
 
-  // Poll StoryScroller state
+  // Listen for immediate state changes from StoryScroller API
   useEffect(() => {
+    // Force initial state sync with a slight delay to ensure API is ready
+    const initialSync = () => {
+      if ((window as any).storyScrollerAPI?.getState) {
+        const state = (window as any).storyScrollerAPI.getState();
+        console.log('🎯 [ControlHub] Initial state sync:', state);
+        setCurrentIndex(state.currentSection);
+        setIsAnimating(state.isAnimating);
+      } else {
+        // Retry if API not ready yet
+        setTimeout(initialSync, 50);
+      }
+    };
+    
+    initialSync();
+
+    // Listen for immediate state change events
+    const handleStateChange = (event: CustomEvent) => {
+      const { currentSection, isAnimating } = event.detail;
+      console.log('🎯 [ControlHub] Received immediate state change:', event.detail);
+      setCurrentIndex(currentSection);
+      setIsAnimating(isAnimating);
+    };
+
+    window.addEventListener('storyScrollerStateChange', handleStateChange as EventListener);
+
+    // High-frequency polling for reliable test synchronization (16ms = 60fps)
     const interval = setInterval(() => {
       if ((window as any).storyScrollerAPI?.getState) {
         const state = (window as any).storyScrollerAPI.getState();
-        setCurrentIndex(state.currentSection);
-        setIsAnimating(state.isAnimating);
+        // Force update state - use callback form to ensure we're getting latest state
+        setCurrentIndex(prevIndex => {
+          if (prevIndex !== state.currentSection) {
+            console.log('🎯 [ControlHub] Polling update:', { from: prevIndex, to: state.currentSection });
+            // Force a re-render to ensure UI updates
+            setForceUpdateCounter(prev => prev + 1);
+          }
+          return state.currentSection;
+        });
+        setIsAnimating(prevAnimating => {
+          if (prevAnimating !== state.isAnimating) {
+            console.log('🎯 [ControlHub] Animation state update:', { from: prevAnimating, to: state.isAnimating });
+          }
+          return state.isAnimating;
+        });
       }
-    }, 16); // 60fps for smooth updates
+    }, 16); // 60fps for smooth updates and reliable test sync
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+      window.removeEventListener('storyScrollerStateChange', handleStateChange as EventListener);
+      clearInterval(interval);
+    };
+  }, []); // Remove deps to avoid recreating interval unnecessarily
 
   // Performance monitoring
   useEffect(() => {

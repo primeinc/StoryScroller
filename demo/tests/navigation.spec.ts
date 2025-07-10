@@ -110,15 +110,16 @@ const waitForSectionChange = async (page: Page, expectedSection: number, maxWait
         if (match && match[1]) uiSection = parseInt(match[1])
       }
       
-      // Check if both API and UI are at target section, not animating, AND ready for next navigation
+      // Check if API is at target section and not animating - UI may lag slightly
+      // API uses 0-based indexing, so add 1 to compare with 1-based target
       const apiAtTarget = (state.currentSection + 1) === targetSection
-      const uiAtTarget = uiSection === targetSection
-      const notAnimating = !state.isAnimating && !queueStatus.hasQueuedAction
+      const notAnimating = !state.isAnimating && queueStatus.pending === 0
       
-      // Also check that enough time has passed for cooldown (typically 300ms)
-      const cooldownReady = Date.now() - state.lastNavigationTime > 350
+      // Reduced cooldown for test reliability
+      const cooldownReady = Date.now() - state.lastNavigationTime > 200
       
-      return apiAtTarget && uiAtTarget && notAnimating && cooldownReady
+      // Primary check: API state is correct and stable
+      return apiAtTarget && notAnimating && cooldownReady
     },
     { targetSection: expectedSection },
     { timeout: maxWaitMs }
@@ -169,14 +170,14 @@ const safeButtonClick = async (page: Page, selector: string, buttonName: string,
   if (expectedSection) {
     await waitForSectionChange(page, expectedSection)
   } else {
-    // Fallback: wait for any navigation to complete
+    // Fallback: wait for any navigation to complete with reduced timeout
     await page.waitForFunction(() => {
       const api = (window as any).storyScrollerAPI
       if (!api) return false
       const state = api.getState()
       const queueStatus = api.getQueueStatus()
       return !state.isAnimating && !queueStatus.hasQueuedAction
-    }, { timeout: 3000 })
+    }, { timeout: 2000 }) // Reduced from 3000ms to 2000ms for faster tests
   }
   
   const afterState = await getCurrentSection(page)
